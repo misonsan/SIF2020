@@ -1,0 +1,49 @@
+<p>giornata-detail-listino works!</p>
+
+<div class="form-row col-sm-12 offset-6">
+  <caption class="title ">{{title}}</caption>
+</div>
+
+
+<br>
+
+<!--{{manif | json}} -->
+<div class="container">
+  <div class="row col-md-12">    <!--  <div class="row justify-content-md-center"> -->
+     <div class="col-md-auto">
+      <form #fm ="ngForm">
+       <!-- <input Hidden #id="ngModel"  [(ngModel)]="manif.id" class="form-control" name="id" id="id">   -->
+        <!--  riga descrizione messa -->
+        <div class="form-row">
+            <div class="form-group col-sm-9">
+                  <label for="descManif">Manifestazione</label>
+            <!--      <input disabled #descManif="ngModel"  [(ngModel)]="manif.descManif" class="form-control" name="descManif" id="descManif">  -->
+
+            </div>
+            <div class="form-group col-sm-3">
+                <label >Stato</label>
+        <!--       <input disabled #d_stato_manifestazione="ngModel"  [(ngModel)]="manif.d_stato_manifestazione" class="form-control" name="d_stato_manifestazione" id="d_stato_manifestazione" [style.color]="manif.statoManifestazione == 2 ? 'red' : null">  -->
+            </div>
+        </div>
+        <!--  riga date inizio e finei  -->
+        <div class="form-row">
+            <div class="form-group col-sm-6">
+                <label for="dtInizio">Data </label>
+       <!--         <input  disabled [(ngModel)]="manif.dtInizio"   #dtInizio="ngModel" class="form-control"  name="dtInizio" id="dtInizio" placeholder="dd/mm/yyyy" >     -->   <!-- type="date" -->
+            </div>
+            <div class="form-group col-sm-3">
+              <label >Stato</label>
+        <!--      <input disabled #d_stato_giornata="ngModel"  [(ngModel)]="manif.d_stato_giornata" class="form-control" name="d_stato_giornata" id="d_stato_giornata" [style.color]="manif.statoManifestazione == 2 ? 'red' : null">  -->
+          </div>
+        </div>
+      </form>
+    </div>
+   </div>
+</div>
+
+
+  <label >Situazione del Listino</label>
+  <div class="pippo" >
+    visibili dati del listino
+</div>
+

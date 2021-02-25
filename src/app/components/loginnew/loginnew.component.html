@@ -1,0 +1,108 @@
+<p>loginnew works!</p>
+
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <h1>
+      login works!
+    </h1>
+    <div class="card">
+      <div class="card-body">
+    <form name="loginForm" #f="ngForm" (ngSubmit)="signIn(f)">
+
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+              <span class="input-group-text"><fa-icon [icon]="faEnvelope"></fa-icon> </span>     <!--   <i class="fa fa-envelope" aria-hidden="true"></i> -->
+          </div>
+          <input required  class="form-control" email type="email" ngModel #email="ngModel" name="email" id="email"  placeholder="inserire email nel formato example@mail.com">
+        </div>
+        <div *ngIf="email.dirty && email.touched && email.invalid" class="alert alert-danger">
+
+          <div  *ngIf="email.errors.required">
+            inserire indirizzo email - campo obbligatorio
+          </div>
+          <div *ngIf="email.errors.email">
+            indirizzo email formalismo non cotretto
+          </div>
+
+        </div>
+      </div>
+
+
+
+      <!--
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input required  class="form-control" email type="email" ngModel #email="ngModel" name="email" id="email" value=''>
+        <div *ngIf="email.dirty && email.touched && email.invalid">
+
+          <div class="alert-danger" *ngIf="email.errors.required">
+            inserire indirizzo email - campo obbligatorio
+          </div>
+          <div class="alert-danger" *ngIf="email.errors.email">
+            indirizzo email formalismo non cotretto
+          </div>
+
+        </div>
+      </div>  -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-group">
+              <input class="form-control" required minlength="6" ngModel type="password" #password="ngModel" name="password" id="password" value=''>
+
+
+              <div class="input-group-append">
+                <span class="input-group-text" >
+                  <a (Click)="this.toggleFieldTextType()">
+                    <fa-icon [icon]="faEyeSlash"  ></fa-icon>
+                 </a>
+                </span>
+              </div>
+
+        </div>
+        <div *ngIf="password.dirty && password.touched && password.invalid" class="alert alert-danger" >
+          <div *ngIf="password.errors.required">
+          inserire la password - campo obbligatorio
+          </div>
+          <div *ngIf="password.errors.minlength">
+            la password deve comtenere almeno  {{password.errors.minlength.requiredLength }} caratteri
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <a class="nav-link" routerLinkActive="active" href="#"  (click)="changePassword()">Cambio Password</a>
+        <div class="form-group text-center">
+          <button [disabled]="!f.valid" class="btn btn-primary">Log in</button>
+        </div>
+
+      </div>
+
+
+
+      <div *ngIf="savechange  && !alertSuccess" class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Errore in Login</h4>
+        <p>{{message}}</p>
+        <hr>
+        <p class="mb-0">inserire credenziali corrette</p>
+      </div>
+      <div *ngIf="savechange  && alertSuccess" class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Modifca Password</h4>
+        <p>Utente riconosciuto</p>
+        <hr>
+        <p class="mb-0">Bravissimo !!!!!!</p>
+      </div>
+
+
+
+
+
+
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

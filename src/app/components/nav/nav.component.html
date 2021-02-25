@@ -1,0 +1,91 @@
+
+<nav class="navbar navbar-expand-lg navbar-light fixed-top bg-blue navbg">
+
+  <!--<a class="navbar-brand titoliblue" href="#">Fixed navbar</a> -->
+  <a class="navbar-brand" href="#">
+    <img src="assets/images/logoSanfra.png" width="30" height="30" alt="logo">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"  open="true"  open="true">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse" >
+    <ul class="navbar-nav mr-auto"  >
+      <li class="nav-item active">
+        <a class="nav-link titoliwhite" href="#" routerLink="">Home</a>
+      </li>
+
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Funzioni
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+          <button   class="dropdown-item" type="button" (click)="gofunctionAdminActivity('manif')">Manifestazioni</button>   <!--  [disabled] *ngIf="functionAdmin !== -1" -->
+          <button   class="dropdown-item" type="button" (click)="gofunctionAdminActivity('commande')">Commande</button>
+          <button   class="dropdown-item" type="button" (click)="gofunctionAdminActivity('giormanif')">Sit. Giornliera</button>
+          <div class="dropdown-divider"></div>
+          <button   class="dropdown-item" type="button">Prodotti</button>
+        </div>
+      </div>
+
+
+
+      <div class="form-row">    
+        <div class="titolo">
+          {{titolo}}
+        </div>
+         &nbsp;
+        <div class="anno">
+          {{anno}}
+        </div>
+      </div>
+      <div class="form-inline" >
+        <form class="form-inline mt-2 mt-md-0" *ngIf="isUserLoggedIn" >
+          <div   >
+            <button visible *ngIf="ruoloUser == 1 || ruoloUser == -1" class="btn btn-success btn-md pad" (click)="goActivity(ruoloCassa)">Cassa</button>
+          </div>
+        </form>
+
+          <div >
+            <button  visible *ngIf="ruoloUser == 2  || ruoloUser == -1" class="btn btn-danger btn-md pad"  (click)="goActivity(ruoloCucina)">Cucina</button>
+          </div>
+          <div  >
+            <button  visible *ngIf="ruoloUser == 3 || ruoloUser == -1" class="btn btn-primary btn-md pad"  (click)="goActivity(ruoloBevande)">Bevande</button>
+          </div>
+      </div>
+
+     </ul>
+
+    <form class="form-inline mt-2 mt-md-0" *ngIf="isUserLoggedIn" >
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap">
+        <a *ngIf="!isUserLoggedIn" (click)="signIn($event)"  class="nav-link titoliwhite" href="#">Login</a>
+      </li>
+
+      <li class="nav-item text-nowrap">
+        <a *ngIf="!isUserLoggedIn" (click)="signUp($event)"  class="nav-link titoliwhite" href="#">Sign up </a>
+      </li>
+      <li class="nav-item text-nowrap">
+        <a *ngIf="isUserLoggedIn" (click)="chgpwd($event)"  class="nav-link titoliwhite" href="#">cambio Password </a>
+      </li>
+
+        <li *ngIf="isUserLoggedIn" class="nav-item nav-link ">   <!--  colorUsername  text-nowrap -->
+          {{username}} 
+        </li>
+        <li class="nav-item text-nowrap">
+            <a *ngIf="isUserLoggedIn" class="nav-link titoliwhite"  href="#" (click)=logout($event)>Sign out</a>
+      </li>
+      <li hidden *ngIf="isUserLoggedIn" class="nav-item nav-link ">   <!--  colorUsername  text-nowrap -->
+        {{ruoloUser}}  
+      </li>
+      <li  *ngIf="isUserLoggedIn" class="nav-item nav-link ">   <!--  colorUsername  text-nowrap -->
+        {{idDay}} 
+      </li>
+
+    </ul>
+  </div>
+</nav>
+
+

@@ -1,0 +1,161 @@
+<p>prodotto-detail works!</p>
+
+<!--{{prodotto|json}} -->
+
+
+<div class="container">
+  <caption class="title  col-sm-12">{{title}}</caption>
+  <div class="row col-md-12">    <!--  <div class="row justify-content-md-center"> -->
+     <div class="col-md-auto">
+      <form #fm ="ngForm"  >
+        <input Hidden #id="ngModel"  [(ngModel)]="prodotto.id" class="form-control" name="id" id="id">
+
+        <div class="col-6 " style="margin-top: 35px;">
+          <div class="row">
+            <div class="col-md-12 offset-6">
+
+              <img src="assets/images/photoProducts/{{prodotto.photo}}"  alt="prodotto.photo" class="img-circle" width="150px" height="150px" [(ngModel)]="prodotto.photo" #photo="ngModel">   <!--displayedImage-->   <!--  -->
+
+            </div>
+          </div>
+        </div>
+        <!--  Descrizione -->
+        <div class="form-row">
+            <div class="form-group col-sm-9">
+                  <label for="cognome">Prodotto</label>
+                  <input disabled #descrizione_prodotto="ngModel"  [(ngModel)]="prodotto.descrizione_prodotto" class="form-control" name="descrizione_prodotto" id="descrizione_prodotto">
+
+            </div>
+            <div class="form-group col-sm-3">
+                <label for="nome">Tipologia</label>
+                <input disabled #d_Tipologia="ngModel"  [(ngModel)]="prodotto.d_Tipologia" class="form-control" name="d_Tipologia" id="d_Tipologia">    <!--  [style.color]="manif.statoManifestazione == 2 ? 'red' : null"-->
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-6">
+              <label for="d_Categoria">Categoria</label>
+              <input disabled #d_Categoria="ngModel"  [(ngModel)]="prodotto.d_Categoria" class="form-control" name="d_Categoria" id="d_Categoria">
+
+        </div>
+        <div class="form-group col-sm-6">
+            <label for="d_Competenza">Competenza</label>
+            <input disabled #d_Competenza="ngModel"  [(ngModel)]="prodotto.d_Competenza" class="form-control" name="d_Competenza" id="d_Competenza">    <!--  [style.color]="manif.statoManifestazione == 2 ? 'red' : null"-->
+        </div>
+      </div>
+        <div class="form-row">
+          <div class="form-group col-sm-6">
+            <label for="disponibile_Day">Disponibile</label>
+            <input required  #disponibile_Day="ngModel"  [(ngModel)]="prodotto.disponibile_Day" class="form-control" name="disponibile_Day" id="disponibile_Day" placeholder="Inserire la disponibilità per oggi"  minlength="2" maxlength="3" pattern="[0-9]{2,3}"  type="number">
+            <div *ngIf="disponibile_Day.dirty && disponibile_Day.touched && disponibile_Day.invalid "  class="alert alert-danger">
+                <div  *ngIf="disponibile_Day.errors.required">
+                  inserire la disponibilità giornaliera - campo Obbligatorio
+                </div>
+                <div  *ngIf="disponibile_Day.errors.minlength">
+                  il campo deve avere almeno {{disponibile_Day.errors.minlength.requiredLength }} caratteri
+                </div>
+                <div *ngIf="disponibile_Day.errors?.pattern">
+                  <!-- non posso inserire lettere   {{postimax.errors.pattern.requiredPattern }}  -->
+                  Disponibilità giornaliera non valida.
+                </div>
+            </div>
+
+
+
+
+
+
+
+      </div>
+      <div class="form-group col-sm-6">
+          <label for="disponibile">Disponibile Std</label>
+          <input disabled #disponibile="ngModel"  [(ngModel)]="prodotto.disponibile" class="form-control" name="disponibile" id="disponibile">
+      </div>
+    </div>
+    <!--  prezzo -->
+    <div class="form-row">
+      <div class="form-group col-sm-6">
+        <label for="prezzo_day">Prezzo</label>
+        <input required  #prezzo_day="ngModel"  [(ngModel)]="prodotto.prezzo_day" class="form-control" name="prezzo_day" id="prezzo_day">
+        <div *ngIf="prezzo_day.dirty && prezzo_day.touched && prezzo_day.invalid && prezzo_day == 0"  class="alert alert-danger">
+          <div  *ngIf="prezzo_day.errors.required">
+            inserire il prezzo giornaliero - campo Obbligatorio
+          </div>
+          <div  *ngIf="prezzo_day.errors.minlength">
+            il campo deve avere almeno {{prezzo_day.errors.minlength.requiredLength }} caratteri
+          </div>
+          <div *ngIf="prezzo_day.errors?.pattern">
+            <!-- non posso inserire lettere   {{postimax.errors.pattern.requiredPattern }}  -->
+            Prezzo giornaliero non valida.
+          </div>
+          <div *ngIf="prezzo_day == 0">
+            <!-- non posso inserire lettere   {{postimax.errors.pattern.requiredPattern }}  -->
+            Valorizzare il Prezzo giornaliero
+          </div>
+      </div>
+  </div>
+  <div class="form-group col-sm-6">
+      <label for="prezzo">Prezzo Std</label>
+      <input disabled #prezzo="ngModel"  [(ngModel)]="prodotto.prezzo" class="form-control" name="prezzo" id="prezzo">
+  </div>
+</div>
+
+<div class="form-group col-sm-6">
+  <input #saveValueStdCheckBox
+        id="saveValueStdCheckBox"
+        type="checkbox"
+        [checked]="saveValueStd"
+        (change)="onSaveValueStdChanged(saveValueStdCheckBox.checked)" />&nbsp;&nbsp;per Impostare valori Std
+</div>
+
+
+<br>
+
+<!--  riga selezione per scegliere utilizzo a menu  -->
+<div class="form-row">
+  <label>Prodotta a Menu</label>&nbsp;&nbsp;
+    <select formControlName="aMenu" class="form-select" aria-label="Default select example" #mySelect (change)='onOptionsSelected(mySelect.value)'     >  <!-- (change)="onChange($event.target.value)" -->
+
+      <option *ngFor="let prod of enabledProd" [value]="prod.value"  class="form-control" >{{prod.dEnable}}</option>
+    </select>
+
+<!--   <select formControlName="aMenu">
+    <option *ngFor="let prod of enabledProd" [value]="prod.value">
+      {{prod.dEnable}}
+    </option>
+  </select> -->
+</div>
+
+
+      <div class="form-group form-footer">
+        <div class="row borde">
+          <div class="col-12 col-md-8"></div>   <!--   lasciato volutamente vuoto -->
+            <div class="col-sm-3 justify-content-md-center">
+                <button [disabled]="!isSelected" class="btn btn-success btn-md" (click)="Salva(mySelect.value)">Salva   <!--Salva($event.target.value)-->
+                  <fa-icon [icon]="faSave"  fixed="true"></fa-icon>
+                </button>
+            </div>
+        </div>
+      </div>
+
+
+
+
+
+
+      <div class="row col-md-12">
+        <!-- messaggi -->
+        <div *ngIf="!alertSuccess && isVisible" class="alert alert-danger" role="alert">
+          <!--   <h4 class="alert-heading">Errore in elenco</h4>    -->
+             <p>{{Message}}</p>
+             <hr>
+           </div>
+           <div *ngIf="alertSuccess && isVisible" class="alert alert-success" role="alert">
+           <!--   <h4 class="alert-heading">Modifca Password</h4>    -->
+             <p>{{Message}}</p>
+           </div>
+          </div>
+
+      </form>
+    </div>
+   </div>
+</div>

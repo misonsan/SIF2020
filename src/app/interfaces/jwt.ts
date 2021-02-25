@@ -1,0 +1,18 @@
+/*  interfaccia per jwt  */
+
+
+export interface JwtInterface  {
+
+    // definisco l'interfaccia dei dati che ottengo dalla chiamata di login
+   access_token: string;
+   token_type: string;
+   expires_in: number;
+    // parametri aggiuntivi - vedi AuthController in laraapi
+   username: string;
+   cognome: string;
+   email: string;
+   level: string;
+   id: number;
+
+}
+

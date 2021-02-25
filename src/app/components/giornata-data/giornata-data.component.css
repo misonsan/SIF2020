@@ -1,0 +1,22 @@
+input.num {
+  text-align:right;
+  caret-color: red;
+}
+input.inizioCassa {
+  background:Cornsilk;
+}
+
+input.fineCassa {
+  background:darkturquoise;
+}
+
+th.alignheader  {
+  text-align:center;
+}
+td.utile {
+  text-align:right;
+  vertical-align: bottom;
+  color: red;
+  font-size: 15px;
+  font-style: bold;
+}

@@ -1,0 +1,203 @@
+
+<!--
+<p>commandaw-detail works!</p>
+
+
+
+
+<div class="form-row col-sm-12 offset-6">
+  <caption class="title  col-sm-12">{{title}}</caption>
+</div>   -->
+
+
+<br>
+
+<!-- {{manif | json}}  -->
+
+<br>
+<div class="container">
+  <caption class="title  col-sm-12">{{title}}</caption>
+  <div class="row col-md-12">    <!--  <div class="row justify-content-md-center"> -->
+     <div class="col-md-auto">
+      <form #fm ="ngForm"  method="POST">
+        <input Hidden #id="ngModel"  [(ngModel)]="commandaw.id" class="form-control" name="id" id="id">
+
+      <!--<input type="hidden" name="_token" value="{{ csrf_token() }}" />  -->
+
+     <!--   <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">  -->
+        <!--  riga descrizione manifestazione -->
+        <div class="form-row">
+            <div class="form-group col-sm-9">
+                  <label for="descManif">Manifestazione</label>
+               <input disabled #descManif="ngModel"  [(ngModel)]="manif.descManif" class="form-control" name="descManif" id="descManif">
+
+            </div>
+            <div class="form-group col-sm-3">
+                <label >Stato</label>
+                <input disabled #d_stato_manifestazione="ngModel"  [(ngModel)]="manif.d_stato_manifestazione" class="form-control" name="d_stato_manifestazione" id="d_stato_manifestazione" [style.color]="manif.statoManifestazione == 2 ? 'red' : null">
+            </div>
+        </div>
+
+
+
+        <!-- situazione dello stato della giornata - Persone  -->
+        <div class="form-row">
+          <div class="form-group col-sm-6">
+              <label for="dtGiornata">Data </label>
+              <input  disabled [(ngModel)]="giornata.dtGiornata"  #dtGiornata="ngModel" class="form-control"  name="dtGiornata" id="dtGiornata">      <!-- type="date" -->
+          </div>
+          <div class="form-group col-sm-3">
+            <label >Stato</label>
+            <input disabled #d_stato_giornata="ngModel"  [(ngModel)]="giornata.d_stato_giornata" class="form-control" name="d_stato_giornata" id="d_stato_giornata" [style.color]="giornata.stato == 2 ? 'red' : null">
+
+        </div>
+        </div>
+<hr>
+
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="S" (change)="onSelectionChange('S')">
+  <label class="form-check-label" for="flexRadioDefault1">
+    Personale Sanfra
+  </label>
+</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked value="N" (change)="onSelectionChange('N')">
+  <label class="form-check-label" for="flexRadioDefault2">
+    Cliente
+  </label>
+</div>
+
+
+       <!--  riga descrizione cliente -->
+       <div class="form-row">
+        <div [hidden] *ngIf="!personaleSanfra" class="form-group col-sm-10">
+              <label for="cognome">Cognome e Nome</label>
+              <input  required  minlength="3" maxlength="25" pattern="[a-zA-Z\s]*"  #anagrafica_cliente="ngModel"  [(ngModel)]="commandaw.anagrafica_cliente" class="form-control" name="anagrafica_cliente" id="anagrafica_cliente" placeholder="Inserire il cognome e Nome">
+              <div *ngIf="anagrafica_cliente.dirty && anagrafica_cliente.touched && anagrafica_cliente.invalid" class="alert alert-danger">
+                  <!-- {{ demessa.errors | json }}  per editare gli errori e poi impostare il validatore corretto -->
+                <!--  validatore lato client -->
+                      <div  *ngIf="anagrafica_cliente.errors.required">    <!-- *ngIf="demessa.invalid"-->
+                        il campo messa è obbligatorio
+                      </div>
+                      <div  *ngIf="anagrafica_cliente.errors.minlength">
+                        il campo deve essere lungo più di {{ anagrafica_cliente.errors.minlength.requiredLength }} caratteri
+                      </div>
+                      <div  *ngIf="anagrafica_cliente.errors.maxlength">
+                        il campo non deve essere lungo più di {{ anagrafica_cliente.errors.maxlength.requiredLength }} caratteri
+                      </div>
+                      <div *ngIf="anagrafica_cliente.errors?.pattern">
+                             non posso inserire numeri
+                      </div>
+               </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div [hidden] *ngIf="personaleSanfra" class="form-group col-sm-10">
+          <div class="form-group row">
+            <label for="cognome">Cognome e Nome Personale Sanfra</label>
+            <select multiple formControlName="personale">
+              <option value="">Seleziona il Personale in servizio</option>
+              <option *ngFor="let persona of persone" [ngValue]="persona.id" (click)="onChangePersona(persona)">{{persona.cognome}}
+              </option>
+           </select>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+      <!--  riga descrizione cliente -->
+      <div class="form-row">
+        <div class="form-group col-sm-3">
+              <label for="persone">Persone</label>
+              <input required #numPersone="ngModel"  [(ngModel)]="commandaw.numPersone"  minlength="1" maxlength="2" pattern="[0-9]{1,2}" class="form-control" name="numPersone" id="numPersone" placeholder="Inserire il numero persone">
+              <div *ngIf="numPersone.dirty && numPersone.touched && numPersone.invalid"  class="alert alert-danger">
+                    <div  *ngIf="numPersone.errors.required">
+                      inserire il numero delle persone - campo Obbligatorio
+                    </div>
+                    <div  *ngIf="numPersone.errors.minlength">
+                      il campo deve avere almeno {{numPersone.errors.minlength.requiredLength }} caratteri
+                    </div>
+
+                    <div *ngIf="numPersone.errors?.pattern">
+                      <!-- non posso inserire lettere   {{postimax.errors.pattern.requiredPattern }}  -->
+                      numero persone non valido.
+                    </div>
+              </div>
+            </div>
+         <div class="form-group col-sm-3">
+            <label >Tavolo</label>
+            <input #numTavolo="ngModel"  [(ngModel)]="commandaw.numTavolo" class="form-control" name="numTavolo" id="numTavolo" minlength="1" maxlength="2" pattern="[0-9]{1,2}" placeholder="Inserire il tavolo" >
+
+            <div *ngIf="numTavolo.dirty && numTavolo.touched && numTavolo.invalid"  class="alert alert-danger">
+
+                    <div  *ngIf="numTavolo.errors.minlength">
+                      il campo deve avere almeno {{numPersone.errors.minlength.requiredLength }} caratteri
+                    </div>
+                 <div  *ngIf="numTavolo.errors.maxlength">
+                        il campo non deve essere lungo più di {{ numTavolo.errors.maxlength.requiredLength }} caratteri
+                      </div>
+                    <div *ngIf="numTavolo.errors?.pattern">
+                      <!-- non posso inserire lettere   {{postimax.errors.pattern.requiredPattern }}  -->
+                      numero Tavolo non valido.
+                    </div>
+              </div>
+
+
+
+        </div>
+      </div>
+
+    <br>
+  <!-- Bottoni funzionali -->
+
+   <div class="form-group form-footer">
+      <div class="row borde">
+        <div class="row col-sm-12" >
+          <div class="col-sm-4">
+              <button [disabled]="registrata" class="btn btn-secondary  btn-md"  (click)="resetForm(fm.form)">Reset  <!--  reset -->
+                <fa-icon [icon]="faUndo"></fa-icon>
+              </button>
+          </div>
+
+          <div class="col-sm-4">
+              <button [disabled]="fm.invalid || registrata" class="btn btn-success btn-md " (click)="RegistraCommandaW()"> Salva      <!--   (click)="RegistraCommanda()"-->
+                <fa-icon [icon]="faSave"  fixed="true"></fa-icon>
+               </button>
+          </div>
+          <div class="col-sm-4">
+              <button [disabled]="!registrata" class="btn btn-success btn-md " (click)="goProdotti()"> Prodotti     <!--   (click)="RegistraCommanda()"-->
+                <fa-icon [icon]="faSave"  fixed="true"></fa-icon>
+               </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <br>
+<br>
+
+<!--   messaggio con esito operazione -->
+
+        <div *ngIf="isVisible  && !alertSuccess" class="alert alert-danger" role="alert">
+          <h4 class="alert-heading">Errore in Registrazione Commanda</h4>
+          <p>{{Message}}</p>
+          <hr>
+          <p class="mb-0">Contattare il gestore dell'applicazione.</p>
+        </div>
+        <div *ngIf="isVisible  && alertSuccess" class="alert alert-success" role="alert">
+          <h4 class="alert-heading">Registrazione Commanda</h4>
+          <p>{{Message}}</p>
+          <hr>
+          <p class="mb-0">per proseguire nella registrazione clicca sul pulsante Prodotti</p>
+        </div>
+
+
+      </form>
+    </div>
+   </div>
+</div>

@@ -1,0 +1,86 @@
+<p>manifestazioni works!</p>
+
+
+
+<br>
+
+<!--{{messa | json}}      -->
+<div class="container">
+  <caption class="title col-sm-12"><strong>{{title}}</strong></caption>
+
+  <div class="row col-md-10">    <!--  <div class="row justify-content-md-center"> -->
+
+    <div class="col-md-auto">
+      <form #fm ="ngForm">
+
+    <div class="row col-sm-6">
+            <div class="col-sm-5">
+                 <button  class="btn btn-primary btn-rounded"  (click)="registraManifestazione()">Registrazione
+                   <fa-icon [icon]="faPlusSquare"  fixed="true"></fa-icon>
+                  </button>
+             </div>
+      </div>
+  <br>
+
+<div>
+  <div class="row">
+    <div class="form-check form-check-inline" *ngFor="let option of options">
+         <input type="radio" name="radiogroup" [checked]="idx === 0" [value]="option" (change)="onSelectionChange(option)">&nbsp;&nbsp; {{option}}
+    </div>
+    <!--  bottone per eseguire la ricerca -->
+    <div class="col-sm-3">
+      <button [disabled]="!validSearch" class="btn btn-success btn-md" (click)="ricercaManif()">Ricerca
+        <fa-icon [icon]="faSearch"  fixed="true"></fa-icon>
+       </button>
+    </div>
+  </div>
+</div>
+
+     <br>
+
+     <table class="table table-striped table-sm shadow-lg p-3 mb-5 bg-white">
+
+       <tr>
+           <th>prog</th>
+           <th>manifestazione</th>
+           <th>data Inizio</th>
+           <th>data Fine</th>
+           <th>num. Utenti</th>
+           <th>stato</th>
+           <!--  non serve action -->
+           <th>Action</th>
+       </tr>
+
+       <tr app-manifestazione *ngFor ="let manifestazione of manifestazioni; let i = index"
+       [manif-prog] = i+1
+       [manif-data] = "manifestazione" [style.color]="manifestazione.statoManifestazione == 2 ? 'red' : null" >    <!--  -->
+
+
+     </tr>
+     </table>
+     <div class="row col-md-12">
+  <!-- messaggi -->
+  <div *ngIf="!alertSuccess && isVisible" class="alert alert-danger" role="alert">
+    <!--   <h4 class="alert-heading">Errore in elenco</h4>    -->
+       <p>{{Message}}</p>
+       <hr>
+     </div>
+     <div *ngIf="alertSuccess && isVisible" class="alert alert-success" role="alert">
+     <!--   <h4 class="alert-heading">Modifca Password</h4>    -->
+       <p>{{Message}}</p>
+     </div>
+    </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,172 @@
+<p>commanda-data works!</p>
+
+
+
+<!-- {{commanda | json}}  -->
+
+
+<div class="container">
+  <caption class="title  col-sm-12"><strong>{{title}}</strong></caption>
+  <div class="row col-md-12">    <!--  <div class="row justify-content-md-center"> -->
+     <div class="col-md-auto">
+      <form #fm ="ngForm">
+
+        <!-- situazione dello stato della Commanda  -->
+        <div class="form-row">
+          <div class="form-group col-sm-2">
+            <label for="id">Commanda </label>
+            <input  disabled [(ngModel)]="commanda.id"  #dtGiornata="ngModel" class="form-control"  name="id" id="id">       <!-- type="date" -->
+        </div>
+          <div class="form-group col-sm-2">
+              <label for="dtGiornata">Data </label>
+              <input  disabled [(ngModel)]="commanda.dtCommanda "  #dtGiornata="ngModel" class="form-control"  name="dtCommanda" id="dtCommanda">       <!-- type="date" -->
+          </div>
+          <div class="form-group col-sm-2">
+            <label for="dtInizio">ora Inizio</label>
+            <input  disabled [(ngModel)]="commanda.dtCommanda" [ngModel]="commanda.dtCommanda | date:'HH:mm'" #dtInizio="ngModel" class="form-control"  name="dtInizio" id="dtInizio" >  <!-- type="date" -->
+        </div>
+
+
+
+
+
+
+          <div class="form-group col-sm-3">
+            <label >Stato</label>
+            <input disabled #d_stato_giornata="ngModel"  [(ngModel)]="commanda.d_stato_commanda" class="form-control" name="d_stato_commanda" id="d_stato_commanda" [style.color]="commanda.stato == 1 ? 'red' : null" [style.background]="commanda.stato == 1 ? 'yellow' : null">
+         </div>
+        </div>
+
+   <!--  riga Anagrafica Cliente -->
+      <div class="form-row">
+        <div class="form-group col-sm-6">
+              <label for="descManif">cliente</label>
+              <input disabled #anagrafica_cliente="ngModel"  [(ngModel)]="commanda.anagrafica_cliente" class="form-control" name="anagrafica_cliente" id="anagrafica_cliente">
+        </div>
+        <div class="form-group col-sm-1">
+          <label for="numTavolo">Tavolo</label>
+          <input disabled #numTavolo="ngModel"  [(ngModel)]="commanda.numTavolo" class="form-control" name="numTavolo" id="numTavolo">
+        </div>
+        <div class="form-group col-sm-1">
+          <label for="numPersone">Persone</label>
+            <input disabled #numPersone="ngModel"  [(ngModel)]="commanda.numPersone" class="form-control" name="numPersone" id="numPersone" >
+        </div>
+        <!--  riga N.ro Posti - Tavolo -->
+        <div class="form-row">
+          <div class="form-group col-sm-6">
+            </div>
+          <div class="form-group col-sm-1">
+            <label for="importodaPagare">Totale</label>
+              <input disabled #importodaPagare="ngModel"  [(ngModel)]="commanda.importodaPagare " class="form-control" name="importodaPagare" id="importodaPagare" >
+          </div>
+          <div class="form-group col-sm-1">
+            <label for="importoPagato">Pagato</label>
+              <input disabled #importoPagato="ngModel"  [(ngModel)]="commanda.importoPagato " class="form-control" name="importoPagato" id="importoPagato" >
+          </div>
+          <div class="form-group col-sm-1">
+            <label for="resto">Resto</label>
+              <input disabled #resto="ngModel"  [(ngModel)]="commanda.resto " class="form-control" name="resto" id="resto" >
+          </div>
+
+        </div>
+      </div>
+      </form>
+    </div>
+   </div>
+  <br>
+   <div class="form-row col col-md-12">
+    <div class="container">
+
+        <!-- tabella di dettaglio dei fedeli -->
+         <table class="table table-striped table-sm shadow-lg p-3 mb-5 bg-white table-bordered table-responsive-lg table-container">
+           <tr>
+               <th>prog</th>
+               <th>categoria</th>
+               <th>Prodotto</th>
+               <th>qta</th>
+               <th>prezzo</th>
+               <th>ordine</th>
+               <th>Consegna</th>
+           </tr>
+           <!-- <tr app-fedele *ngFor ="let fedele of fedeli; let i = index" >  -->  <!-- volendo gestire anche il progressivo -->
+             <!-- in fedele-prog passo al componente fedele.component in valore dell'indice da visualizzare -->
+
+            <!--| filter:searchText
+              esempio    https://stackblitz.com/edit/angular-search-filter?file=app%2Fapp.component.html
+              ricerca google:  angular search  -->
+
+           <tr app-commandariga *ngFor ="let commandariga of commandarighe | filter:searchText | paginate: { itemsPerPage: 10, currentPage: p }; let i = index"
+              [commandariga-prog] = i+1
+              [commandariga-data] = "commandariga" [style.color]="commandariga.stato == 0 ? 'red' : null"  [attr.data-index]="i">
+           </tr>
+         </table>
+         <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+   </div>
+   <div class="form-row col col-md-12">
+
+    elenco delle banconote usate nel pagamento
+
+    <div class="container">
+
+      <!-- tabella di dettaglio dei fedeli -->
+       <table class="table table-striped table-sm shadow-lg p-3 mb-5 bg-white table-bordered table-responsive-lg table-container">
+        <tr >
+          <!--   <th>prog</th>  -->
+              <th></th>
+              <th></th>
+              <th></th>
+              <th style='text-align:center; vertical-align:middle' colspan="2">Incassato</th>
+
+              <th style='text-align:center; vertical-align:middle' colspan="2">Reso</th>
+
+
+          </tr>
+        <tr>
+             <th>prog</th>
+             <th>Tipo</th>
+             <th>Taglia</th>
+             <th>N.ro</th>
+             <th>Importo</th>
+             <th>N.ro</th>
+             <th>Importo</th>
+          </tr>
+         <!-- <tr app-fedele *ngFor ="let fedele of fedeli; let i = index" >  -->  <!-- volendo gestire anche il progressivo -->
+           <!-- in fedele-prog passo al componente fedele.component in valore dell'indice da visualizzare -->
+
+          <!--| filter:searchText
+            esempio    https://stackblitz.com/edit/angular-search-filter?file=app%2Fapp.component.html
+            ricerca google:  angular search  -->
+
+
+         <tr app-moneypay *ngFor ="let moneypay of moneypays; let i = index"
+            [moneypay-prog] = i+1
+            [moneypay-data] = "moneypay"   [attr.data-index]="i">
+         </tr>
+       </table>
+  </div>
+
+
+
+
+   </div>
+   <div class="form-row col col-md-12">
+
+    <div class="form-row borde">
+      <div class="col-md-12">
+         <!-- messaggi -->
+        <div *ngIf="!alertSuccess && isVisible" class="alert alert-danger" role="alert">
+          <!--   <h4 class="alert-heading">Errore in elenco</h4>    -->
+                <div class="col md-12">
+                  <p>{{Message}}</p>
+                </div>
+         </div>
+         <div *ngIf="alertSuccess && isVisible" class="alert alert-success" role="alert">
+           <!--   <h4 class="alert-heading">Modifca Password</h4>    -->
+                <div class="col md-12">
+                  <p>{{Message}}</p>
+                </div>
+          </div>
+        </div>
+     </div>
+   </div>

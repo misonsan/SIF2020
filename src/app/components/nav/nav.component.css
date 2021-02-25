@@ -1,0 +1,22 @@
+.anno {
+  color: red;
+  font-size: 30px;
+}
+.titolo {
+  padding-left: 50px;
+  color: yellow;
+  font-weight: 100;
+  font-size: 30px;
+}
+.navbg {
+  background-color: MediumSeaGreen;
+}
+.titoliwhite {
+  color:yellow;
+}
+.titoliblue {
+  color: blue;
+}
+.pad {
+  margin-left: 20px
+}

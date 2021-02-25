@@ -1,0 +1,12 @@
+
+
+<!--{{moneypay}}  -->
+
+<td>{{i}}</td>
+<td>{{moneypay.movimento}}</td>
+<!--<td [style.color]="commanda.stato == 1 ? 'red' : 'green'">{{commanda.d_stato_commanda}}</!->  -->
+<td>{{moneypay.d_taglia}}</td>
+<td [style.visibility]="moneypay.nro_pezzi_entrata == 0 ? 'hidden' : null">{{moneypay.nro_pezzi_entrata}}</td>
+<td [style.visibility]="moneypay.imp_entrata == 0 ? 'hidden' : null">{{moneypay.imp_entrata}}</td>
+<td [style.visibility]="moneypay.nro_pezzi_uscita == 0 ? 'hidden' : null">{{moneypay.nro_pezzi_uscita}}</td>
+<td [style.visibility]="moneypay.imp_uscita == 0 ? 'hidden' : null">{{moneypay. imp_uscita}}</td>

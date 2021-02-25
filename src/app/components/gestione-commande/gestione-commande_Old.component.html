@@ -1,0 +1,235 @@
+<div class="container">
+    <caption class="title  col-sm-12">{{title}}</caption>
+    <div class="row col-md-12">    <!--  <div class="row justify-content-md-center">  -->
+       <div class="col-md-auto">
+        <form #fm ="ngForm">
+          <div class="form-row">
+              <div class="form-group col-sm-6">
+                  <label for="dtGiornata">Data </label>
+                  <input  disabled [(ngModel)]="giornata.dtGiornata"  #dtGiornata="ngModel" class="form-control"  name="dtGiornata" id="dtGiornata">       <!-- type="date"   -->
+              </div>
+              <div class="form-group col-sm-3">
+                <label >Stato</label>
+                <input disabled #d_stato_giornata="ngModel"  [(ngModel)]="giornata.d_stato_giornata" class="form-control" name="d_stato_giornata" id="d_stato_giornata" [style.color]="giornata.stato == 2 ? 'red' : null">settore {{settore}} ruolo: {{ruolo}}
+              </div>
+          </div>
+        </form>
+      </div>
+     </div>
+  </div>  
+  
+  <div class="container">
+   
+      <!-- test -->  
+      <div *ngIf="ruolo === -1">
+        ho il ruolo -1
+      </div>
+  
+      <div  *ngIf="ruolo === -1" > 
+          <div class="form-check form-check-inline" *ngFor="let option1 of optionsSettore; index as idx">
+            <input type="radio" name="radiogroupSettore" [checked]="idx === 0" [value]="option1" (change)="onSelectionChangeSettore(option1)">&nbsp;&nbsp; {{option1}}
+          </div>
+      </div> 
+     
+      
+  
+  </div>
+  
+  <br>
+  
+  
+  <div class="container">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item"><a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Prodotti</a></li>
+      <li class="nav-item"><a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false"   tabindex="-1">Commande</a></li>
+    </ul>
+  <div class="tab-content" id="myTabContent">
+    <!--  ---  tab 1 ---------  Prodotti  ------------------ -->
+    <div class="tab-pane p-4 fade" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+  
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-8">
+            <div class="form-check form-check-inline" *ngFor="let option2 of optionsProd; index as idx">
+              <input type="radio" name="radiogroup" [checked]="idx === 0" [value]="option2" (change)="onSelectionChangeProd(option2)">&nbsp;&nbsp; {{option2}}
+            </div>
+            <!--
+            <button [disabled]="!validSearch" class="btn btn-success btn-md" (click)="ricercaCommande()">Ricerca
+              <fa-icon [icon]="faSearch"  fixed="true"></fa-icon>
+            </button>  -->
+          </div>
+          <div *ngIf="trovatoRecCommande"  class="col-6 col-md-4">
+            <strong>Record trovati:</strong>&nbsp;&nbsp; {{nRecCo}}
+          </div>
+        </div>
+      </div>
+      <div class="container">
+          <!-- riga per filtro di ricerca -->
+          <div class="form-group row col-md-6">
+            <div class="col col-sm-1 alignicon">
+                <fa-icon [icon]="faSearch"  fixed="true"></fa-icon>
+            </div>
+            <div class="search-hero">
+                <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="inserisci campo di ricerca">
+          </div>
+          </div>
+          <div class="row col-md-12">
+                   inserire la tabella con i prodotti
+          </div>
+      </div>
+  
+  
+    </div>
+  <!--  ---  tab 2 ---------- Commande ------------------ -->
+    <div class="tab-pane p-4 fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+  
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-8">
+            <ng-container
+              *ngIf="settore === 2; then settore2; else settore3">
+            </ng-container>
+  
+            <ng-template #settore2>
+                <div  class="form-check form-check-inline" *ngFor="let option3 of optionsLav; index as idx">
+                    <input type="radio" name="radiogroup" [checked]="idx === 0" [value]="option3" (change)="onSelectionChangeLavorazione(option3)">&nbsp;&nbsp;  {{option3}}
+                </div>
+            </ng-template>
+            <ng-template #settore3>
+                <div class="form-check form-check-inline" *ngFor="let option4 of optionsCon; index as idx">
+                    <input type="radio" name="radiogroup" [checked]="idx === 0" [value]="option4" (change)="onSelectionChangeConsegna(option4)">&nbsp;&nbsp; {{option4}}
+                </div>
+            </ng-template>
+  
+            <!--
+            <button [disabled]="!validSearch" class="btn btn-success btn-md" (click)="ricercaCommande()">Ricerca
+              <fa-icon [icon]="faSearch"  fixed="true"></fa-icon>
+            </button>  -->
+          </div>
+          <div *ngIf="trovatoRecCommande"  class="col-6 col-md-4">
+            <strong>Record trovati:</strong>&nbsp;&nbsp; {{nRecCo}}
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="container">
+  
+     <!-- riga per filtro di ricerca -->
+        <div class="form-group row col-md-6">
+                <div class="col col-sm-1 alignicon">
+                    <fa-icon [icon]="faSearch"  fixed="true"></fa-icon>
+                </div>
+                <div class="search-hero">
+                    <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="inserisci campo di ricerca">
+                </div>
+          </div>
+        <div class="row col-md-12">
+          <!-- tabella di dettaglio commande -->
+           <table class="table table-striped table-sm shadow-lg p-3 mb-5 bg-white table-bordered table-responsive-lg table-container">
+             <tr>
+                 <th>prog</th>
+                 <th>commanda</th>
+                 <th>stato</th>
+                 <th>cliente</th>
+                 <th>tavolo</th>
+                 <th>Persone</th>
+                 <th>Prodotti</th>
+                 <th>Attention</th>
+                 <!--  non serve action -->
+                 <th >Action</th>
+             </tr>
+             <!-- <tr app-fedele *ngFor ="let fedele of fedeli; let i = index" >  -->  <!-- volendo gestire anche il progressivo -->
+               <!-- in fedele-prog passo al componente fedele.component in valore dell'indice da visualizzare -->
+  
+              <!--| filter:searchText
+                esempio    https://stackblitz.com/edit/angular-search-filter?file=app%2Fapp.component.html
+                ricerca google:  angular search  -->
+  
+             <tr app-commanda1 *ngFor ="let commanda of commande | filter:searchText | paginate: { itemsPerPage: 10, currentPage: p }; let i = index"
+                 [commanda1-prog] = i+1
+                 [commanda1-data] = "commanda" [style.color]="commanda.stato == 1 ? 'red' : null"  [attr.data-index]="i">
+             </tr>
+           </table>
+  
+           <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  
+           <!-- n.ro commanda e anagrafica -->
+  
+        <!-- cognome e nome  -->
+        <div class="form-row">
+          <div class="form-group col-sm-4">
+            <label >Commanda</label>
+            <input disabled #id="ngModel"  [(ngModel)]="commanda.id" class="form-control" name="id" id="id">
+  
+          </div>
+          <div class="form-group col-sm-8">
+            <label for="cognome">Cognome e Nome</label>
+            <input disabled #anagrafica_cliente="ngModel"  [(ngModel)]="commanda.anagrafica_cliente" class="form-control" name="anagrafica_cliente" id="anagrafica_cliente" >
+          </div>
+  
+        
+     </div>
+  
+  
+  
+  
+  
+         <ng-container
+           *ngIf="settore == 2; then Prodsettore2; else Prodsettore3">
+         </ng-container>
+  
+         <ng-template #Prodsettore2>  <!--  mettere selettore su record selezionato -->
+          <!--   visualizzo il n.ro commanda e il cognome e le righe della commanda (lav) -->
+  
+          <table class="table table-striped table-sm shadow-lg p-3 mb-5 bg-white table-bordered table-responsive-lg table-container">
+            <tr>
+  
+  
+  
+  
+                <th>prog</th>
+                <th>categoria</th>
+                <th>Prodotto</th>
+                <th>Qta</th>
+                <th>hm Ordine</th>
+                <th>Lavorazione</th>
+                <th>Att. Lav.ne</th>
+                <th>Consegna</th>
+                <th>Att. Con.</th>
+                <!--  non serve action -->
+                <th >Action</th>
+            </tr>
+            <!-- <tr app-fedele *ngFor ="let fedele of fedeli; let i = index" >  -->  <!-- volendo gestire anche il progressivo -->
+              <!-- in fedele-prog passo al componente fedele.component in valore dell'indice da visualizzare -->
+  
+             <!--| filter:searchText
+               esempio    https://stackblitz.com/edit/angular-search-filter?file=app%2Fapp.component.html
+               ricerca google:  angular search  -->
+  
+  
+  
+            <tr app-commandarigalav *ngFor ="let commandariga of commandarighe | filter:searchText | paginate: { itemsPerPage: 10, currentPage: p2 }; let i = index"
+               [commandarigalav-prog] = i+1
+               [commandarigalav-data] = "commandariga" [style.color]="commandariga.stato == 1 ? 'red' : null"  [attr.data-index]="i">
+            </tr>
+          </table>
+  
+  
+         </ng-template>
+         <ng-template #Prodsettore3>  <!--  mettere selettore su record selezionato -->
+             <!--   visualizzo il n.ro commanda e il cognome e le righe della commanda (Con) -->
+  
+            mettere il dettaglio commanda con elenco delle righe per consegna (bevande)
+  
+  
+            </ng-template>
+  
+  
+  
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  </div>
+  

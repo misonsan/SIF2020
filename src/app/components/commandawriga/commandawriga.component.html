@@ -1,0 +1,155 @@
+
+
+ <!--{{commandawriga | json}} -->
+<td>{{i}}</td>
+<td>{{commandawriga.descrizione_prodotto}}</td>
+<td>{{commandawriga.d_Categoria}}</td>
+<td>{{commandawriga.disponibile_Day}}</td>
+<td>{{commandawriga.prezzo_day}}</td>
+<td>{{commandawriga.qta}}</td>
+
+<!--
+<td ng-style="prodotto.aMenu === '?'  {'background-color': 'red'} ||
+              prodotto.aMenu === 'S' {'background-color': 'green'} ||
+              prodotto.aMenu === 'N' {'background-color': 'yellow'}"  >{{prodotto.aMenu}}</td>   -->
+<td class="buttons">
+  <div class="row">
+    <div class="col-sm-4">
+      <!-- per vedere come attivare popup -->
+            <button   class="btn btn-primary  btn-sm" (click)="showDetail()"  >
+
+     <!-- <button   class="btn btn-primary  btn-sm" (click)="showMessaDetail()"> -->
+         <fa-icon [icon]="faUserEdit" fixed="true"></fa-icon>
+          <!--  <fa name="fainfo" fixed="true" ></fa>  -->
+      </button>
+    </div>
+<!--
+    <div class="col-sm-4">
+      <-- attivo selezione prodotti via popup
+          <button type="button" class="btn btn-success" data-toggle="modal" (click)="goProdottoModal(commandawriga.id)"  data-target="#selProdModal">
+        S. Prod
+          <fa-icon [icon]="faInfo" fixed="true"></fa-icon>
+
+      </button>
+    </div>   -->
+
+  </div>
+</td>
+
+
+<!-- campi per selezione prodotti visualizzati in Popup  -->
+
+<!-- Modal -->
+<!--
+<div class="modal fade" id="selProdModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Selezione Prodotti Modal</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+       <div class="container">
+     // <--   <caption class="title  col-sm-12"><strong>{{title}}</strong></caption>   via
+        <div class="row col-md-12">
+           <div class="col-md-auto">
+            <form #fm ="ngForm"  >
+              <input hidden #id="ngModel"  [(ngModel)]="commandawriga.id" class="form-control" name="id" id="id">
+               <div class="col-6 " style="margin-top: 35px;">
+                <div class="row">
+                  <div class="col-md-12 offset-6">
+                    <img src="assets/images/photoProducts/{{commandawriga1.photo}}"  alt="commandawriga.photo" class="img-circle rounded-circle border p-1" width="150px" height="150px" [(ngModel)]="commandawriga1.photo" #photo="ngModel">
+
+                  </div>
+                </div>
+              </div>
+              // Descrizione
+              <div class="form-row">
+                  <div class="form-group col-sm-9">
+                        <label for="descrizione_prodotto">Prodotto</label>
+                        <input disabled #descrizione_prodotto="ngModel"  [(ngModel)]="commandawriga.descrizione_prodotto" class="form-control" name="descrizione_prodotto" id="descrizione_prodotto">
+
+                  </div>
+
+
+                  <div class="form-group col-sm-3">
+                    <label for="prezzo_day">Prezzo</label>
+                    <input disabled #prezzo_day="ngModel"  [(ngModel)]="commandawriga.prezzo_day" class="form-control" name="prezzo_day" id="prezzo_day">
+                  </div>
+              </div>
+              <div class="form-row">
+                  <div class="form-group col-sm-6">
+                    <label for="disponibile_Day">Disponibile</label>
+                    <input disabled #disponibile_Day="ngModel"  [(ngModel)]="commandawriga.disponibile_Day" class="form-control" name="disponibile_Day" id="disponibile_Day" >
+                  </div>
+              </div>
+
+
+
+              <label for="qta">qtà Ordinata</label>
+
+      <div class="form-row form-inline">
+           <div class="col-sm-1">
+              <button type="button" class="btn btn-primary" (click)="aggiungoProdotti()" id="aggiungi" name="aggiungi">
+                <fa-icon [icon]="faPlus"  fixed="true"></fa-icon>
+              </button>
+           </div>
+              <div class="col-sm-1">
+                 <input disabled #qta="ngModel"  [(ngModel)]="commandawriga.qta" class="form-control widthqta" name="qta" id="qta" [style.color]="commandawriga.qta > 0 ? 'white' : null" [style.background]="commandawriga1.qta > 0 ? 'red' : null">
+              </div>
+              <div class="col-sm-1">
+                <button [disabled]="(commandawriga.qta == 0)" type="button" class="btn btn-danger" (click)="tolgoProdotti()" id="togli" name="togli">
+                  <fa-icon [icon]="faMinus"  fixed="true"></fa-icon>
+                </button>
+              </div>
+      </div>
+
+      <br>
+
+            <div class="form-group form-footer">
+              <div class="row col col-md-6">
+                <div class="col col-md-6"></div>
+                  <div class="justify-content-md-left">
+                      <button [hidden]="commandawriga.qta === 0" class="btn btn-success btn-md" (click)="Salva(commandawriga)">Salva
+                        <fa-icon [icon]="faSave"  fixed="true"></fa-icon>
+                      </button>
+                  </div>
+                </div>
+            </div>
+
+            <div class="row col-md-12">
+
+              <div *ngIf="!alertSuccess && isVisible && commandawriga.qta > 0" class="alert alert-danger" role="alert">
+
+                   <p>{{Message}}</p>
+                   <hr>
+                 </div>
+                 <div *ngIf="alertSuccess && isVisible && commandawriga.qta > 0" class="alert alert-success" role="alert">
+
+                   <p>{{Message}}</p>
+                 </div>
+             </div>
+
+            </form>
+          </div>
+         </div>
+      </div>
+
+
+
+
+
+
+        //  Fine  campi per  la selezione del prodotto
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>     -->

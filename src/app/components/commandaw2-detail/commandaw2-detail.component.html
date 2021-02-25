@@ -1,0 +1,629 @@
+<!-- {{manif | json}} -->
+<div class="container">
+  <caption class="title  col-sm-12">{{title}}</caption>
+  <div class="row col-md-12">
+     <div class="col-md-auto">
+      <form #fm ="ngForm">
+        <input Hidden #id="ngModel"  [(ngModel)]="commandaw.id" class="form-control" name="id" id="id">
+
+
+        <!--  riga descrizione manifestazione -->
+        <div class="form-row">
+            <div class="form-group col-sm-8">
+                  <label for="descManif">Manifestazione</label>
+               <input disabled #descManif="ngModel"  [(ngModel)]="manif.descManif" class="form-control" name="descManif" id="descManif">
+
+            </div>
+            <div class="form-group col-sm-4">
+              <label for="dtGiornata">Data </label>
+              <input  disabled [(ngModel)]="giornata.dtGiornata"  #dtGiornata="ngModel" class="form-control"  name="dtGiornata" id="dtGiornata">
+          </div>
+        </div>
+
+
+
+        <!-- cognome e nome  -->
+        <div class="form-row">
+
+          <div class="form-group col-sm-8">
+            <label for="cognome">Cognome e Nome</label>
+            <input disabled #anagrafica_cliente="ngModel"  [(ngModel)]="commandaw.anagrafica_cliente" class="form-control" name="anagrafica_cliente" id="anagrafica_cliente" >
+          </div>
+
+          <div class="form-group col-sm-4">
+            <label >Stato</label>
+            <input disabled #d_stato_commanda="ngModel"  [(ngModel)]="commandaw.d_stato_commanda" class="form-control" name="d_stato_commanda" id="d_stato_commanda" [style.color]="commandaw.stato == 1 ? 'red' : null">
+
+          </div>
+     </div>
+
+      <!--  persone e tavolo -->
+      <!--
+      <div class="form-row">
+        <div class="form-group col-sm-3">
+          <label for="persone">Persone</label>
+          <input disabled #numPersone="ngModel"  [(ngModel)]="commandaw.numPersone"   class="form-control" name="numPersone" id="numPersone" >
+        </div>
+        <div class="form-group col-sm-3">
+            <label >Tavolo</label>
+            <input disabled #numTavolo="ngModel"  [(ngModel)]="commandaw.numTavolo" class="form-control" name="numTavolo" id="numTavolo"  >
+        </div>
+    </div>   -->
+
+
+      </form>
+     </div>
+</div>
+</div>
+    <br>
+
+<div class="form-row">
+  <div class="col col-md-6">
+
+    <div class="form-group row">
+      <div class="col-sm-5"></div>
+      <label >Persone</label>
+      <div class="col-sm-1">
+        <input disabled #numPersone="ngModel"  [(ngModel)]="commandaw.numPersone"   class="form-control" name="numPersone" id="numPersone" >
+      </div>
+      <label >Tavolo</label>
+      <div class="col-sm-1">
+        <input disabled #numTavolo="ngModel"  [(ngModel)]="commandaw.numTavolo" class="form-control" name="numTavolo" id="numTavolo"  >
+      </div>
+   </div>
+
+
+
+
+
+  </div>
+  <div class="col col-md-3">
+    <div class="form-group row">
+      <label for="inputPassword" class="col-sm-2 col-form-label">Prodotti</label>
+      <div class="col-sm-3">
+          <input disabled #importoProdotti="ngModel"  [(ngModel)]="commandaw.importoProdotti" class="form-control  alignNumber" name="importoProdotti" id="importoProdotti" >
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="importoCoperto" class="col-sm-2 col-form-label">Coperto</label>
+      <div class="col-sm-3">
+        <input disabled #importoCoperto="ngModel"  [(ngModel)]="commandaw.importoCoperto" class="form-control  alignNumber" name="importoCoperto" id="importoCoperto" >
+      </div>
+    </div>
+    <div class="form-group row" >
+      <label for="buonoPasto" class="col-sm-2 col-form-label" hidden="(commandaw.idSanfra == 0)">Ticket</label>
+      <div class="col-sm-3">
+        <input disabled hidden="(commandaw.idSanfra == 0)" class="form-control  alignNumber" #buonoPasto="ngModel"  [(ngModel)]="commandaw.buonoPasto"  name="buonoPasto" id="buonoPasto" [style.color]="commandaw.idSanfra > 0 ? 'red' : null" [style.background]="commandaw.idSanfra > 0 ? 'yellow' : null">
+      </div>
+    </div>
+  </div>
+  <div class="col col-md-3">
+
+      <div class="form-group row">
+        <label for="importodaPagare" class="col-sm-3 col-form-label">da Pagare</label>
+        <div class="col-sm-3">
+          <input disabled class="form-control alignNumber" #importodaPagare="ngModel"  [(ngModel)]="commandaw.importodaPagare"  name="importodaPagare" id="importodaPagare">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="importoPagato" class="col-sm-3 col-form-label">Incassato</label>
+        <div class="col-sm-3">
+          <input disabled class="form-control alignNumber" #importoPagato="ngModel"  [(ngModel)]="commandaw.importoPagato"  name="importoPagato" id="importoPagato">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="resto" class="col-sm-3 col-form-label">Resto</label>
+        <div class="col-sm-3">
+          <input disabled class="form-control alignNumber" #resto="ngModel"  [(ngModel)]="commandaw.resto"  name="resto" id="resto" [style.color]="moneyw.resto > 0 ? 'black' : null" [style.background]="moneyw.resto > 0 ? 'palegreen' : null">
+        </div>
+        <label for="residuo" class="col-sm-2 col-form-label">residuo</label>
+        <div class="col-sm-3">
+          <input disabled class="form-control alignNumber" #residuo="ngModel"  [(ngModel)]="commandaw.importoPagato - commandaw.importodaPagare -  moneyw.resto"  name="residuo" id="residuo">
+        </div>
+
+      </div>
+
+  </div>
+</div>
+
+    <div class="container">
+      <form role="form">
+        <div class="form-group  row-cols-7" style="height: 15px;">
+
+    <table>
+      <th  scope="col" >Taglia</th>
+
+      <td style="width: 95px; margin: 35px; text-align: center;">
+        <label for="a100" class="col-sm-1">N.ro</label>
+      </td>
+      <td style="width: 130px; margin: 35px; text-align: center;">
+        <label for="a100" class="col-sm-1">Valore</label>
+      </td>
+      <td style="width: 150px; margin: 35px; text-align: center;">
+        <label for="a100" class="col-sm-1">qta</label>
+      </td>
+      <td style="width: 80px; margin: 10px; text-align: center;">
+        <label >Valore</label>
+      </td>
+
+    </table>
+  </div>
+</form>
+    </div>
+
+
+
+
+ <div class="container">
+  <div class="form-row">
+    <div class="form-group col col-md-12 marginesx">
+             <!-- taglia 100 -->
+        <div class="form-group row">
+          <div class="row">
+            <label for="a100" class="col-sm-1">€ 100</label>
+            <div class="col-sm-1">
+              <input disabled #a100="ngModel"  [(ngModel)]="giornata.a100" class="form-control" name="a100" id="a100" >
+            </div>
+            <div class="col-sm-1">
+              <input disabled #a100Valore="ngModel"  [(ngModel)]="giornata.a100Valore" class="form-control oldstyle-nums" name="a100Valore" id="a100Valore" >
+            </div>
+
+              <button type="button" class="btn btn-primary" (click)="aggiungoDenaro('i100')" id="aggiungo100" name="aggiungo100">
+                <fa-icon [icon]="faPlus"  fixed="true"></fa-icon>
+              </button>
+
+
+              <div class="col-sm-1">
+                <input disabled #qta="ngModel"  [(ngModel)]="moneyw.i100" class="form-control" name="i100" id="i100" [style.color]="moneyw.i100 > 0 ? 'white' : null" [style.background]="moneyw.i100 > 0 ? 'red' : null">
+              </div>
+              <div class="col-sm-1">
+                <input disabled #i100Valore="ngModel"  [(ngModel)]="moneyw.i100Valore" class="form-control" name="i100Valore" id="i100Valore" [style.color]="moneyw.i100Valore > 0 ? 'black' : null" [style.background]="moneyw.i100Valore > 0 ? 'hotpink' : null">
+              </div>
+
+                <button [disabled]="(moneyw.i100 == 0)" type="button" class="btn btn-danger btn-md" (click)="tolgoDenaro('i100')" id="tolgo100" name="tolgo100i">
+                  <fa-icon [icon]="faMinus"  fixed="true"></fa-icon>
+                </button>
+            <!-- separatore -->
+                <div class="col-sm-1">
+                  <label class="col-sm-1"> -*- </label>
+                </div>
+            <!--   resto  -->
+
+                  <button [disabled]="(100 > darendere)" type="button" class="btn btn-primary" (click)="aggiungoResto('r100')" id="aresto100" name="aresto100">
+                  <fa-icon [icon]="faPlus"  fixed="true"></fa-icon>
+                </button>
+                <div class="col-sm-1">
+                  <input disabled #r100="ngModel"  [(ngModel)]="moneyw.r100" class="form-control" name="r100" id="r100" [style.color]="moneyw.r100 > 0 ? 'white' : null" [style.background]="moneyw.r100 > 0 ? 'red' : null">
+                </div>
+                <div class="col-sm-1">
+                  <input disabled #r100Valore="ngModel"  [(ngModel)]="moneyw.r100Valore" class="form-control" name="r100Valore" id="r100Valore" [style.color]="moneyw.r100Valore > 0 ? 'black' : null" [style.background]="moneyw.r100Valore > 0 ? 'palegreen' : null">
+                </div>
+                <div class="col-sm-1">
+                  <button [disabled]="(moneyw.r100 == 0)" type="button" class="btn btn-danger btn-md" (click)="tolgoResto('r100')" id="tresto100" name="tresto100">
+                    <fa-icon [icon]="faMinus"  fixed="true"></fa-icon>
+                  </button>
+                </div>
+
+
+          </div>
+        </div>
+        <!-- taglia 050 -->
+        <div class="form-group row">
+        <div class="row">
+          <label for="a050" class="col-sm-1">€  50</label>
+          <div class="col-sm-1">
+            <input disabled #a050="ngModel"  [(ngModel)]="giornata.a050" class="form-control" name="a050" id="a050" >
+          </div>
+          <div class="col-sm-1">
+            <input disabled #a050Valore="ngModel"  [(ngModel)]="giornata.a050Valore" class="form-control oldstyle-nums" name="a050Valore" id="a050Valore" >
+          </div>
+
+            <button type="button" class="btn btn-primary" (click)="aggiungoDenaro('i050')" id="aggiungo050" name="aggiungo050">
+              <fa-icon [icon]="faPlus"  fixed="true"></fa-icon>
+            </button>
+
+
+            <div class="col-sm-1">
+              <input disabled #i050="ngModel"  [(ngModel)]="moneyw.i050" class="form-control" name="i050" id="i050" [style.color]="moneyw.i050 > 0 ? 'white' : null" [style.background]="moneyw.i050 > 0 ? 'red' : null">
+            </div>
+            <div class="col-sm-1">
+              <input disabled #i050Valore="ngModel"  [(ngModel)]="moneyw.i050Valore" class="form-control" name="i050Valore" id="i050Valore"  [style.color]="moneyw.i050Valore > 0 ? 'black' : null" [style.background]="moneyw.i050Valore > 0 ? 'hotpink' : null">
+            </div>
+
+              <button [disabled]="(moneyw.i050 == 0)" type="button" class="btn btn-danger btn-md" (click)="tolgoDenaro('i050')" id="tolgo050" name="tolgo050">
+                <fa-icon [icon]="faMinus"  fixed="true"></fa-icon>
+              </button>
+
+
+                       <!-- separatore -->
+                       <div class="col-sm-1">
+                        <label class="col-sm-1"> -*- </label>
+                      </div>
+                  <!--   resto  -->
+                      <button [disabled]="(50 > darendere)"  type="button" class="btn btn-primary" (click)="aggiungoResto('r050')" id="aresto050" name="aresto050">
+                        <fa-icon [icon]="faPlus"  fixed="true"></fa-icon>
+                      </button>
+                      <div class="col-sm-1">
+                        <input disabled #r0500="ngModel"  [(ngModel)]="moneyw.r050" class="form-control" name="r050" id="r050" [style.color]="moneyw.r050 > 0 ? 'white' : null" [style.background]="moneyw.r050 > 0 ? 'red' : null">
+                      </div>
+                      <div class="col-sm-1">
+                        <input disabled #r050Valore="ngModel"  [(ngModel)]="moneyw.r050Valore" class="form-control" name="r050Valore" id="r050Valore"  [style.color]="moneyw.r050Valore > 0 ? 'black' : null" [style.background]="moneyw.r050Valore > 0 ? 'palegreen' : null">
+                      </div>
+                      <div class="col-sm-1">
+                        <button [disabled]="(moneyw.r050 == 0)" type="button" class="btn btn-danger btn-md" (click)="tolgoResto('r050')" id="resto050" name="resto050">
+                          <fa-icon [icon]="faMinus"  fixed="true"></fa-icon>
+                        </button>
+                      </div>
+
+
+        </div>
+      </div>
+
+        <!-- taglia 020 -->
+        <div class="form-group row">
+          <div class="row">
+            <label for="a020" class="col-sm-1">€  20</label>
+            <div class="col-sm-1">
+              <input disabled #a020="ngModel"  [(ngModel)]="giornata.a020" class="form-control" name="a020" id="a020" >
+            </div>
+            <div class="col-sm-1">
+              <input disabled #a020Valore="ngModel"  [(ngModel)]="giornata.a020Valore" class="form-control oldstyle-nums" name="a020Valore" id="a020Valore" >
+            </div>
+              <button type="button" class="btn btn-primary" (click)="aggiungoDenaro('i020')" id="aggiungo020" name="aggiungo020">
+                <fa-icon [icon]="faPlus"  fixed="true"></fa-icon>
+              </button>
+              <div class="col-sm-1">
+                <input disabled #i020="ngModel"  [(ngModel)]="moneyw.i020" class="form-control" name="i020" id="i020" [style.color]="moneyw.i020 > 0 ? 'white' : null" [style.background]="moneyw.i020 > 0 ? 'red' : null">
+              </div>
+              <div class="col-sm-1">
+                <input disabled #i020Valore="ngModel"  [(ngModel)]="moneyw.i020Valore" class="form-control" name="i020Valore" id="i020Valore" [style.color]="moneyw.i020Valore > 0 ? 'black' : null" [style.background]="moneyw.i020Valore > 0 ? 'hotpink' : null">
+              </div>
+
+                <button [disabled]="(moneyw.i020 == 0)" type="button" class="btn btn-danger btn-md" (click)="tolgoDenaro('i020')" id="tolgo020" name="tolgo020">
+                  <fa-icon [icon]="faMinus"  fixed="true"></fa-icon>
+                </button>
+
+                       <!-- separatore -->
+                       <div class="col-sm-1">
+                        <label class="col-sm-1"> -*- </label>
+                      </div>
+                  <!--   resto  -->
+                      <button [disabled]="(20 > darendere)"  type="button" class="btn btn-primary" (click)="aggiungoResto('r020')" id="aresto020" name="aresto020">
+                        <fa-icon [icon]="faPlus"  fixed="true"></fa-icon>
+                      </button>
+                      <div class="col-sm-1">
+                        <input disabled #r020="ngModel"  [(ngModel)]="moneyw.r020" class="form-control" name="r020" id="r020" [style.color]="moneyw.r020 > 0 ? 'white' : null" [style.background]="moneyw.r020 > 0 ? 'red' : null">
+                      </div>
+                      <div class="col-sm-1">
+                        <input disabled #r020Valore="ngModel"  [(ngModel)]="moneyw.r020Valore" class="form-control" name="r020Valore" id="r020Valore"  [style.color]="moneyw.r020Valore > 0 ? 'black' : null" [style.background]="moneyw.r020Valore > 0 ? 'palegreen' : null">
+                      </div>
+                      <div class="col-sm-1">
+                        <button [disabled]="(moneyw.r020 == 0)" type="button" class="btn btn-danger btn-md" (click)="tolgoResto('r020')" id="tresto020" name="tresto020">
+                          <fa-icon [icon]="faMinus"  fixed="true"></fa-icon>
+                        </button>
+                      </div>
+
+
+
+
+
+
+
+          </div>
+        </div>
+
+          <!-- taglia 010 -->
+          <div class="form-group row">
+            <div class="row">
+              <label for="a010" class="col-sm-1">€  10</label>
+              <div class="col-sm-1">
+                <input disabled #a010="ngModel"  [(ngModel)]="giornata.a010" class="form-control" name="a010" id="a010" >
+              </div>
+              <div class="col-sm-1">
+                <input disabled #a010Valore="ngModel"  [(ngModel)]="giornata.a010Valore" class="form-control oldstyle-nums" name="a010Valore" id="a010Valore" >
+              </div>
+
+                <button type="button" class="btn btn-primary" (click)="aggiungoDenaro('i010')" id="aggiungo010" name="aggiungo010">
+                  <fa-icon [icon]="faPlus"  fixed="true"></fa-icon>
+                </button>
+
+
+                <div class="col-sm-1">
+                  <input disabled #i010="ngModel"  [(ngModel)]="moneyw.i010" class="form-control" name="i010" id="i010" [style.color]="moneyw.i010 > 0 ? 'white' : null" [style.background]="moneyw.i010 > 0 ? 'red' : null">
+                </div>
+                <div class="col-sm-1">
+                  <input disabled #i010Valore="ngModel"  [(ngModel)]="moneyw.i010Valore" class="form-control" name="i010Valore" id="i010Valore"  [style.color]="moneyw.i010Valore > 0 ? 'black' : null" [style.background]="moneyw.i010Valore > 0 ? 'hotpink' : null">
+                </div>
+
+                  <button [disabled]="(moneyw.i010 == 0)" type="button" class="btn btn-danger btn-md" (click)="tolgoDenaro('i010')" id="tolgo010" name="tolgo010">
+                    <fa-icon [icon]="faMinus"  fixed="true"></fa-icon>
+                  </button>
+
+
+                      <!-- separatore -->
+                      <div class="col-sm-1">
+                        <label class="col-sm-1"> -*- </label>
+                      </div>
+                  <!--   resto  -->
+                      <button [disabled]="(10 > darendere)" type="button" class="btn btn-primary" (click)="aggiungoResto('r010')" id="aresto010" name="aresto010">
+                        <fa-icon [icon]="faPlus"  fixed="true"></fa-icon>
+                      </button>
+                      <div class="col-sm-1">
+                        <input disabled #r010="ngModel"  [(ngModel)]="moneyw.r010" class="form-control" name="r010" id="r010" [style.color]="moneyw.r010 > 0 ? 'white' : null" [style.background]="moneyw.r010 > 0 ? 'red' : null">
+                      </div>
+                      <div class="col-sm-1">
+                        <input disabled #r010Valore="ngModel"  [(ngModel)]="moneyw.r010Valore" class="form-control" name="r010Valore" id="r010Valore" [style.color]="moneyw.r010Valore > 0 ? 'black' : null" [style.background]="moneyw.r010Valore > 0 ? 'palegreen' : null">
+                      </div>
+                      <div class="col-sm-1">
+                        <button [disabled]="(moneyw.r010 == 0)" type="button" class="btn btn-danger btn-md" (click)="tolgoResto('r010')" id="tresto010" name="tresto010">
+                          <fa-icon [icon]="faMinus"  fixed="true"></fa-icon>
+                        </button>
+                      </div>
+
+
+
+            </div>
+          </div>
+
+          <!-- taglia 005 -->
+          <div class="form-group row">
+            <div class="row">
+              <label for="a005" class="col-sm-1">€   5</label>
+              <div class="col-sm-1">
+                <input disabled #a005="ngModel"  [(ngModel)]="giornata.a005" class="form-control" name="a005" id="a005" >
+              </div>
+              <div class="col-sm-1">
+                <input disabled #a005Valore="ngModel"  [(ngModel)]="giornata.a005Valore" class="form-control oldstyle-nums" name="a005Valore" id="a005Valore" >
+              </div>
+
+                <button type="button" class="btn btn-primary" (click)="aggiungoDenaro('i005')" id="aggiungo005" name="aggiungo005">
+                  <fa-icon [icon]="faPlus"  fixed="true"></fa-icon>
+                </button>
+
+
+                <div class="col-sm-1">
+                  <input disabled #i005="ngModel"  [(ngModel)]="moneyw.i005" class="form-control" name="i005" id="i005" [style.color]="moneyw.i005 > 0 ? 'white' : null" [style.background]="moneyw.i005 > 0 ? 'red' : null">
+                </div>
+                <div class="col-sm-1">
+                  <input disabled #i005Valore="ngModel"  [(ngModel)]="moneyw.i005Valore" class="form-control" name="i005Valore" id="i005Valore" [style.color]="moneyw.i005Valore > 0 ? 'black' : null" [style.background]="moneyw.i005Valore > 0 ? 'hotpink' : null">
+                </div>
+
+                  <button [disabled]="(moneyw.i005 == 0)" type="button" class="btn btn-danger btn-md" (click)="tolgoDenaro('i005')" id="tolgo005" name="tolgo005">
+                    <fa-icon [icon]="faMinus"  fixed="true"></fa-icon>
+                  </button>
+
+
+                      <!-- separatore -->
+                      <div class="col-sm-1">
+                        <label class="col-sm-1"> -*- </label>
+                      </div>
+                  <!--   resto  -->
+                      <button [disabled]="(5 > darendere)" type="button" class="btn btn-primary" (click)="aggiungoResto('r005')" id="aresto005" name="aresto005">
+                        <fa-icon [icon]="faPlus"  fixed="true"></fa-icon>
+                      </button>
+                      <div class="col-sm-1">
+                        <input disabled #r005="ngModel"  [(ngModel)]="moneyw.r005" class="form-control" name="r005" id="r005" [style.color]="moneyw.r005 > 0 ? 'white' : null" [style.background]="moneyw.r005 > 0 ? 'red' : null">
+                      </div>
+                      <div class="col-sm-1">
+                        <input disabled #r005Valore="ngModel"  [(ngModel)]="moneyw.r005Valore" class="form-control" name="r005Valore" id="r005Valore" [style.color]="moneyw.r005Valore > 0 ? 'black' : null" [style.background]="moneyw.r005Valore > 0 ? 'palegreen' : null">
+                      </div>
+                      <div class="col-sm-1">
+                        <button [disabled]="(moneyw.r005 == 0)" type="button" class="btn btn-danger btn-md" (click)="tolgoResto('r005')" id="tresto005" name="tresto005">
+                          <fa-icon [icon]="faMinus"  fixed="true"></fa-icon>
+                        </button>
+                      </div>
+
+
+            </div>
+          </div>
+
+      <!-- contante -->
+
+        <div class="form-group row">
+          <div class="row col-md-12">
+            <label for="acontante" class="col-sm-1">Moneta</label>
+
+
+            &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            <!--
+            &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+
+-->
+
+
+            <div class="col-sm-2">
+              <input disabled #acontante="ngModel"  [(ngModel)]="giornata.acontante" class="form-control  oldstyle-nums" name="acontante" id="acontante" >
+            </div>
+            <div class="col-sm-1"></div>
+
+
+            <div class="col-sm-1">
+              <input  #icontante="ngModel"  [(ngModel)]="moneyw.icontante" class="form-control" name="icontante" id="icontante" (focus)="focusFunction()" (focusout)="aggiornaIncasso()"  minlength="1" maxlength="5" pattern="\d+(\.\d*)?|\.\d+" [style.color]="moneyw.icontante > 0 ? 'white' : null" [style.background]="moneyw.icontante > 0 ? 'red' : null">
+              <div *ngIf="icontante.dirty && icontante.touched && icontante.invalid"  class="alert alert-danger">
+                <div  *ngIf="icontante.errors.minlength">
+                  il campo deve avere almeno {{icontante.errors.minlength.requiredLength }} caratteri
+                </div>
+                <div  *ngIf="icontante.errors.maxlength">
+                        il campo non deve essere lungo più di {{ icontante.errors.maxlength.requiredLength }} caratteri
+                </div>
+                <div *ngIf="icontante.errors?.pattern">
+
+                  moneta non valida.
+                </div>
+                <div *ngIf="icontante.errors.invalid">
+
+                  moneta non valida.   1
+                </div>
+              </div>
+            </div>
+              <!-- separatore -->
+
+
+            <div class="col col-md-3"></div>
+
+
+              <div class="col-sm-1">
+                <input  #rcontante="ngModel"  [(ngModel)]="moneyw.rcontante" class="form-control" name="rcontante" id="rcontante" (focus)="focusFunction()" (focusout)="aggiornaResto()"  minlength="1" maxlength="5" pattern="\d+(\.\d*)?|\.\d+" [style.color]="moneyw.rcontante > 0 ? 'black' : null" [style.background]="moneyw.rcontante > 0 ? 'palegreen' : null">
+                <div *ngIf="rcontante.dirty && rcontante.touched && rcontante.invalid "  class="alert alert-danger">
+                  <div  *ngIf="rcontante.errors.minlength">
+                    il campo deve avere almeno {{rcontante.errors.minlength.requiredLength }} caratteri
+                  </div>
+                  <div  *ngIf="rcontante.errors.maxlength">
+                          il campo non deve essere lungo più di {{ rcontante.errors.maxlength.requiredLength }} caratteri
+                  </div>
+                  <div *ngIf="rcontante.errors?.pattern">
+
+                    moneta non valida.
+                  </div>
+                  <div *ngIf="rcontante.errors.invalid">
+
+                    moneta non valida.   1
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
+          </div>
+        </div>
+
+
+        <div class="form-group row">
+          <div class="row">
+            <label for="acontante" class="col-sm-1">Cassa</label>
+            <div class="col-sm-2">
+
+            </div>
+            &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+            <div class="col-sm-4">
+              <input disabled #incasso="ngModel"  [(ngModel)]="moneyw.incasso" class="form-control  oldstyle-nums" name="incasso" id="incasso" >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="form-group">
+  <div class="row col-sm-12">
+
+    <div class="col-sm-4"></div>
+      <div class="col-sm-1">
+          <button  class="btn btn-primary btn-md " (click)="RegistraeStampaCommanda()"> Reset      <!-- [disabled]="commandaw.numProdotti === 0"  (click)="RegistraCommanda()" -->
+            <fa-icon [icon]="faUndo"  fixed="true"></fa-icon>
+           </button>
+      </div>
+      <div class="col-sm-1">
+        <button  class="btn btn-success btn-md " (click)="RegistraeStampaCommanda()"> Incassa      <!-- [disabled]="commandaw.numProdotti === 0"  (click)="RegistraCommanda()" -->
+          <fa-icon [icon]="faSave"  fixed="true"></fa-icon>
+         </button>
+    </div>
+    <!--  resto  - bottoni funzionali -->
+    <div class="col-sm-2"></div>
+    <div class="col-sm-1">
+        <button  class="btn btn-warning btn-md " (click)="RegistraeStampaCommanda()"> Reset      <!-- [disabled]="commandaw.numProdotti === 0"  (click)="RegistraCommanda()" -->
+          <fa-icon [icon]="faUndo"  fixed="true"></fa-icon>
+         </button>
+    </div>
+    <div class="col-sm-1">
+      <button [disabled]="commandaw.importoPagato - commandaw.importodaPagare -  commandaw.resto > 0"  class="btn btn-info btn-md " (click)="RegistraeStampaCommanda()"> Stampa      <!-- [disabled]="commandaw.numProdotti === 0"  (click)="RegistraCommanda()" -->
+        <fa-icon [icon]="faSave"  fixed="true"></fa-icon>
+       </button>
+  </div>
+     </div>
+  </div>
+<!--  versione con tabella -->
+
+<!--    impaginazione penosa - da rivedere
+
+<div class="container">
+  <form role="form">
+    <div class="form-group  row-cols-7" style="height: 15px;">
+
+<table>
+  <th  scope="col" class="borde">Taglia</th>
+  <th  scope="col" class="borde" >N.ro</th>
+  <th  scope="col" class="borde">Valore</th>
+
+  <th  scope="col" class="borde"> + </th>
+  <th  scope="col" class="borde">qta</th>
+  <th  scope="col" class="borde">Valore</th>
+  <th  scope="col" class="borde"> - </th>
+
+  <tr>
+    <td style="width: 10px;">
+   €  50</td>
+     <td style="
+     text-align: left;
+     width: 10px;">
+          {{giornata.a100}}
+      </td>
+      <td style="width: 5%">
+        {{giornata.a100Valore}}
+      </td>
+
+
+
+
+      <td style="width: 5%" >
+        <button type="button" class="btn btn-primary  btn-md" (click)="aggiungoDenaro('i100')" id="aggiungo100" name="aggiungo100"> +
+          <fa-icon [icon]="faPlus"  fixed="true"></fa-icon>
+        </button>
+       </td>
+     <td style="width: 5%"  >
+          <input disabled #qta="ngModel"  [(ngModel)]="moneyw.i100"  name="i100" id="i100" style="
+          background-clip: border-box;
+          background-color: #cfee7a;
+          border-right-width: 1px;
+          border-top-color: #b2e96b;
+          border-top-style: solid;
+          border-top-width: 1px;
+          color: red
+          font-family: tahoma, arial, verdana, sans-serif, 'Lucida Sans';
+          text-align: center;
+          width: 80px;">
+      </td>
+  <td style="width: 5%">
+    {{giornata.i100Valore}}
+</td>
+<td style="width: 5%">
+  <button [hidden]="(moneyw.i100 == 0)" type="button" class="btn btn-danger btn-md" (click)="tolgoDenaro('i100')" id="tolgo100" name="tolgo100i"> -
+    <fa-icon [icon]="faMinus"  fixed="true"></fa-icon>
+  </button>
+</td>
+
+
+  </tr>
+
+</table>
+</div>
+  </form>
+</div>
+
+-->
+
+
+
+    <!-- Bottoni funzionali  -->
+<!--                 ------------------------------------   buttare via
+   <div class="form-group form-footer">
+      <div class="row borde col-sm-12">
+        <div class="col-sm-4">
+
+        </div>
+        <div class="col-sm-4">
+
+        </div>
+          <div class="col-sm-4">
+              <button  class="btn btn-success btn-md " (click)="RegistraeStampaCommanda()"> Chiudi      <-- [disabled]="commandaw.numProdotti === 0"  (click)="RegistraCommanda()"
+               </button>
+          </div>
+         </div>
+      </div>
+    -->
+  <br>
+<br>
+

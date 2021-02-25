@@ -1,0 +1,105 @@
+<p>commandawrighe works!</p>
+<!-- elenco delle tipologie menu per selezione prodotti -->
+<div class="container-fluid">
+  <div class="row col-md-12">
+
+    <table class="table">
+      <tr >
+          <td class="col col-md-10">
+              <div class="form-check form-check-inline" *ngFor="let tipologia of tipologie; let idx = index">
+                <input type="radio" name="radiogroup" [checked]="idx === 0" [value]="tipologia.id" (change)="onSelectionChange(tipologia.id)">&nbsp; {{tipologia.d_tipologia}}
+              </div>
+          </td>
+        </tr>
+    </table>
+  </div>
+    <div class="container-fluid">
+      <table class="table">
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>
+              <div *ngIf="trovatoRec"  class="col col-md-6">
+                    <strong>Record :</strong>&nbsp;&nbsp; {{nRec}}
+              </div></td>
+        </tr>
+      </table>
+  </div>
+
+  </div>
+
+
+
+<!--{{messa | json}}      -->
+<!--
+
+
+<div class="container-fluid">
+  <caption class="title col-sm-12">{{title}}</caption>
+  <div class="row justify-content-md-center">    <!--  <div class="row justify-content-md-center">
+    <form #fm ="ngForm">
+
+            <table class="table">
+              <tr>
+                <td class="col col-md-7">
+                    <div class="form-check form-check-inline" *ngFor="let option of options; let idx = index">
+                      <input type="radio" name="radiogroup" [checked]="idx === 0" [value]="option" (change)="onSelectionChange(option)">&nbsp; {{option}}
+                    </div>
+                </td>
+                <td>
+
+                  <div class="col-md-5">
+                    <button [disabled]="!validSearch" class="btn btn-success btn-lg" (click)="ricercaPersone()">Ricerca
+                      <fa-icon [icon]="faSearch"  fixed="true"></fa-icon>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </table>
+
+          -->
+     <form #fm ="ngForm">
+
+     <table class="table table-striped table-sm shadow-lg p-3 mb-5 bg-white ">
+
+       <tr >
+           <th>prog</th>
+           <th>Descrizione</th>
+           <th>Categoria</th>
+           <th>Disp.</th>
+           <th>Prezzo</th>   <!-- disp e prezzo sono _day-->
+           <th>Qta</th>
+            <!--  non serve action -->
+           <th>Action</th>
+           <th></th>
+        </tr>
+
+       <tr app-commandawriga  *ngFor ="let commandawriga of commandawrighe | paginate: { itemsPerPage: 10, currentPage: p }; let i = index"
+       [commandawriga-prog] = i+1
+       [commandawriga-data] = "commandawriga" [style.color]="commandawriga.scorta_minima > commandawriga.disponibile_Day ? 'red' : null || commandawriga.qta > 0 ? 'blue' : null"
+       (onSelectProdotto) ="onSelectProdotto($event)"
+       >
+
+
+     </tr>
+     </table>
+
+     <div class="row col-md-12">
+      <!-- messaggi -->
+      <div *ngIf="!alertSuccess && isVisible" class="alert alert-danger" role="alert">
+        <!--   <h4 class="alert-heading">Errore in elenco</h4>    -->
+           <p>{{Message}}</p>
+           <hr>
+         </div>
+         <div *ngIf="alertSuccess && isVisible" class="alert alert-success" role="alert">
+         <!--   <h4 class="alert-heading">Modifca Password</h4>    -->
+           <p>{{Message}}</p>
+         </div>
+        </div>
+
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+     </form>
+
+

@@ -24,9 +24,12 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -88,6 +91,8 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/font-awesome/css/font-awesome.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -119,6 +124,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "SIF2020"
+    }
+  },
+  "defaultProject": "SIF2020",
+  "cli": {
+    "analytics": "196bebf5-f0c8-4399-a3ec-80131d069b92"
+  }
 }

@@ -1,0 +1,43 @@
+.oldstyle-nums {
+  font-variant-numeric: oldstyle-nums;
+
+  text-align: right;
+
+  color: blue;
+}
+
+.qtabanco {
+   width: 30px;
+
+}
+
+.borde {
+  border: 2px solid red;
+}
+.marginesx {
+  margin: 30px;
+}
+
+input.focus {
+  background-color:rgb(188, 241, 137);
+}
+
+input.text:focus {
+  background: #2c2c91;
+  }
+td.numt {
+  width:  30px;
+}
+input.text {
+  font: bold 12px Arial, Helvetica, sans-serif;
+  color: #000000;
+  background: #CCCCCC;
+  border: 1px solid #000000;
+  padding-right: 5px;
+  padding-left: 5px;
+  width: 140px;
+  }
+
+  .alignNumber {
+    text-align: right;
+  }

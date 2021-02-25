@@ -1,0 +1,105 @@
+<!--
+
+<p>commandaw1-detail works!</p>
+
+
+
+<div class="form-row col-sm-12 offset-6">
+  <caption class="title  col-sm-12">{{title}}</caption>
+</div>
+-->
+
+<br>
+
+<!-- {{manif | json}}  -->
+
+<br>
+<div class="container">
+  <caption class="title  col-sm-12">{{title}}</caption>
+  <div class="row col-md-12">    <!--  <div class="row justify-content-md-center"> -->
+     <div class="col-md-auto">
+      <form #fm ="ngForm">
+        <input Hidden #id="ngModel"  [(ngModel)]="commandaw.id" class="form-control" name="id" id="id">
+    <!--    <input  #numProdotti="ngModel"  [(ngModel)]="commandaw.numProdotti" class="form-control" name="numProdotti" id="numProdotti">  -->
+   <!-- <input   (numprod)="onProdottiCreated($event)" class="form-control" name="numProdotti" id="numProdotti">  <!--  #numProdotti="ngModel" [(ngModel)]="commandaw.numProdotti" -->
+
+        <!--  riga descrizione manifestazione -->
+        <div class="form-row">
+            <div class="form-group col-sm-8">
+                  <label for="descManif">Manifestazione</label>
+               <input disabled #descManif="ngModel"  [(ngModel)]="manif.descManif" class="form-control" name="descManif" id="descManif">
+
+            </div>
+            <div class="form-group col-sm-4">
+              <label for="dtGiornata">Data </label>
+              <input  disabled [(ngModel)]="giornata.dtGiornata"  #dtGiornata="ngModel" class="form-control"  name="dtGiornata" id="dtGiornata">      <!-- type="date" -->
+          </div>
+        </div>
+
+
+
+        <!-- cognome e nome  -->
+        <div class="form-row">
+
+          <div class="form-group col-sm-8">
+            <label for="cognome">Cognome e Nome</label>
+            <input disabled #anagrafica_cliente="ngModel"  [(ngModel)]="commandaw.anagrafica_cliente" class="form-control" name="anagrafica_cliente" id="anagrafica_cliente" >
+          </div>
+
+          <div class="form-group col-sm-4">
+            <label >Stato</label>
+            <input disabled #d_stato_commanda="ngModel"  [(ngModel)]="commandaw.d_stato_commanda" class="form-control" name="d_stato_commanda" id="d_stato_commanda" [style.color]="commandaw.stato == 1 ? 'red' : null">
+
+          </div>
+     </div>
+
+      <!--  persone e tavolo -->
+      <div class="form-row">
+        <div class="form-group col-sm-3">
+          <label for="persone">Persone</label>
+          <input disabled #numPersone="ngModel"  [(ngModel)]="commandaw.numPersone"   class="form-control" name="numPersone" id="numPersone" >
+        </div>
+        <div class="form-group col-sm-3">
+            <label >Tavolo</label>
+            <input disabled #numTavolo="ngModel"  [(ngModel)]="commandaw.numTavolo" class="form-control" name="numTavolo" id="numTavolo"  >
+        </div>
+    </div>
+      </form>
+     </div>
+</div>
+</div>
+    <br>
+ <div class="container-fluid">
+    <div class="row col-md-12">
+
+      <div class="col col-md-7">
+         <app-commandawrighe (updateProdotto) = "updateProdotto($event)"></app-commandawrighe>
+      </div>
+
+      <div Class="col col-md-5" *ngIf="prodottoSelected">
+        <app-prodotto1-detail [commandawriga] = "prodottoSelected"></app-prodotto1-detail>
+      </div>
+
+   </div>
+
+    <!-- Bottoni funzionali -->
+
+   <div class="form-group form-footer">
+      <div class="row borde">
+        <div class="row col-sm-12" >
+          <div class="col-sm-4">
+              <button class="btn btn-secondary  btn-md"  (click)="resetForm(fm.form)">Reset  <!--  reset -->
+                <fa-icon [icon]="faUndo"></fa-icon>
+              </button>
+          </div>
+          <div class="col-sm-4">
+              <button  class="btn btn-success btn-md " (click)="PagaCommanda()"> Cassa      <!-- [disabled]="commandaw.numProdotti === 0"  (click)="RegistraProdottiCommanda()"-->
+                <fa-icon [icon]="faSave"  fixed="true"></fa-icon>
+               </button>
+          </div>
+         </div>
+      </div>
+    </div>
+  <br>
+<br>
+</div>

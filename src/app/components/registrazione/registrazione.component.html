@@ -1,0 +1,110 @@
+<p>registrazione works!</p>
+
+<div class="row">
+  <div class="col-md-4 offset-md-3">
+
+    <br>
+    <div class="card">
+      <div class="card-body">
+    <form name="loginForm" #f="ngForm" (ngSubmit)="Registrazione(f)">
+
+      <div class="center-block centrata">
+        <img src="assets/images/logoSanfra.png"   alt="logo" class="img-circle" width="80px" height="80px">
+      </div>
+
+      <div class="form-group">
+        <label for="username">Cognome</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+              <span class="input-group-text"><fa-icon [icon]="faUser"></fa-icon> </span>     <!--   <i class="fa fa-envelope" aria-hidden="true"></i> -->
+          </div>
+          <input required  class="form-control" cognome minlength="8" maxlength="10" type="text" ngModel #cognome="ngModel" name="cognome" id="cognome"  placeholder="inserire il cognome">
+        </div>
+        <div *ngIf="cognome.dirty && cognome.touched && cognome.invalid" class="alert alert-danger">
+
+          <div  *ngIf="cognome.errors.required">
+            inserire cognome - campo obbligatorio
+          </div>
+          <div *ngIf="cognome.errors.minlength">
+            il cognome deve comtenere almeno  {{cognome.errors.minlength.requiredLength }} caratteri
+          </div>
+          <div *ngIf="cognome.errors.maxlength">
+            il cognome deve comtenere al massimo  {{cognome.errors.maxlength.requiredLength }} caratteri
+          </div>
+         </div>
+      </div>
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+              <span class="input-group-text"><fa-icon [icon]="faUser"></fa-icon> </span>     <!--   <i class="fa fa-envelope" aria-hidden="true"></i> -->
+          </div>
+          <input required  class="form-control" username minlength="8" maxlength="20" type="text" ngModel #username="ngModel" name="username" id="username"  placeholder="inserire username">
+        </div>
+        <div *ngIf="username.dirty && username.touched && username.invalid" class="alert alert-danger">
+
+          <div  *ngIf="username.errors.required">
+            inserire username - campo obbligatorio
+          </div>
+          <div *ngIf="username.errors.minlength">
+            la username deve comtenere almeno  {{username.errors.minlength.requiredLength }} caratteri
+          </div>
+          <div *ngIf="username.errors.maxlength">
+            la username deve comtenere al massimo  {{username.errors.maxlength.requiredLength }} caratteri
+          </div>
+         </div>
+      </div>
+
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-group">
+              <input class="form-control" required minlength="6"  maxlength="20" ngModel type="password" #password="ngModel" name="password" id="password" value=''   placeholder="inserire la password">
+              <div class="input-group-append">
+                <span class="input-group-text" >
+                  <a (Click)="this.toggleFieldTextType()">
+                    <fa-icon [icon]="faEyeSlash"  ></fa-icon>
+                 </a>
+                </span>
+              </div>
+
+        </div>
+        <div *ngIf="password.dirty && password.touched && password.invalid" class="alert alert-danger" >
+          <div *ngIf="password.errors.required">
+          inserire la password - campo obbligatorio
+          </div>
+          <div *ngIf="password.errors.minlength">
+            la password deve comtenere almeno  {{password.errors.minlength.requiredLength }} caratteri
+          </div>
+          <div *ngIf="password.errors.maxlength">
+            la password deve comtenere al massimo  {{password.errors.maxlength.requiredLength }} caratteri
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+     <!--   <a class="nav-link" routerLinkActive="active" href="#"  (click)="Registrazione(f)">Registra</a>   -->
+        <div class="form-group text-center">
+          <button [disabled]="!f.valid" class="btn btn-primary">Registrazione</button>
+        </div>
+
+      </div>
+      <div *ngIf="savechange  && !alertSuccess" class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Errore in Registrazione</h4>
+        <p>{{message}}</p>
+        <hr>
+        <p class="mb-0">inserire campi corretti per registrazione</p>
+      </div>
+      <div *ngIf="savechange  && alertSuccess" class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Modifca Password</h4>
+        <p>Utente riconosciuto</p>
+        <hr>
+        <p class="mb-0">Bravissimo !!!!!!</p>
+      </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

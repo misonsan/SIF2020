@@ -1,0 +1,10 @@
+input.num {
+  text-align:right;
+  caret-color: red;
+}
+input.disabled {
+  background: red;
+}
+input.enabled {
+  background:Cornsilk;
+}

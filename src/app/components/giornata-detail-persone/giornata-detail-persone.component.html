@@ -1,0 +1,67 @@
+
+<br>
+
+<!--{{manif | json}} -->
+<div class="container">
+  <caption class="title  col-sm-12">{{title}}</caption>
+  <div class="row col-md-12">    <!--  <div class="row justify-content-md-center"> -->
+   <!--  <div class="col-md-12">  -->
+      <form #fm ="ngForm">
+        <input Hidden #id="ngModel"  [(ngModel)]="manif.id" class="form-control" name="id" id="id">
+        <!--  riga descrizione messa -->
+        <div class="form-row">
+            <div class="form-group col-md-9">
+                  <label for="descManif">Manifestazione</label>
+                  <input disabled #descManif="ngModel"  [(ngModel)]="manif.descManif" class="form-control" name="descManif" id="descManif">
+
+            </div>
+            <div class="form-group col-md-3">
+                <label >Stato</label>
+                <input disabled #d_stato_manifestazione="ngModel"  [(ngModel)]="manif.d_stato_manifestazione" class="form-control" name="d_stato_manifestazione" id="d_stato_manifestazione" [style.color]="manif.statoManifestazione == 2 ? 'red' : null">
+            </div>
+        </div>
+        <!-- situazione dello stato della giornata - Persone  -->
+          <div class="form-row">
+                <div class="form-group col-sm-6">
+                    <label for="dtGiornata">Data </label>
+                    <input  disabled [(ngModel)]="giornata.dtGiornata"  #dtGiornata="ngModel" class="form-control"  name="dtGiornata" id="dtGiornata">       <!-- type="date" -->
+                </div>
+                <div class="form-group col-sm-3">
+                  <label >Stato</label>
+                  <input disabled #d_stato_giornata="ngModel"  [(ngModel)]="giornata.d_stato_giornata" class="form-control" name="d_stato_giornata" id="d_stato_giornata" [style.color]="giornata.stato == 2 ? 'red' : null">
+              </div>
+              <div class="form-group col-sm-3">
+                <label >Stato Persone</label>
+                <input disabled #d_stato_cassa="ngModel"  [(ngModel)]="giornata.d_stato_utenti" class="form-control" name="d_stato_utenti" id="d_stato_utenti" [style.color]="giornata.statoUtenti == 0 ? 'red' : null">
+            </div>
+          </div>
+      </form>
+  <!--  </div>   -->
+   </div>
+</div>
+
+
+<div class="row col-md-12">
+
+   <div class="col col-md-7">
+      <app-persone (updateUser) = "updateUser($event)"></app-persone>
+   </div>
+   <div Class="col col-md-5" *ngIf="userSelected">
+     <app-persona-detail [persona] = "userSelected"></app-persona-detail>
+   </div>
+
+</div>
+
+   <div class="form-group form-footer">
+    <div class="row">
+      <div class="row col-sm-9" >
+        <div class="col-sm-3">
+          <button class="btn btn-primary  btn-md"  (click)="backToGiornata()">Back
+           <fa-icon [icon]="faHandPointLeft"></fa-icon>
+         </button>
+        </div>
+     </div>
+  </div>
+</div>
+
+

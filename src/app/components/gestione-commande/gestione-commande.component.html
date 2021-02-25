@@ -1,0 +1,400 @@
+
+<br>
+<p>gestione-commande works!</p>
+
+<!--Giornata:  {{giornata | json}}
+<br>
+Manif:  {{manif | json}} -->
+
+<!--{{giornata.statoCassa | json}}   ----  {{enabledCassaIniziale | json}}  -->
+
+
+<div class="container">
+  <caption class="title  col-sm-12">{{title}}</caption>
+  <div class="row col-md-12">    <!--  <div class="row justify-content-md-center">  -->
+     <div class="col-md-auto">
+      <form #fm ="ngForm">
+        <div class="form-row">
+            <div class="form-group col-sm-6">
+                <label for="dtGiornata">Data </label>
+                <input  disabled [(ngModel)]="giornata.dtGiornata"  #dtGiornata="ngModel" class="form-control"  name="dtGiornata" id="dtGiornata">       <!-- type="date"   -->
+            </div>
+            <div class="form-group col-sm-3">
+              <label >Stato</label>
+              <input disabled #d_stato_giornata="ngModel"  [(ngModel)]="giornata.d_stato_giornata" class="form-control" name="d_stato_giornata" id="d_stato_giornata" [style.color]="giornata.stato == 2 ? 'red' : null">settore {{settore}} ruolo: {{ruolo}}
+            </div>
+        </div>
+      </form>
+    </div>
+   </div>
+</div>  
+
+<div class="container">
+ 
+    <!-- test -->  
+    <div *ngIf="ruolo === -1">
+      ho il ruolo -1
+    </div>
+
+    <div  *ngIf="ruolo === -1" > 
+        <div class="form-check form-check-inline" *ngFor="let option1 of optionsSettore; index as idx">
+          <input type="radio" name="radiogroupSettore" [checked]="idx === 0" [value]="option1" (change)="onSelectionChangeSettore(option1)">&nbsp;&nbsp; {{option1}}
+        </div>
+    </div> 
+   
+    
+
+</div>
+
+<br>
+
+
+<div class="container">
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item"><a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Prodotti</a></li>
+    <li class="nav-item"><a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false"   tabindex="-1">Commande</a></li>
+  </ul>
+<div class="tab-content" id="myTabContent">
+  <!--  ---  tab 1 ---------  Prodotti  ------------------ -->
+  <div class="tab-pane p-4 fade" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-8">
+          <div class="form-check form-check-inline" *ngFor="let option2 of optionsProd; index as idx">
+            <input type="radio" name="radiogroup" [checked]="idx === 0" [value]="option2" (change)="onSelectionChangeProd(option2)">&nbsp;&nbsp; {{option2}}
+          </div>
+      
+        </div>
+        <div *ngIf="trovatoRecRighe"  class="col-6 col-md-4">
+          <strong>Record trovati:</strong>&nbsp;&nbsp; {{nRecRi}}
+        </div>
+      </div>
+    </div>
+    <div class="container">
+    
+        <div class="form-group row col-md-6">
+          <div class="col col-sm-1 alignicon">
+              <fa-icon [icon]="faSearch"  fixed="true"></fa-icon>
+          </div>
+          <div class="search-hero">
+              <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="inserisci campo di ricerca">
+          </div>
+        </div>
+        <div class="row col-md-12">
+                <table class="table table-striped table-sm shadow-lg p-3 bg-white table-bordered table-responsive-lg table-container"> <!--  mb-5 --> 
+                  <tr>
+                      <th>prog</th>
+                      <th>Comm.</th>
+                      <th>prodotto</th>
+                      <th>qta</th>
+                      <th>HM Ord.</th>
+                      <th>lavorazione</th>
+                      <th>Att..</th>
+                      <th>Consegna</th>
+                      <th>Att..</th>
+                      <th >Action</th>
+                  </tr>
+                      <tr *ngFor ="let commandariga of commandarighe | filter:searchText | paginate: { itemsPerPage: 10, currentPage: p }; let i = index" [style.color]="commandariga.stato == 1 ? 'red' : null"  [attr.data-index]="i">
+                        <td>{{i+1}}</td>
+                        <td>{{commandariga.idCommanda}}</td>
+                        <td>{{commandariga.descrizione_prodotto}}</td>
+                        <td>{{commandariga.qta_ord}}</td>
+                        <td>{{commandariga.ora_inizio | date:'HH:mm'}}</td>
+                        <td [style.color]="commandariga.flag_lavorazione == 0 ? 'green' : 'red'">{{commandariga.d_stato_lavorazione}}</td>
+                        <td><img src="assets/images/{{commandariga.semaphoreLavorazione}}"  alt="??" class="img-circle rounded-circle border p-1" >&nbsp; {{commandariga.delayLavorazione}} </td>  <!--  width="10px" height="10px"-->
+                    
+                        <td [style.color]="commandariga.flag_consegna == 0 ? 'green' : 'red'">{{commandariga.d_stato_consegna}}</td>
+                        <td><img src="assets/images/{{commandariga.semaphoreConsegna}}"  alt="??" class="img-circle rounded-circle border p-1" >&nbsp; {{commandariga.delayConsegna}} </td>  <!--  width="10px" height="10px"-->
+             
+                        <td class="buttons">
+                          <div class="row">
+
+                            <div class="col-sm-4">
+                              <!-- per vedere come attivare popup -->
+                                    <button   class="btn btn-success  btn-sm" (click)="openModal(commandariga.idProdotto, modalProdotto)"  >  <!--  (click)="goModal(commandawriga.idProdotto)"-->
+                                         <fa-icon [icon]="faInfo" fixed="true"></fa-icon>
+                                    </button>
+                            </div>
+
+                                          <!-- da eliminare 
+                                            <div class="col-sm-4">
+                                                <button   class="btn btn-primary  btn-sm" (click)="showDetailProdotto(commandariga.idProdotto)" >
+                                                      <fa-icon [icon]="faInfo" fixed="true"></fa-icon>
+                                                </button>
+                                            </div>  -->
+                          </div>
+                        <td>
+                      </tr>
+                  </table>
+                  <pagination-controls (pageChange)="p2 = $event"></pagination-controls> 
+        </div> 
+    </div>  
+
+
+  </div>
+
+  <div class="tab-pane p-4 fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-8">
+          <ng-container
+            *ngIf="settore === 2; then settore2; else settore3">
+          </ng-container>
+
+          <ng-template #settore2>
+              <div  class="form-check form-check-inline" *ngFor="let option3 of optionsLav; index as idx">
+                  <input type="radio" name="radiogroup" [checked]="idx === 0" [value]="option3" (change)="onSelectionChangeLavorazione(option3)">&nbsp;&nbsp;  {{option3}}
+              </div>
+          </ng-template>
+          <ng-template #settore3>
+              <div class="form-check form-check-inline" *ngFor="let option4 of optionsCon; index as idx">
+                  <input type="radio" name="radiogroup" [checked]="idx === 0" [value]="option4" (change)="onSelectionChangeConsegna(option4)">&nbsp;&nbsp; {{option4}}
+              </div>
+          </ng-template>
+       
+        </div>
+        <div *ngIf="trovatoRecCommande"  class="col-6 col-md-4">
+          <strong>Record trovati:</strong>&nbsp;&nbsp; {{nRecCo}}
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <div class="container">
+
+      <div class="form-row">
+   
+      <div class="form-group row col-md-6">
+              <div class="col col-sm-1 alignicon">
+                  <fa-icon [icon]="faSearch"  fixed="true"></fa-icon>
+              </div>
+              <div class="search-hero">
+                  <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="inserisci campo di ricerca">
+              </div>
+        </div>
+      <div class="row col-md-12">
+     
+         <table class="table table-striped table-sm shadow-lg p-3 mb-5 bg-white table-bordered table-responsive-lg table-container">
+           <tr>
+               <th>prog</th>
+               <th>commanda</th>
+               <th>stato</th>
+               <th>cliente</th>
+               <th>tavolo</th>
+               <th>Persone</th>
+               <th>Prodotti</th>
+               <th>Attention</th>
+            
+               <th >Action</th>
+           </tr>
+        
+
+            <!--| filter:searchText
+              esempio    https://stackblitz.com/edit/angular-search-filter?file=app%2Fapp.component.html
+              ricerca google:  angular search    -->
+
+
+              <!--  attenzione  -->
+              <!-- non utilizzo il componente app-commanda1 perchè ho bisogno di un altro bottone ceh gestisca un metodo in questo componente -->
+
+
+
+<!--
+           <tr app-commanda1 *ngFor ="let commanda of commande | filter:searchText | paginate: { itemsPerPage: 10, currentPage: p }; let i = index"
+               [commanda1-prog] = i+1
+               [commanda1-data] = "commanda" [style.color]="commanda.stato == 1 ? 'red' : null"  [attr.data-index]="i">
+           </tr>      -->
+
+           <tr *ngFor ="let commanda of commande | filter:searchText | paginate: { itemsPerPage: 10, currentPage: p }; let i = index" [style.color]="commanda.stato == 1 ? 'red' : null"  [attr.data-index]="i">
+            <td>{{i+1}}</td>
+            <td>{{commanda.id}}</td>
+            <td [style.color]="commanda.stato == 1 ? 'red' : 'green'">{{commanda.d_stato_commanda}}</td>
+            <td>{{commanda.anagrafica_cliente}}</td>
+            <td>{{commanda.numTavolo}}</td>
+            <td>{{commanda.numPersone}}</td>
+            <td>{{commanda.numProdotti}}</td>
+            <td><img src="assets/images/{{commanda.semaphore}}"  alt="??" class="img-circle rounded-circle border p-1" >&nbsp; {{commanda.delay}} </td>  <!--  width="10px" height="10px"-->
+            <td class="buttons">
+              <div class="row">
+                <div class="col-sm-4">
+                       <button   class="btn btn-primary  btn-sm" (click)="showCommandaDetail(commanda.id)"  >
+                         <fa-icon [icon]="faUserEdit" fixed="true"></fa-icon>
+                       </button>
+                </div>
+                <!--     buttare
+                <div class="col-sm-4">
+                   <button   class="btn btn-success  btn-sm" (click)="loadCommandaSelezionata(commanda.id)"  >
+                   <fa-icon [icon]="faInfo" fixed="true"></fa-icon>
+                 </button>
+                </div>   -->
+        
+            
+              </div>
+            </td>
+           </tr>
+
+         </table>
+
+              <pagination-controls (pageChange)="p = $event"></pagination-controls> 
+        </div>
+        <hr>
+       
+      
+
+<!--
+
+
+       <ng-container
+         *ngIf="settore === 2; then Prodsettore2; else Prodsettore3">
+       </ng-container>
+
+       <ng-template #Prodsettore2>  
+    
+
+        <table class="table table-striped table-sm shadow-lg p-3 mb-5 bg-white table-bordered table-responsive-lg table-container">
+          <tr>
+
+
+
+
+              <th>prog</th>
+              <th>categoria</th>
+              <th>Prodotto</th>
+              <th>Qta</th>
+              <th>hm Ordine</th>
+              <th>Lavorazione</th>
+              <th>Att. Lav.ne</th>
+              <th>Consegna</th>
+              <th>Att. Con.</th>
+                           <--  non serve action 
+              <th >Action</th>
+          </tr>
+         
+
+           <!--| filter:searchText
+             esempio    https://stackblitz.com/edit/angular-search-filter?file=app%2Fapp.component.html
+             ricerca google:  angular search  
+
+
+<--  qui mettere le righe di dettaglio  in funzione del settore senza passare per il componente figlio 
+          <tr app-commandarigalav *ngFor ="let commandariga of commandarighe | filter:searchText | paginate: { itemsPerPage: 10, currentPage: p2 }; let i = index"
+             [commandarigalav-prog] = i+1
+             [commandarigalav-data] = "commandariga" [style.color]="commandariga.stato == 1 ? 'red' : null"  [attr.data-index]="i">
+          </tr>   
+        </table>
+
+
+       </ng-template>
+       <ng-template #Prodsettore3>  
+         
+        
+        <-- mettere il dettaglio commanda con elenco delle righe per consegna (bevande)  
+
+
+       </ng-template>
+
+
+
+      </div>
+
+    </div>
+  </div>   -->
+</div>  
+</div>
+
+
+<ng-template #modalProdotto let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Selezione Prodotto</h4>
+    <button class="close" aria-label="close" type="button" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+  <div class="modal-body">
+
+    <div class="container">
+
+      <div class="row col-md-12">    <!--  <div class="row justify-content-md-center"> -->
+         <div class="col-md-auto">
+          <form #fm ="ngForm"  >
+            <input hidden #id="ngModel"  [(ngModel)]="prodotto.id" class="form-control" name="id" id="id">
+            <input hidden #idriga="ngModel"  [(ngModel)]="commandariga.id" class="form-control" name="idriga" id="idriga">
+            <!--  immagine del Prodotto -->
+            <div class="col-6 " style="margin-top: 35px;">
+              <div class="row">
+                <div class="col-md-12 offset-6">
+                  <img src="assets/images/photoProducts/{{commandariga.photo}}"  alt="commandariga.photo" class="img-circle rounded-circle border p-1 imagecenter" width="150px" height="150px" [(ngModel)]="commandawriga.photo" #photo="ngModel">   <!--displayedImage-->   <!--  -->
+                </div>
+              </div>
+            </div>
+            <!--  Descrizione prodotto e prezzo -->
+            <div class="form-row">
+                <div class="form-group col-sm-9">
+                      <label for="cognome">Prodotto</label>
+                      <input disabled #descrizione_prodotto="ngModel"  [(ngModel)]="prodotto.descrizione_prodotto" class="form-control" name="descrizione_prodotto" id="descrizione_prodotto">
+                </div>
+                <div class="form-group col-sm-3">
+                  <label for="prezzo_day">Prezzo</label>
+                  <input disabled #prezzo_day="ngModel"  [(ngModel)]="prodotto.prezzo_day" class="form-control" name="prezzo_day" id="prezzo_day">    <!--  [style.color]="manif.statoManifestazione == 2 ? 'red' : null"-->
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-sm-6">
+                  <label for="disponibile_Day">Disponibile</label>
+                  <input disabled #disponibile_Day="ngModel"  [(ngModel)]="prodotto.disponibile_Day" class="form-control" name="disponibile_Day" id="disponibile_Day" >
+                </div>
+            </div>
+            <!--  Qta -->
+
+            <label for="qta">Quantità</label>
+            <div class="form-row form-inline">
+  
+                 <div class="col-sm-1">
+                    <input disabled #qta="ngModel"  [(ngModel)]="commandariga.qta" class="form-control widthqta" name="qta" id="qta" [style.color]="commandariga.qta > 0 ? 'white' : null" [style.background]="commandariga.qta > 0 ? 'red' : null">
+                 </div>
+            
+           </div>
+          </form>
+        </div>
+       </div>
+     </div>
+  </div>
+  <div class="modal-footer">
+
+
+    <div class="form-group form-footer">
+            <div class="row borde">
+              <div class="col-12 col-md-8">
+                <div class="col-sm-3 justify-content-md-center">
+
+                  <button [hidden]="commandawriga.qta === 0" class="btn btn-success btn-md" (click)="Salva(commandawriga)">Salva
+
+                   <!-- <button [disabled]="!isSelected" class="btn btn-success btn-md" (click)="Salva(mySelect.value)">Salva   -->
+                      <fa-icon [icon]="faSave"  fixed="true"></fa-icon>
+                    </button>
+                </div>
+              </div>
+          </div>
+    </div>
+    <div class="row col-md-12">
+      <!-- messaggi -->
+      <div *ngIf="!alertSuccess && isVisible" class="alert alert-danger" role="alert">
+        <!--   <h4 class="alert-heading">Errore in elenco</h4>    -->
+           <p>{{Message}}</p>
+           <hr>
+         </div>
+         <div *ngIf="alertSuccess && isVisible" class="alert alert-success" role="alert">
+         <!--   <h4 class="alert-heading">Modifca Password</h4>    -->
+           <p>{{Message}}</p>
+         </div>
+    </div>
+
+
+
+  </div>
+
+
+</ng-template>

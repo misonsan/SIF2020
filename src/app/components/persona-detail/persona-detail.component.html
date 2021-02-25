@@ -1,0 +1,91 @@
+<p>persona-detail works!   merda</p>
+
+<!--{{persona|json}}-->
+<!-- {{ruoli | json}} -->
+
+<div class="container">
+  <caption class="title  col-sm-12">{{title}}</caption>
+  <div class="row col-md-12">    <!--  <div class="row justify-content-md-center"> -->
+     <div class="col-md-auto">
+      <form #fm ="ngForm"  >
+        <input Hidden #id="ngModel"  [(ngModel)]="persona.id" class="form-control" name="id" id="id">
+
+        <div class="col-6 " style="margin-top: 35px;">
+          <div class="row">
+            <div class="col-md-12 offset-6">
+
+              <img src="assets/images/photo/{{persona.photo}}"  alt="persona.photo" class="img-circle" width="150px" height="150px" [(ngModel)]="persona.photo" #photo="ngModel">   <!--displayedImage-->   <!--  -->
+
+            </div>
+          </div>
+        </div>
+        <!--  riga Cognome -->
+        <div class="form-row">
+            <div class="form-group col-sm-9">
+                  <label for="cognome">Cognome</label>
+                  <input disabled #cognome="ngModel"  [(ngModel)]="persona.cognome" class="form-control" name="cognome" id="cognome">
+
+            </div>
+            <div class="form-group col-sm-3">
+                <label for="nome">Nome</label>
+                <input disabled #nome="ngModel"  [(ngModel)]="persona.nome" class="form-control" name="nome" id="nome">    <!--  [style.color]="manif.statoManifestazione == 2 ? 'red' : null"-->
+            </div>
+        </div>
+        <!--  riga date inizio e finei  -->
+
+<!--
+        <div class="form-row">
+
+            <label>Prodotti</label>
+            <select formControlName="ruoli">
+              <option *ngFor="let prodotto of prodotti" [value]="ruolo.value">
+                {{prodotto-data.dRuolo}}
+              </option>
+            </select>
+
+       </div>    -->
+
+       <div class="form-group">
+        <label class="col-sm-2 control-label">Ruoli</label>
+        <div class="col-sm-10">
+          <select formControlName="ruoli" class="form-select" aria-label="Default select example"     (change)="onChange($event.target.value)" >
+            <option [value]="999">Selezionare il Ruolo</option>
+            <option *ngFor="let ruolo of ruoli" [value]="ruolo.id"  class="form-control" >{{ruolo.d_ruolo_day}}</option>
+          </select>
+        </div>
+      </div>
+
+
+      <div class="form-group form-footer">
+        <div class="row borde">
+          <div class="col-12 col-md-8"></div>   <!--   lasciato volutamente vuoto -->
+            <div class="col-sm-3 justify-content-md-center">
+                <button [disabled]="!isSelected" class="btn btn-success btn-md" (click)="Salva($event.target.value)">Salva
+                  <fa-icon [icon]="faSave"  fixed="true"></fa-icon>
+                </button>
+            </div>
+        </div>
+      </div>
+
+
+
+
+
+
+      <div class="row col-md-12">
+        <!-- messaggi -->
+        <div *ngIf="!alertSuccess && isVisible" class="alert alert-danger" role="alert">
+          <!--   <h4 class="alert-heading">Errore in elenco</h4>    -->
+             <p>{{Message}}</p>
+             <hr>
+           </div>
+           <div *ngIf="alertSuccess && isVisible" class="alert alert-success" role="alert">
+           <!--   <h4 class="alert-heading">Modifca Password</h4>    -->
+             <p>{{Message}}</p>
+           </div>
+          </div>
+
+      </form>
+    </div>
+   </div>
+</div>
