@@ -1,0 +1,108 @@
+<div class="modal-header " [style.background]="fase === 'job' ? 'red' : 'green'" [style.color]="fase === 'job' ? 'white' : 'yellow'"> 
+    <div class="col-sm-3">
+      <img src="assets/images/logoSanfra.png" width="40" height="40" alt="logo">
+    </div>
+    <div *ngIf="fase === 'job'"  class="col-sm-8">
+      <h4 class="modal-title" id="modal-basic-title">{{title}} </h4>
+    </div>
+    <div *ngIf="fase === 'cob' || fase === 'coc'"  class="col-sm-8">
+        <h4 class="modal-title" id="modal-basic-title">{{title}} </h4>
+      </div>
+
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <!-- inserire i campui della form da gestire in popup -->
+   <form [formGroup]="editForm" (ngSubmit)="onSubmit()" *ngIf="editForm">
+<!--   inizio  -->
+        <!-- Chiave del record -->
+        <input hidden type="text" formControlName="id" class="form-control" />
+  <!--      <input  formControlName="idProd" class="form-control">  -->
+        <!-- Immagine del Prodotto -->
+
+        <div class="col-6 " style="margin-top: 35px;">
+          <div class="row">
+            <div class="col-md-12 offset-6">
+              <img src="assets/images/photoProducts/{{prodotto.photo}}"  alt="prodotto.photo" class="img-circle rounded-circle border p-1" width="150px" height="150px">   
+            </div>
+          </div>
+        </div>
+        <br>
+        <hr>
+        <!-- descrizione del Prodotto   -->
+        <div class="form-row">
+          <div class="mb-3 row margini">
+            <label for="desprodotto" class="col-sm-3 col-form-label">Prodotto:</label>
+            <div class="col-sm-9">
+              <input disabled type="text" formControlName="desprodotto" class="form-control" />
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="mb-3 row margini">
+            <label for="prezzo" class="col-sm-3 col-form-label">Prezzo:</label>
+            <div class="col-sm-3">
+              <input disabled type="text" formControlName="prezzo" class="form-control" />
+            </div>
+          </div>
+        </div>
+        <!--  qta -->
+        <div class="form-row">
+          <div class="mb-3 row margini">
+            <label for="qta" class="col-form-label col-sm-3"><strong>Quantità:</strong></label>
+            <div class="col-sm-3">
+                <input disabled type="text" formControlName="qta" class="form-control" />
+                <!--
+                <div *ngIf="editFormData.qta.invalid && (editFormData.qta.dirty || editFormData.qta.touched)"
+                    class="alert-danger">
+                    <span>First name is required!</span>
+                </div>  -->
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+           <div *ngIf="fase === 'job'" class="mb-3 row margini">
+                <label for="qta" class="col-form-label col-sm-3"><strong>attesa:</strong></label>
+                <div class="col-sm-1">
+                  <img src="assets/images/{{commandariga.semaphoreLavorazione}}"  alt="??" class="img-circle rounded-circle border p-1" >&nbsp;
+                </div>
+                <div class="col-sm-2 ">
+                  <input disabled type="text" formControlName="delayjob" class="form-control" />
+                </div> 
+              </div>
+
+        </div>
+
+
+     
+  
+
+     
+
+          <!-- messaggi -->
+                  <div class="row col-md-12">
+                      <div *ngIf="!alertSuccess && isVisible" class="alert alert-danger" role="alert">
+                          <p>{{Message}}</p>
+                      </div>
+                      <hr>
+                      <div *ngIf="alertSuccess && isVisible" class="alert alert-success" role="alert">
+                         <p>{{Message}}</p>
+                      </div>
+                 </div>
+
+                 <div class="modal-footer">
+                  <button [disabled]="isLoading" class="btn btn-primary mr-2" (click)="modal.close('Cancel')">Cancel</button>
+                  <button [disabled]="isLoading" class="btn btn-primary mr-2">Update</button>
+              </div>
+
+
+<!-- fine  -->
+  </form>
+</div> 
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+</div> 
+

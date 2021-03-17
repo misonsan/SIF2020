@@ -25,7 +25,7 @@ export class NavComponent implements OnInit {
   public username: string;
 
   titolo = "Sanfra in Festa ....  ";
-  anno = "2020";
+  anno = 2020;
 
   public isAbilityBevande = false;
   public isAbilityCucina = false;
@@ -97,6 +97,10 @@ export class NavComponent implements OnInit {
 
   ngOnInit() {
 
+    var data = new Date()
+    this.anno = data.getFullYear();
+    
+
     this.isUserLoggedIn = this.auth.isUserLoggedIn();
     if(this.isUserLoggedIn)  {
       this.letturaseGiornataAttiva();
@@ -163,7 +167,7 @@ async letturaseGiornataAttiva() {
   await   this.giornataService.getGiornataactive().subscribe(
             response => {
     // -----   alert('letto giornata attiva: ' + response['number'] ) ;
-               if(response['number'] == 1) {
+               if(response['number'] === 1) {
                  this.giornata = response['data'];
         //         alert('idGiornata: ' + this.giornata.id);
                  this.idDay = this.giornata.id;
@@ -186,7 +190,7 @@ async letturaseGiornataAttiva() {
 
  goActivity(ruolo: number) {
 
-  if(this.dayAbilitato == false) {
+  if(this.dayAbilitato === false) {
     alert('Giornata non abilitata - Operatività non eseguibile');
     return;
   } else {
@@ -292,7 +296,10 @@ async letturaseGiornataAttiva() {
            this.route.navigate(['giormanif/' +  this.giornata.idManifestazione]);
         // mettere link
         break;
-
+      case 'prodotti':
+        this.route.navigate(['prodotti']);
+     // mettere link
+       break;
       default:
         alert('nav - funzione non ancora attivata');
           break;

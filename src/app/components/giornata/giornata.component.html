@@ -8,6 +8,13 @@
 <td class="buttons">
   <div class="row col-sm-12">
     <div class="col-sm-2">
+      <button class="btn btn-dark  btn-sm" (click)="showGiornata(giornata)"  type="button">
+         <fa-icon [icon]="faCalendarAlt" fixed="true"></fa-icon>
+          <!--  <fa name="fainfo" fixed="true" ></fa>  -->
+      </button>
+    </div>
+
+    <div class="col-sm-2">
       <button class="btn btn-primary  btn-sm" (click)="showGiornataDetail(giornata)"  type="button">
         <fa-icon [icon]="faInfo" fixed="true"></fa-icon>
           <!-- <fa-icon [icon]="faChartBar" fixed="true"></fa-icon> -->
@@ -19,11 +26,13 @@
           <!--  <fa name="fainfo" fixed="true" ></fa>  -->
       </button>
     </div>
+    <!-- completato gestione con popup e controllo stato -->
     <div class="col-sm-2">
       <button class="btn btn-info  btn-sm" (click)="showGiornataDetailProdotti(giornata)"  type="button">
          <fa-icon [icon]="faUtensils" fixed="true" ></fa-icon>
       </button>
     </div>
+    <!-- completato gestione con popup e controllo stato -->
     <div class="col-sm-2">
       <button class="btn btn-warning  btn-sm" (click)="showGiornataDetailPersone(giornata)"  type="button">
          <fa-icon [icon]="faUserEdit" fixed="true"></fa-icon>

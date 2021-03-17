@@ -1,0 +1,185 @@
+<!--
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="dateOfBirth">Date of birth</label>
+        <div class="input-group">
+          <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div>
+-->
+
+
+
+<div class="modal-header " [style.background]="fase === 'M' ? 'red' : 'green'" [style.color]="fase === 'M' ? 'white' : 'yellow'">   
+    <div class="col-sm-3">
+      <img src="assets/images/logoSanfra.png" width="40" height="40" alt="logo">
+    </div>
+    <h4 class="modal-title" id="modal-basic-title">{{title}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <!-- inserire i campi della form da gestire in popup  --> 
+   <form [formGroup]="editForm" (ngSubmit)="onSubmit()" *ngIf="editForm" >   <!-- class="was-validated" -->
+<!--   inizio   -->  
+        <!-- Chiave del record -->
+        <input hidden type="text" formControlName="id" class="form-control" />
+  
+        <!-- descrizione della Manifestazione    -->
+        <div class="form-row">
+          <div class="mb-3 row margini">
+            <label for="desmanif" class="col-sm-3 col-form-label">Descrizione:</label>
+            <div class="col-sm-9">
+              <input type="text" formControlName="desmanif" class="form-control" minlength="4" maxlength="50" placeholder="Inserire Manifestazione"/>
+            <!--  <div class="valid-feedback">Campo corretto</div>
+              <div class="invalid-feedback">insersci un valore corretto</div> -->
+              
+              <div *ngIf="editFormData.desmanif.invalid && (editFormData.desmanif.dirty || editFormData.desmanif.touched)" class="alert-danger">
+                <div *ngIf="editFormData.desmanif.errors.required">
+                    <span>la descrizione è obbligatoria</span>
+                </div>
+                <div *ngIf="editFormData.desmanif.errors.minlength">
+                   <span>la descrizione deve essere di almeno 4 caratteri</span>
+                </div>
+                <div *ngIf="editFormData.desmanif.errors.maxlength">
+                    <span>la descrizione non può essere più lunga di 50 caratteri</span>
+                 </div>
+              </div> 
+            </div>
+          </div>
+        </div>
+        <!-- Buono Pasto  --> 
+        <div class="form-row">
+          <div class="mb-3 row margini">
+            <label for="buonopasto" class="col-sm-3 col-form-label">Buono Pasto:</label>
+            <div class="col-sm-3">
+              <input type="text" formControlName="buonopasto" class="form-control"  pattern="\d+(\.\d*)?|\.\d+"/>
+           <!--   <div class="valid-feedback">Campo corretto</div>
+                  <div class="invalid-feedback">insersci un valore corretto</div>   -->
+              <div *ngIf="editFormData.buonopasto.invalid && (editFormData.buonopasto.dirty || editFormData.buonopasto.touched)" class="alert-danger">
+                <div *ngIf="editFormData.buonopasto.errors.required">
+                    <span>Inserire l'importo del buono pasto</span>
+                </div>
+                <div *ngIf="editFormData.buonopasto.errors?.pattern">
+                    <span>il buono pasto non può essere negativo</span>
+                  </div>
+               </div>               
+            </div>
+          </div>
+        </div>
+      <!-- Coperto --> 
+      <div class="form-row">
+        <div class="mb-3 row margini">
+          <label for="coperto" class="col-sm-3 col-form-label">Coperto:</label>
+          <div class="col-sm-3">
+            <input type="text" formControlName="coperto" class="form-control" pattern="\d+(\.\d*)?|\.\d+"/>
+            <div *ngIf="editFormData.coperto.invalid && (editFormData.coperto.dirty || editFormData.coperto.touched)" class="alert-danger">
+                <div *ngIf="editFormData.coperto.errors.required">
+                    <span>Inserire il coperto</span>
+                </div>
+                <div *ngIf="editFormData.coperto.errors?.pattern">
+                    solo valori posotivi
+                  </div>
+               </div>   
+          </div>
+        </div>
+      </div>    
+     <!-- radio button per selezione stampa  radio-inline -->
+      Impostare se stampa interna &nbsp;&nbsp;
+     <label class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+        <label class="form-check-label" for="inlineRadio1">Si</label>
+      </label>
+      <label class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"  checked>
+        <label class="form-check-label" for="inlineRadio2">No</label>
+      </label>
+
+    
+     <!-- Note  --> 
+     <!--
+     <div class="form-row">
+        <div class="mb-3 row margini">
+          <label for="note" class="col-sm-3 col-form-label">Note:</label>
+          <div class="col-sm-3">
+            <input type="text" formControlName="note" class="form-control" />
+          </div>
+        </div>
+      </div>   -->
+      
+      
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Note</span>
+        </div>
+        <textarea class="form-control" aria-label="With textarea" formControlName="note"></textarea>
+      </div>
+
+
+
+
+ <!-- fine  --> 
+ 
+
+ 
+  </form>
+</div> 
+
+<div class="modal-footer">
+  <button [disabled]="isLoading" class="btn btn-success mr-2" (click)="lancioEsito()">Cancel
+    <fa-icon [icon]="faPlus"  fixed="true"></fa-icon>
+  </button>   
+ 
+    <button [disabled]="isLoading" class="btn btn-secondary mr-2" (click)="modal.dismiss('Cross click')">Cancel
+      <fa-icon [icon]="faWindowClose"  fixed="true"></fa-icon>
+    </button>   <!--(click)="modal.close('Merda')"-->
+    <button class="btn btn-primary mr-2" (click)="onSubmit()" >Salva
+      <fa-icon [icon]="faSave"  fixed="true"></fa-icon>
+    </button>   <!-- (click)="onSubmit()"     [disabled]="isLoading"  -->
+    <button [hidden]="fieldVisible === false" class="btn btn-danger mr-2" (click)="openModal2(templateConfirmDelete)" >Cancella
+      <fa-icon [icon]="faTrash"  fixed="true"></fa-icon>
+    </button> 
+</div>  
+
+
+<!-- (click)="modal.close('Save click')" -->
+ <!--
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" >Save</button>   
+</div> -->
+
+<ng-template #templateConfirmDelete>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Cancellazione Manifestazione</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    confermi la cancellazione per la manifestazione selezionata ?<br />
+  </div>
+    <div class="modal-footer">
+     <button type="button" class="btn btn-secondary" (click)="closeModal(2)">Annulla
+      <fa-icon [icon]="faWindowClose"  fixed="true"></fa-icon>
+     </button>
+    <button type="button" class="btn btn-danger" (click)="closeModal(1)">Conferma
+      <fa-icon [icon]="faTrash"  fixed="true"></fa-icon>
+    </button>
+  </div>
+</ng-template>

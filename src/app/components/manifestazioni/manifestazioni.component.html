@@ -13,13 +13,27 @@
     <div class="col-md-auto">
       <form #fm ="ngForm">
 
-    <div class="row col-sm-6">
-            <div class="col-sm-5">
+
+        <div class="form-row">
+          <div class="row col-sm-6">
+            <div class="col-sm-6">
                  <button  class="btn btn-primary btn-rounded"  (click)="registraManifestazione()">Registrazione
                    <fa-icon [icon]="faPlusSquare"  fixed="true"></fa-icon>
                   </button>
              </div>
-      </div>
+          </div>
+
+          <div class="row col-sm-6">
+            <div class="col-sm-6">
+                <button  class="btn btn-primary btn-rounded"  (click)="RegistrabyPopup()">Registr. Popup
+                  <fa-icon [icon]="faPlusSquare"  fixed="true"></fa-icon>
+                  </button>
+            </div>
+          </div>
+        </div>
+
+
+  
   <br>
 
 <div>
@@ -27,37 +41,33 @@
     <div class="form-check form-check-inline" *ngFor="let option of options">
          <input type="radio" name="radiogroup" [checked]="idx === 0" [value]="option" (change)="onSelectionChange(option)">&nbsp;&nbsp; {{option}}
     </div>
-    <!--  bottone per eseguire la ricerca -->
-    <div class="col-sm-3">
-      <button [disabled]="!validSearch" class="btn btn-success btn-md" (click)="ricercaManif()">Ricerca
-        <fa-icon [icon]="faSearch"  fixed="true"></fa-icon>
-       </button>
-    </div>
+ 
   </div>
 </div>
 
      <br>
+  <div class="form-row col-md-12 borde">
+        <table class="table  ">   <!--  table-striped p-3 mb-5 table-lg shadow-lgbg-white -->
 
-     <table class="table table-striped table-sm shadow-lg p-3 mb-5 bg-white">
+          <tr>
+              <th>prog</th>
+              <th>manifestazione</th>
+              <th>data Inizio</th>
+              <th>data Fine</th>
+              <th>Utenti</th>
+              <th class="statoMan">stato</th>
+              <!--  non serve action -->
+              <th>Action</th>
+          </tr>
 
-       <tr>
-           <th>prog</th>
-           <th>manifestazione</th>
-           <th>data Inizio</th>
-           <th>data Fine</th>
-           <th>num. Utenti</th>
-           <th>stato</th>
-           <!--  non serve action -->
-           <th>Action</th>
-       </tr>
-
-       <tr app-manifestazione *ngFor ="let manifestazione of manifestazioni; let i = index"
-       [manif-prog] = i+1
-       [manif-data] = "manifestazione" [style.color]="manifestazione.statoManifestazione == 2 ? 'red' : null" >    <!--  -->
+          <tr app-manifestazione *ngFor ="let manifestazione of manifestazioni; let i = index"
+          [manif-prog] = i+1
+          [manif-data] = "manifestazione" [style.color]="manifestazione.statoManifestazione == 2 ? 'red' : null" >    <!--  -->
 
 
-     </tr>
-     </table>
+        </tr>
+        </table>
+    </div>
      <div class="row col-md-12">
   <!-- messaggi -->
   <div *ngIf="!alertSuccess && isVisible" class="alert alert-danger" role="alert">

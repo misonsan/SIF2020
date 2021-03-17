@@ -123,7 +123,7 @@ onSelectionChange(menu: string)   {
         return;
         }  else {
           alert('la scelta della ricerca é: ' + this.tipoRichiesta);
-              switch (this.tipoRichiesta) {
+          switch (this.tipoRichiesta) {
                   case 'T':
                   this.loadProdotti();
                //   this.router.navigate(['getpersoneforMessa', this.messa.id]);

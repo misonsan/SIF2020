@@ -41,8 +41,15 @@ export class PersoneComponent implements OnInit {
   // per paginazone
   p: number = 1;
 
+   // variabili per visualizzazione messaggio di esito con notifier
+   public type = '';
+   public message = '';
+
   constructor(private personaService: PersonaService,
-              private router: Router) { }
+              private router: Router) {
+            
+              }
+
 
 ngOnInit(): void {
 
@@ -58,9 +65,7 @@ async loadPersone() {
   this.nRec = 0;
   this.isVisible = true;
   await  this.personaService.getPersone().subscribe(
-    // sentire hidran per lettura particolare
-   // this.fedeleService.getFedeliforMessa(id).subscribe(
-      res => {
+       res => {
           this.users = res['data'];
           this.nRec = res['number'];
           this.trovatoRec = true;
@@ -141,12 +146,42 @@ onSelectionChange(tiruolo: string)   {
 this.tipoRichiesta = tiruolo;  //tifedel.substring(0,1);
 this.validSearch = true;
 
-//alert('ho selezionato:' + tifedel + ' valore: ' + this.tipoRichiesta);
+if(this.tipoRichiesta === '?') {
+  this.validSearch = false;
+  alert('effettuare prima la selezione del ruolo ,\n ricerca non possibile');
+  return;
+  }  else {
+
+        switch (this.tipoRichiesta) {
+            case 'Tutte':
+            this.loadPersone();
+         //   this.router.navigate(['getpersoneforMessa', this.messa.id]);
+            break;
+            case 'Non Assegnato':
+              this.ruolo = 0;
+              this.loadPersoneconRuolo1(this.ruolo);
+              break;
+            case 'Con Ruolo':
+          //  alert(' devo attivare rotta con n.ro messa e tipo fedeli');
+              this.ruolo = 0;
+              this.ruoloEnd = 90;
+              this.loadPersoneconRuolo2(this.ruolo, this.ruoloEnd);
+               break;
+            case 'Non Operativo':
+              this.ruolo = 99;
+              this.loadPersoneconRuolo1(this.ruolo);
+              break;
+            default:
+            alert('Scelta errata \n ricerca non possibile');
+            break;
+      }
+    }
+
 
 }
 
 
-
+/*
 
 ricercaPersone() {
 
@@ -187,6 +222,8 @@ ricercaPersone() {
           }
         }
     }
+    */
+    
 
     onSelectUser(persona: Persona){
 

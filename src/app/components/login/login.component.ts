@@ -6,6 +6,7 @@ import { JwtInterface } from '../../interfaces/jwt';
 import { AuthService } from './../../services/auth.service';
 import { faEnvelope, faEyeSlash,  faEye,  faUser } from '@fortawesome/free-solid-svg-icons';
 
+
 /*    cancellare
 interface Jwt {
   // definisco l'interfaccia dei dati che ottengo dalla chiamata di login
@@ -43,10 +44,13 @@ export class LoginComponent implements OnInit {
 
   private user: User;
 
-  constructor(private  auth: AuthService, private router: Router) {
+  public title_OK = 'Login';
+  public title_KO = 'Login in Errore';
+  
 
-
-
+  constructor(private  auth: AuthService, 
+              private router: Router,
+             ) {
 
    }
 
@@ -120,6 +124,9 @@ export class LoginComponent implements OnInit {
 
       const resp = await this.auth.signIn(form.value.username, form.value.password);
       if(resp){
+
+        this.message  = 'Utente ' + form.value.username + '\n' + 'autenticato' ; 
+     //   mettere notifica   
     //    alert('login corretto per utente:  ' + resp.username);
         this.message = 'login corretto per utente:  ' + resp.username;
         this.savechange = true;

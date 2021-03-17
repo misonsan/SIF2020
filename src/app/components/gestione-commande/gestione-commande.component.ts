@@ -13,11 +13,11 @@ import { GiornataService }  from './../../services/giornata.service';
 import { CommandaService } from './../../services/commanda.service';
 import { CommandarigaService } from './../../services/commandariga.service';
 
-import { faUndo, faSave, faHandPointLeft, faTrashAlt, faInfoCircle, faThumbsUp, faThumbsDown, faSearch, faPlusSquare, faUserEdit, faInfo } from '@fortawesome/free-solid-svg-icons';
+import { faUndo, faSave, faHandPointLeft, faTrashAlt, faInfoCircle, faThumbsUp, faThumbsDown, faSearch, faPlusSquare, faUserEdit, faInfo, faAlignLeft } from '@fortawesome/free-solid-svg-icons';
 import { switchMap } from 'rxjs/operators';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-
-
+import { FormGroup, FormBuilder, Validators, FormControlName } from '@angular/forms';
+import { ProdottojobComponent } from './../../components/popups/prodottojob/prodottojob.component';
 
 @Component({
   selector: 'app-gestione-commande',
@@ -41,6 +41,7 @@ export class GestioneCommandeComponent implements OnInit {
   faPlusSquare = faPlusSquare;
   faUserEdit = faUserEdit;
   faInfo = faInfo;
+  faAlignLeft = faAlignLeft;
 
   public giornata: Giornata;
   public commanda: Commanda;
@@ -49,6 +50,7 @@ export class GestioneCommandeComponent implements OnInit {
   public commande: Commanda[] = [];
   public commandariga: Commandariga;
   public commandarighe: Commandariga[] = [];
+  public commandarighe1: Commandariga[] = [];
   public commandarigaw: Commandariga;
   public prodotto: Prodotto;
 
@@ -82,9 +84,12 @@ export class GestioneCommandeComponent implements OnInit {
   public date1 = null;
   public date2 = null;
 
+  public enabledCommanda = false;
+
   // per paginazione
   p: number = 1;
   p2: number = 1;
+  p3: number = 1;
 
   //  tutti       - 0 --> nessun filtro
   //  da Lavorare - 2 --> stato commanda --> 2
@@ -94,9 +99,6 @@ export class GestioneCommandeComponent implements OnInit {
 
 
   public statoCommanda = 0;
-
-
-
 
 
     options = [
@@ -138,7 +140,11 @@ export class GestioneCommandeComponent implements OnInit {
               private commandaService: CommandaService,
               private commandarigaService: CommandarigaService,
               private prodottoService: ProdottoService, 
-              private modal: NgbModal) { }
+              private modal: NgbModal,
+              private formBuilder: FormBuilder) { }
+
+
+
 
 
   ngOnInit(): void {
@@ -148,7 +154,7 @@ export class GestioneCommandeComponent implements OnInit {
        this.idDay = +p.get('id');
        });
        this.ruolo = parseInt(localStorage.getItem('user_ruolo'));
-       alert('OnInit - letto ruolo:' + this.ruolo);
+   //    alert('OnInit - letto ruolo:' + this.ruolo);
        if(this.ruolo == 1) {
           alert('Operatività non abilitata al Cassiere');
           return;
@@ -179,7 +185,7 @@ export class GestioneCommandeComponent implements OnInit {
 
   async loadSituazioneClienti(stato: number) {
 
-alert('loadSituazioneClienti - stato:' + stato + ' settore: ' + this.settore);
+//alert('loadSituazioneClienti - stato:' + stato + ' settore: ' + this.settore);
 
 switch (stato)  {
             case 0:
@@ -219,7 +225,7 @@ switch (stato)  {
         this.nRecRi = response['number'];
         if(response['number'] > 0) {
           this.aggiornarigheDelay();
-          alert('aggiornato  --------------------  delay ' );
+      //    alert('aggiornato  --------------------  delay ' );
         }
     },
     error => {
@@ -244,7 +250,7 @@ switch (stato)  {
                 this.nRecCo = response['number'];
                 if(response['number'] > 0) {
                   this.aggiornaDelay();
-                  alert('aggiornato  --------------------  delay ' );
+           //       alert('aggiornato  --------------------  delay ' );
                 }
             },
             error => {
@@ -267,7 +273,7 @@ switch (stato)  {
             if(this.nRecCo > 0){
               this.Message = 'Situazione Attuale';
             }
-            alert('loadCommandefromGiornataeCompetenza -----  record trovati: ' + this.nRecCo);
+        //    alert('loadCommandefromGiornataeCompetenza -----  record trovati: ' + this.nRecCo);
         },
         error => {
         alert('Manif-Data  --loadGiornata: ' + error.message);
@@ -321,7 +327,7 @@ async  aggiornaimageDelayFiltro(stato: number, idDay: number, settore: number) {
 
 
     onSelectionChangeProd(ricProd: string) {
-      alert('onSelectionChangeProd -  da fare' + ricProd);
+    //  alert('onSelectionChangeProd -  da fare' + ricProd);
 
       switch (ricProd)  {
         case 'Tutti':
@@ -385,7 +391,7 @@ async  aggiornaimageDelayFiltro(stato: number, idDay: number, settore: number) {
             this.trovatoRecRighe = true;
             this.alertSuccess = true;
 
-          alert('----- da lavorare ------------------------> loadCommanderighedaLavorare - trovati:' + this.nRecRi);
+       //   alert('----- da lavorare ------------------------> loadCommanderighedaLavorare - trovati:' + this.nRecRi);
 
         },
         error => {
@@ -424,7 +430,7 @@ async  aggiornaimageDelayFiltro(stato: number, idDay: number, settore: number) {
             this.trovatoRecRighe = true;
             this.alertSuccess = true;
 
-            alert('----- Cucina da Consegnare ------------------------> loadCommanderighedaLavorare - trovati:' + this.nRecRi);
+      //      alert('----- Cucina da Consegnare ------------------------> loadCommanderighedaLavorare - trovati:' + this.nRecRi);
         },
         error => {
         alert('Gestione-Commande  --loadProdottiCucinadaConsegnare: ' + error.message);
@@ -449,7 +455,7 @@ async  aggiornaimageDelayFiltro(stato: number, idDay: number, settore: number) {
             this.trovatoRecRighe = true;
             this.alertSuccess = true;
 
-            alert('----- Bevande da Consegnare ------------------------> loadCommanderighedaLavorare - trovati:' + this.nRecRi);
+      //      alert('----- Bevande da Consegnare ------------------------> loadCommanderighedaLavorare - trovati:' + this.nRecRi);
         },
         error => {
         alert('Gestione-Commande  --loadProdottiBevandedaConsegnare: ' + error.message);
@@ -464,10 +470,10 @@ async  aggiornaimageDelayFiltro(stato: number, idDay: number, settore: number) {
  // provata e funziona
 async loadCommanderigheConsegnate(settore: number) {
   
-  if(settore == 2 ) {
+  if(settore === 2 ) {
     this.competenza = 1;
   }
-  if(settore == 3 ) {
+  if(settore === 3 ) {
     this.competenza = 2;
   }
   
@@ -484,7 +490,7 @@ async loadCommanderigheConsegnate(settore: number) {
         this.trovatoRecRighe = true;
         this.alertSuccess = true;
 
-        alert('----- Consegnate ------------------------> loadCommanderighedaLavorare - trovati:' + this.nRecRi);
+   //     alert('----- Consegnate ------------------------> loadCommanderighedaLavorare - trovati:' + this.nRecRi);
     },
     error => {
     alert('Gestione-Commande  --loadCommanderigheConsegnate: ' + error.message);
@@ -497,7 +503,7 @@ async loadCommanderigheConsegnate(settore: number) {
     // aggiorno il tempo di attesa delle commande rispetto all'ordinazione
    async aggiornaDelay() {
 
-      alert(' sono appena entrato in ------------- aggiornaDelay');
+    //  alert(' sono appena entrato in ------------- aggiornaDelay');
 
       for(let comman of this.commande) {
 
@@ -543,7 +549,7 @@ async loadCommanderigheConsegnate(settore: number) {
             );
         }
 
-        alert('  fine aggiornamento delay per le commande selezionate --------------------   ' );
+      //  alert('  fine aggiornamento delay per le commande selezionate --------------------   ' );
 
     }
 
@@ -611,7 +617,7 @@ async loadCommanderigheConsegnate(settore: number) {
 // aggiorno il tempo di attesa delle commande rispetto all'ordinazione
 async aggiornarigheDelay() {
 
-  alert(' sono appena entrato in ------------- aggiornarigheDelay');
+  //alert(' sono appena entrato in ------------- aggiornarigheDelay');
 
 
 
@@ -679,7 +685,7 @@ async aggiornarigheDelay() {
         );
     }
 
-    alert('  fine aggiornamento delay per le commande selezionate --------------------   ' );
+  //  alert('  fine aggiornamento delay per le commande selezionate --------------------   ' );
 
 }
 
@@ -785,7 +791,7 @@ onSelectionChangeLavorazione(statoProd: string)  {
       this.statoCommanda = 4;
       break;
     }
-  alert('scelta filtrata: ' + statoProd + ' -- statoCommanda: ' + this.statoCommanda);
+ // alert('scelta filtrata: ' + statoProd + ' -- statoCommanda: ' + this.statoCommanda);
   this.loadSituazioneClienti(this.statoCommanda);
 }
 
@@ -801,7 +807,7 @@ async loadCommandaSelezionata(id: number) {
   await   this.commandaService.getCommanda(id).subscribe(
     response => {
         this.commanda1 = response['data'];
-          alert('loadCommandaselezionata - letto commanda:' + id);
+     //     alert('loadCommandaselezionata - letto commanda:' + id);
           this.loadrigheCommandaSelezionata(id);
      },
     error => {
@@ -812,9 +818,17 @@ async loadCommandaSelezionata(id: number) {
 
 }
 
-loadrigheCommandaSelezionata(id: number) {
-  alert('loadrighecommandaselezionate ----------------->    da fare ')
-  // da fare
+async loadrigheCommandaSelezionata(id: number) {
+  
+  await   this.commandarigaService.getProdottiforCommanda(id).subscribe(
+    response => {
+        this.commandarighe1 = response['data'];
+        this.nRecRi = response['number'];
+    },
+    error => {
+    alert('Gestione.Commande  --loadrigheCommandaSelezionata: ' + error.message);
+    console.log(error);
+    })
 }
 
 
@@ -822,7 +836,7 @@ loadrigheCommandaSelezionata(id: number) {
 showCommandaDetail(id: number) {
 
 
-  alert('da fare - forma tabset --------------   metodo da commanda1');
+ // alert('da fare - forma tabset --------------   metodo da commanda1');
   this.router.navigate(['commanda/' + id + '/show']);
   //alert('Giornata - editare situazione di generale \n su giornata-data con visibile legato a parametro gestioneGiornata = show ');
   /*
@@ -860,7 +874,7 @@ async getProdottoSelected(id: number) {
 openModal(id: number, modalProdotto) {
 // qui leggere il prodotto
 this.getProdottoSelected(id);
-this.modal.open(modalProdotto,{size:'lg'});
+this.modal.open(modalProdotto,{size:'sm'});
 //  posso aprire la popoup con dimensioni diverse:
 //  this.modal.open(modalProdotto,{size:'sm'});    <----  piccola
 //  this.modal.open(modalProdotto,{size:'lg'});    <----  ampia
@@ -877,6 +891,142 @@ this.modal.open(modalProdotto,{size:'lg'});
   this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
 });  */
 }
+
+private getDismissReason(reason: any): string {
+  if (reason === ModalDismissReasons.ESC) {
+    return 'by pressing ESC';
+  } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+    return 'by clicking on a backdrop';
+  } else {
+    return `with: ${reason}`;
+  }
+}
+
+tolgoProdotti() {
+  this.commandariga.qta_ord= this.commandariga.qta_ord - 1;
+ }
+
+ aggiungoProdotti() {
+    this.commandariga.qta_ord = this.commandariga.qta_ord + 1;
+ }
+
+
+ Salva(commandariga) {
+  if(commandariga.qta_ord == 0) {
+    alert('Selezione non ammessa  \n aggiornamento non possibile !!');
+     return;
+  }  else {
+    this.updaterigaCommanda(commandariga);
+
+  }
+}
+
+async  updaterigaCommanda(commandariga: Commandariga) {
+//alert('cassa- sono in update cassa -  da fare');
+this.isVisible = false;
+await  this.commandarigaService.updateCommandariga(commandariga).subscribe(
+     response => {
+         if(response['success']) {
+           this.updateCommanda(commandariga);
+         }},
+     error =>
+     {
+      this.isVisible = true;
+       console.log(error);
+       this.Message = error.message;
+       this.alertSuccess = false;
+     }
+  );
+}
+
+async  updateCommanda(commandariga: Commandariga) {
+//alert('cassa- sono in update cassa -  da fare');
+
+await  this. commandaService.getCommanda(commandariga.idCommanda).subscribe(
+      response => {
+          if(response['data']) {
+           this.Message = 'Prodotto: ' + commandariga.descrizione_prodotto + 'Aggiornato correttamente  ';
+//
+ //          alert('check_01 -------> ' + this.Message);
+            this.commanda  = response['data'];
+            this.commanda.numProdotti =  this.commanda.numProdotti + commandariga.qta_ord;
+            this.commanda.importoProdotti =  this.commanda.importoProdotti + (commandariga.qta_ord * commandariga.prezzo);
+            this.commanda.importodaPagare = this.commanda.importoProdotti + this.commanda.importoCoperto - this.commanda.buonoPasto;
+             this.updateVendutoCommanda(this.commanda)
+           }},
+      error =>
+      {
+        this.isVisible = true;
+        console.log(error);
+        this.Message = error.message;
+        this.alertSuccess = false;
+      }
+   );
+}
+
+async  updateVendutoCommanda(commanda: Commanda) {
+// alert('cupdateVendutoCommanda ----   entry');
+
+ await  this. commandaService.updateCommanda(commanda).subscribe(
+        response => {
+  //       alert('check_02 -    updateCommanda ------> ');
+            if(response['success']) {
+              this.isVisible = true;
+              this.alertSuccess = true;
+            }},
+        error =>
+        {
+          this.isVisible = true;
+          console.log(error);
+          this.Message = error.message;
+          this.alertSuccess = false;
+        }
+     );
+ }
+
+
+//  lancio popup con versione nuova
+
+openModalPopup(commandariga: Commandariga) {
+    this.enabledCommanda = false;  // inibisco la visualizzazione del dettaglio commanda
+ 
+  // in questo particolare caso passo commandariga e dentro al popup faccio la lettura del prodotto da editare
+  
+
+  //  alert('apro la modal per la riga: ' + commandariga.id + ' ------  prpdotto: ' + commandariga.descrizione_prodotto);
+
+    const ref =   this.modal.open(ProdottojobComponent, {size:'lg'} );  // , { centered: true }
+    ref.componentInstance.commandariga = commandariga;
+  
+    ref.result.then(
+      (yes) => {
+        console.log('Ok Click');
+        let mess01 = '----------------- devo aggiornare la quantità: ' + commandariga.qta_ord + ' per il prodotto:' + commandariga.id;
+        console.log(mess01);
+    //    alert('----------------- devo aggiornare la quantità: ' + commandariga.qta_ord + ' per il prodotto:' + commandariga.id);
+        this.updaterigaCommanda(commandariga);
+        // this.setUsersList();  fare la lettura di tutti le commandawriga per essere riaggiornato
+    },
+    (cancel) => {
+      console.log('Cancel Click');
+    })
+  
+  
+  
+  }
+
+  dettaglioCommanda(commandariga: Commandariga) {
+    // leggo la commanda della riga selezionata
+    this.loadCommandaSelezionata(commandariga.idCommanda);
+
+    
+    this.enabledCommanda = true;
+
+  }
+
+
+
+
 
 
 

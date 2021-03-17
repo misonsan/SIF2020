@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { faAppleAlt } from '@fortawesome/free-solid-svg-icons';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,5 +11,7 @@ export class AppComponent {
   title = 'SIF2020';
   utente = ' Moreno ';
   faAppleAlt = faAppleAlt;
+
+ 
 
 }

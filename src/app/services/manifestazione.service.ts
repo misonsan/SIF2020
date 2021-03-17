@@ -15,11 +15,20 @@ export class ManifestazioneService {
   // lettura dati da server laraapi
   manif: Manifestazione[] = [];  // definisco i dati come array vuoto
 
-private rotta = "/manif";
+  private rotta = "/manif";
+
+  private rottaLast = "/manifestazione";
+  private rootManiflastid  = "/lastid";
+  private rootRicercaStato  = "/getManifestazionebyStato/";
+
 // vecchia versione senza environment
 //  private APIURL = 'http://localhost:8000/users';  // definisco l'url su cui effettuare la lettura sul server
 
 private APIURL = environment.APIURL + this.rotta;  // definisco l'url su cui effettuare la lettura sul server
+
+private APIURLLAST = environment.APIURL + this.rottaLast;
+
+private APIURLSEARCH = '';
 
   constructor(private http: HttpClient, private auth: AuthService) { }
 
@@ -96,5 +105,43 @@ getManifestazioni() {
       headers: this.getAuthHeader()
     });
   }
+
+  
+
+  getLastManifestazioneid() {
+
+    return this.http.get(this.APIURLLAST + this.rootManiflastid ,  {
+      headers: this.getAuthHeader()
+    });      // ok;
+
+  }
+
+  getManifbyStato(stato: number) {
+
+    // ritorniamo un observoble - il subscribe devo farlo su users.component.ts
+
+    // la chiamata la faccio solo se ho il token per abilitare la lettura solo a uteti loggati
+
+        // primo metodo passando il token in chiaro su url
+        //  return this.http.get(this.APIURL + '?token=' + this.auth.getToken());       // <---- 1° metodo  in chiaro su url
+
+        // secondo metodo passando il token non in chiaro come header
+
+       
+
+//alert('GiornataService - Parametri: ' + tipoRic + ' tipo filtro: ' + this.tipoFiltro);
+
+        this.APIURLSEARCH = environment.APIURL + this.rotta + this.rootRicercaStato;
+
+        if(stato === 9) {
+          return this.http.get(this.APIURL,  {
+            headers: this.getAuthHeader()
+          });      
+        } else {
+          return this.http.get(this.APIURLSEARCH + stato,  {
+            headers: this.getAuthHeader()
+          });      // ok;
+        }
+}
 
 }

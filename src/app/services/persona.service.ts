@@ -128,11 +128,9 @@ getPersone() {
 
  getPersoneforRuolo2(ruolo1: number, ruolo2: number) {
 
-
-
          // return this.http.get(this.APIURL + this.rootPersoneforRuoloFiltro + ruolo1 + '/ruolo/' + ruolo2);
-
-          return this.http.get(this.APIURL + this.rootPersonebyRuoloFiltro + ruolo1,  {
+     
+          return this.http.get(this.APIURL + this.rootPersoneforRuoloFiltro + ruolo1 + '/ruolo/' + ruolo2, {
             headers: this.getAuthHeader()
           });      // ok
 

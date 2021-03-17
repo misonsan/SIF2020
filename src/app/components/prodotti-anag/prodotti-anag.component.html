@@ -1,0 +1,142 @@
+<div class="container">
+    <caption class="title col-sm-12"><strong>{{title}}</strong></caption>
+  
+    <div class="row col-md-12">    <!--  <div class="row justify-content-md-center"> -->
+  
+      <div class="col-md-auto">
+        <form #fm ="ngForm">
+  
+  
+          <div class="form-row">
+            <div class="row col-sm-6">
+              <div class="col-sm-6">
+                   <button  class="btn btn-primary btn-rounded"  (click)="registraProdotto()">Registrazione
+                     <fa-icon [icon]="faPlusSquare"  fixed="true"></fa-icon>
+                    </button>
+               </div>
+            </div>
+          </div>
+          <br>
+           <div class="form-row">
+            <div class="col col-sm-1 alignicon">
+                <fa-icon [icon]="faSearch"  fixed="true"></fa-icon>
+           </div>
+           <!-- riga per filtro di ricerca -->
+           <div class="row col-md-6">
+                   <div class="search-hero">
+                      <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="inserisci campo di ricerca">
+                 </div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-check form-check-inline" *ngFor="let option of options">
+                    <input type="radio" name="radiogroup" [checked]="idx === 0" [value]="option" (change)="onSelectionChangeFiltro(option)">&nbsp;&nbsp; {{option}}
+                </div>
+            </div>
+        
+          </div>  
+       <br>
+         <div class="form-row" [hidden]="isEnabledAll === false">
+            <div class="form-check form-check-inline" *ngFor="let optionProd of optionsProdotto">
+                <input type="radio" name="radiogroup" [checked]="idxp === 0" [value]="optionProd" (change)="onSelectionChangeProd(optionProd)">&nbsp;&nbsp; {{optionProd}}
+            </div>
+  
+        </div>
+
+     
+    <!-- creare interface / classe / controller su angular e model / controller per Laravel -->
+        <div class="form-row" [hidden]="isEnabledAll === true">
+            <div class="form-group col-sm-4 was-validated">
+                <label class="col-sm-2 control-label ">Categoria</label>
+                <select class="custom-select" required (change)="selectedCategoria($event.target.value)">
+                    <option value="">Seleziona la Categoria</option>
+                    <option *ngFor="let categoria of categorie" [value]="categoria.id"  class="form-control" >{{categoria.d_categoria}}</option>
+                </select>
+                <div class="invalid-feedback">effettuare la scelta della categoria</div>
+            </div>
+            <div class="form-group col-sm-4 was-validated">
+                <label class="col-sm-2 control-label ">Competenza</label>
+                <select class="custom-select" required (change)="selectedCompetenza($event.target.value)">
+                <option value="">Seleziona la Competenza</option>
+                <option *ngFor="let competenza of competenze" [value]="competenza.id"  class="form-control" >{{competenza.d_competenza}}</option>
+                </select>
+                <div class="invalid-feedback">effettuare la scelta della competenza</div> 
+            </div>
+            <div class="form-group col-sm-4 was-validated">
+                <label class="col-sm-2 control-label ">Tipologia</label>
+                <select class="custom-select" required (change)="selectedTipologia($event.target.value)">
+                <option value="">Seleziona la Tipologia</option>
+                <option *ngFor="let tipologia of tipologie" [value]="tipologia.id"  class="form-control" >{{tipologia.d_tipologia}}</option>
+                </select>
+                <div class="invalid-feedback">effettuare la scelta della tipologia</div> 
+            </div>
+     
+        </div>  
+       <br>
+       <div class="form-row col col-md-12">
+
+     
+        <div class="form-row col-md-12">
+         
+            <table class="table  ">   <!--  table-striped p-3 mb-5 table-lg shadow-lgbg-white -->
+    
+                <tr>
+                    <th>prog</th>
+                    <th>prodotto</th>
+                    <th>tipologia</th>
+                    <th>categoria</th>
+                    <th>Disp.</th>
+                    <th >prezzo</th>
+                    <!--  non serve action -->
+                    <th>Action</th>
+                </tr>
+              
+                <tr app-prodotto-anag *ngFor ="let prodotto of prodotti | filter:searchText| paginate: { itemsPerPage: 10, currentPage: p }; let i = index"
+                [prodotto-prog] = i+1
+                [prodotto-data] = "prodotto" >    <!--  [style.color]="manifestazione.statoManifestazione == 2 ? 'red' : null" -->
+    
+    
+            </tr>
+            </table>
+        </div>
+        <!--   finale -->
+        <div class="form-row col col-md-12">
+            <div class="form-group col col-sm-6">
+                <pagination-controls (pageChange)="p = $event"></pagination-controls> 
+            </div>
+            <div class="form-group col col-sm-3 text-right" *ngIf="trovatoRec">
+                <label></label>
+                <label><strong>Record :</strong>&nbsp;&nbsp; {{nRec}}</label>
+            </div>
+        </div>
+        
+        <div class="row col-md-12">
+        <!-- messaggi -->
+        <div *ngIf="!alertSuccess && isVisible" class="alert alert-danger" role="alert">
+        <!--   <h4 class="alert-heading">Errore in elenco</h4>    -->
+            <p>{{Message}}</p>
+            <hr>
+        </div>
+        <div *ngIf="alertSuccess && isVisible" class="alert alert-success" role="alert">
+        <!--   <h4 class="alert-heading">Modifca Password</h4>    -->
+            <p>{{Message}}</p>
+        </div>
+        </div>
+        </div>
+        </form>
+      </div>
+    
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

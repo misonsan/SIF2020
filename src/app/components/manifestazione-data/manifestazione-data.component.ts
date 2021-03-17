@@ -5,7 +5,9 @@ import { GiornataService }  from './../../services/giornata.service';
 import { Manifestazione} from '../../classes/Manifestazione';
 import { Giornata} from '../../classes/Giornata';
 import { ActivatedRoute, Router } from '@angular/router';
-
+// per gestire inserimento/Modifica con popup
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { GiornatapopComponent } from './../../components/popups/giornatapop/giornatapop.component';
 
 @Component({
   selector: 'app-manifestazione-data',
@@ -25,6 +27,7 @@ export class ManifestazioneDataComponent implements OnInit {
   faUserEdit = faUserEdit;
 
   public giornate: Giornata[] = [];
+  public giornata: Giornata;
   public manif: Manifestazione;
   public nRecMan = 0;
   public nRec = 0;
@@ -46,11 +49,16 @@ export class ManifestazioneDataComponent implements OnInit {
   public isVisible = false;
   public alertSuccess = false;
 
+//  posso aprire la popoup con dimensioni diverse:
+//  this.modal.open(modalProdotto,{size:'sm'});    <----  piccola
+//  this.modal.open(modalProdotto,{size:'lg'});    <----  ampia
+//  this.modal.open(modalProdotto,{size:'xl'});    <----  grandissima
 
   constructor(private manifService: ManifestazioneService,
               private giornataService: GiornataService,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router,
+              private modal: NgbModal) { }
 
   ngOnInit(): void {
     this.tipoRichiesta = "T";
@@ -84,7 +92,7 @@ async loadGiornatefromManif(id: number, tipoRic: string) {
 
    this.trovatoRec = false;
    this.isVisible = true;
-  await  this.giornataService.getGiornateforManif(id,tipoRic).subscribe(
+   await  this.giornataService.getGiornateforManif(id,tipoRic).subscribe(
     // sentire hidran per lettura particolare
    // this.fedeleService.getFedeliforMessa(id).subscribe(
       response => {
@@ -113,10 +121,27 @@ async loadGiornatefromManif(id: number, tipoRic: string) {
 
 registra() {
 
-  // passare il valore della messa selezionata
+alert('apro popup per registrazione giornata')
+  // metodo utilizzando il componente manifestazione-Detail
 
-   localStorage.setItem("gestioneutente", 'new');
-   this.router.navigate(['giornataManif', this.manif.id, 'new']);
+  // localStorage.setItem("gestioneutente", 'new');
+  // this.router.navigate(['giornataManif', this.manif.id, 'new']);
+
+
+  // dal 05/03/2021  gestione con popup    {size:'lg'});
+  this.giornata = new Giornata();
+  this.giornata.idManifestazione = this.manif.id;
+  const ref = this.modal.open(GiornatapopComponent, {size:'lg'});
+  ref.componentInstance.selectedUser = this.giornata;
+
+  ref.result.then(
+    (yes) => {
+      console.log('Click YES');
+    },
+    (cancel) => {
+      console.log('click Cancel');
+    }
+  )
 
 }
 
@@ -126,19 +151,10 @@ onSelectionChange(timanif: string)   {
   this.tipoRichiesta = timanif.substring(0,1);
 // per impostare il campo corretto di ricerca per i fedele entrati
   this.validSearch = true;
-}
-
-ricercaGiornate() {
-  if(this.tipoRichiesta == '?') {
-     this.validSearch = false;
-     alert('effettuare prima la selezione delle giornate ,\n ricerca non possibile');
-     return;
-  }  else {
-      this.loadGiornatefromManif(this.manif.id, this.tipoRichiesta);
-   }
+  this.loadGiornatefromManif(this.manif.id, this.tipoRichiesta);
 }
 
 
-}
 
+}
 

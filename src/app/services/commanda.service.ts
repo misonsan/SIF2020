@@ -18,6 +18,7 @@ export class CommandaService {
  private rootCommandabyGiornataFiltro  = '/getCommandeByGiornataIdFiltrato/';
  private rootCommandaByGiornataeCompetenza  = '/getCommandeByGiornataeCompetenza/';
  private rootCommandaByGiornataeCompetenzaestato  = '/getCommandeByGiornataeCompetenzaestato/';
+ private rootdelete = '/commandadlt/deleteAll'
 
  private rottaLast = "/commandalast";
  private rootCommandalastid  = '/lastid/';
@@ -26,6 +27,7 @@ export class CommandaService {
  private APIURL = environment.APIURL + this.rotta;  // definisco l'url su cui effettuare la lettura sul server
 
  private APIURLLAST = environment.APIURL + this.rottaLast;
+ private APIURLDLT = environment.APIURL + this.rootdelete;  // al momento non funziona
  private tipoFiltro = 0;
 
  constructor(private http: HttpClient, private auth: AuthService) { }
@@ -139,6 +141,15 @@ getCommandeforGiornataeCompetenzaestato(id: number, comp: number, stato: number)
      return this.http.get(this.APIURL + this.rootCommandaByGiornataeCompetenzaestato + id + '/comp/' + comp + '/stato/' + stato,  {
        headers: this.getAuthHeader()
      });      // ok;
+ }
+
+
+ // al momento da errore di incompatibilità di metodo
+ deleteAll() {
+
+  return this.http.get(this.APIURLDLT ,  {
+    headers: this.getAuthHeader()
+  });      // ok;
  }
 
 }

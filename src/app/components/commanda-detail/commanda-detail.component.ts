@@ -9,6 +9,8 @@ import { GiornataService }  from './../../services/giornata.service';
 import { CommandaService }  from './../../services/commanda.service';
 import { faUndo, faSave, faHandPointLeft, faTrashAlt, faInfoCircle, faThumbsUp, faThumbsDown, faSearch, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+// per gestire il popup con esito operazione
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-commanda-detail',
@@ -57,7 +59,8 @@ public giornata: Giornata;
   public statoRic = 0;
 
   public searchText = '';
-
+// variabili per visualizzazione messaggio di esito con notifier
+  public type = '';
 
   options = [
     'Tutte',
@@ -70,11 +73,13 @@ public giornata: Giornata;
 p: number = 1;
 
 constructor(private router: Router,
-             private route: ActivatedRoute,
-             private manifService: ManifestazioneService,
-             private giornataService: GiornataService,
-             private commandaService: CommandaService,
-              ) { }
+            private route: ActivatedRoute,
+            private manifService: ManifestazioneService,
+            private giornataService: GiornataService,
+            private commandaService: CommandaService,
+            public notifier: NotifierService) {
+              this.notifier = notifier;
+            }
 
 ngOnInit(): void {
      this.isVisible  = true;
@@ -131,6 +136,16 @@ this.router.navigate(['manif/' + this.giornata.idManifestazione]);
 
 
 registra()  {
+
+// verifico se la giornata è aperta
+
+  if(this.giornata.stato !==  2) {
+    this.type = 'error';
+    this.Message = 'Giornata non Operativa - Registrazione commande non consentita';
+    this.showNotification(this.type, this.Message);
+    return;
+  }
+
   // salvo il numero della giornata su localStorage
   localStorage.setItem('idGiornata',  String(this.giornata.id))                        ;
   this.router.navigate(['commandaw/' +  this.giornata.idManifestazione + '/new']);
@@ -165,7 +180,7 @@ onSelectionChange(ticomma: string)   {
             this.statoRic = 0;;
             break;
     }
-    if(this.statoRic  == 0) {
+      if(this.statoRic  == 0) {
        this.loadCommandefromGiornata(this.giornata.id);
     }  else {
        this.loadCommandebyGiornataFiltro(this.giornata.id, this.statoRic);
@@ -210,6 +225,20 @@ async loadCommandefromGiornata(id: number)  {
       }
     )
   }
+
+
+      /**
+* Show a notification
+*
+* @param {string} type    Notification type
+* @param {string} message Notification message
+*/
+
+showNotification( type: string, message: string ): void {
+  this.notifier.notify( type, message );
+}
+
+
 
 }
 

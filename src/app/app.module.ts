@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // services
 import { AuthService } from './services/auth.service';
 import { CommandaService } from './services/commanda.service';
@@ -16,6 +16,7 @@ import { TruolodayService }  from './services/truoloday.service';
 import { TtipologiaService }  from './services/ttipologia.service';
 import { MoneypaymentService }  from './services/moneypayment.service';
 import { MoneypayService }  from './services/moneypay.service';
+import { TabellaTService }  from './services/tabella-t.service';
 
 // di sistema
 import { FontAwesomeModule} from '@fortawesome/angular-fontawesome'
@@ -25,6 +26,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // utility
 import {NgxPaginationModule} from 'ngx-pagination';   // paginazione
+// per gestione messaggio esito operazione tipo popup a tempo
+import { NotifierModule, NotifierOptions } from 'angular-notifier';
+// per aprire una seconda popup dentro alla prima  (conferma Cancellazione)
+import { ModalModule } from 'ngx-bootstrap/modal'; 
 
 import { AppComponent } from './app.component';
 // componenti utente
@@ -75,6 +80,60 @@ import { CommandarigalavComponent } from './components/commandarigalav/commandar
 import { CommandarigaconComponent } from './components/commandarigacon/commandarigacon.component';
 import { GestioneComandetestComponent } from './components/gestione-comandetest/gestione-comandetest.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ProdottojobComponent } from './components/popups/prodottojob/prodottojob.component';
+import { ManifestazionepopComponent } from './components/popups/manifestazionepop/manifestazionepop.component';
+import { GiornatapopComponent } from './components/popups/giornatapop/giornatapop.component';
+import { PersonadaypopComponent } from './components/popups/personadaypop/personadaypop.component';
+import { ProdottodaypopComponent } from './components/popups/prodottodaypop/prodottodaypop.component';
+import { CassapopComponent } from './components/popups/cassapop/cassapop.component';
+import { TabelleComponent } from './components/tabelle/tabelle.component';
+import { TabellaTwDettComponent } from './components/tabella-tw-dett/tabella-tw-dett.component';
+import { ProdottiAnagComponent } from './components/prodotti-anag/prodotti-anag.component';
+import { ProdottoAnagComponent } from './components/prodotto-anag/prodotto-anag.component';
+
+/**
+ * Custom angular notifier options
+ */
+const customNotifierOptions: NotifierOptions = {
+  position: {
+    horizontal: {
+      position: 'right',
+      distance: 12
+    },
+    vertical: {
+      position: 'top',
+      distance: 90,
+      gap: 10
+    }
+  },
+  theme: 'material',
+  behaviour: {
+    autoHide: 8000,
+    onClick: 'hide',
+    onMouseover: 'pauseAutoHide',
+    showDismissButton: true,
+    stacking: 4
+  },
+  animations: {
+    enabled: true,
+    show: {
+      preset: 'slide',
+      speed: 300,
+      easing: 'ease'
+    },
+    hide: {
+      preset: 'fade',
+      speed: 300,
+      easing: 'ease',
+      offset: 50
+    },
+    shift: {
+      speed: 300,
+      easing: 'ease'
+    },
+    overlap: 150
+  }
+};
 
 
 
@@ -124,7 +183,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     Prodotto3Component,
     CommandarigalavComponent,
     CommandarigaconComponent,
-    GestioneComandetestComponent
+    GestioneComandetestComponent,
+    ProdottojobComponent,
+    ManifestazionepopComponent,
+    GiornatapopComponent,
+    PersonadaypopComponent,
+    ProdottodaypopComponent,
+    CassapopComponent,
+    TabelleComponent,
+    TabellaTwDettComponent,
+    ProdottiAnagComponent,
+    ProdottoAnagComponent
 
 
   ],
@@ -138,10 +207,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HttpClientModule,
     NgxPaginationModule,
     Ng2SearchPipeModule,
-    NgbModule
+    NgbModule,
+    BrowserAnimationsModule,
+    ModalModule.forRoot(),
+    NotifierModule.withConfig(customNotifierOptions)
   ],
   providers: [AuthService, ManifestazioneService, GiornataService, RouteGuardService, AuthService, CommandaService,PersonaService,CommandawService,CommandawrigaService,
-             ProdottoService,TruolodayService,TtipologiaService,MoneywService,MoneypaymentService, MoneypayService
+             ProdottoService,TruolodayService,TtipologiaService,MoneywService,MoneypaymentService, MoneypayService, TabellaTService
               ],
   bootstrap: [AppComponent]
 })

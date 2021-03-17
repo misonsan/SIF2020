@@ -15,13 +15,21 @@ export class GiornataService {
 
  private rotta = "/giornata";
  private rottadayActive = '/giornataact';
+ private rottaManif = '/giornataManif';
+ 
+ private rootGiornatalastid  = "/lastid";
 
  private rootGiornatebyManif = '/getGiornateByManifId/';
  private rootGiornatebyManifFiltro  = '/getGiornateByManifIdFiltrato/';
  private rootGirnataactive = '/getGiornataactive/';
+ private rootlastGiornatabyManif = '/getLastGiornataByManifId/';
+
+ 
 
  private APIURL = environment.APIURL + this.rotta;  // definisco l'url su cui effettuare la lettura sul server
  private APIURLACT = environment.APIURL + this.rottadayActive + this.rootGirnataactive;
+ private APIURLLAST = environment.APIURL + this.rottaManif;
+
 
 
  private tipoFiltro = 0;
@@ -156,8 +164,27 @@ return this.http.get(this.APIURLACT,  {
 }
 
 
+getLastGiornataid() {
+
+  this.APIURLLAST = environment.APIURL + this.rottaManif + this.rootGiornatalastid;
+
+  return this.http.get(this.APIURLLAST ,  {
+    headers: this.getAuthHeader()
+  });      // ok;
+
+}
+
+getLastGiornataidbyManif(id: number) {
+
+  this.APIURLLAST = environment.APIURL + this.rotta + this.rootlastGiornatabyManif  + id;
 
 
+
+  return this.http.get(this.APIURLLAST  ,  {
+    headers: this.getAuthHeader()
+  });      // ok;
+
+}
 
 
 }

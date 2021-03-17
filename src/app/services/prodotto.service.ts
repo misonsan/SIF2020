@@ -24,6 +24,9 @@ export class ProdottoService {
 
   private rootProdottibyMenu = '/getProdottiforMenu/';
   private rootProdottibyTipologia = '/getProdottiforTipologia/';
+  private rootProdottibyCategoria = '/getProdottiforCategoria/';
+  private rootProdottibyCompetenza = '/getProdottiforCompetenza/';
+  private rootProdottibyStato = '/getProdottiforStato/'
 
     constructor(private http: HttpClient, private auth: AuthService) { }
 
@@ -131,7 +134,26 @@ export class ProdottoService {
                   });      // ok      // ok
 
                 }
+
+
+          getProdottiforCategoria(tipo: number) {
+
+                return this.http.get(this.APIURL + this.rootProdottibyCategoria + tipo,  {
+                          headers: this.getAuthHeader()
+                        });
+                }
+
+          getProdottiforCompetenza(tipo: number) {
+
+                return this.http.get(this.APIURL + this.rootProdottibyCompetenza + tipo,  {
+                           headers: this.getAuthHeader()
+                         });
+                }
+
+          getProdottiforStato(stato: number) {
+
+                  return this.http.get(this.APIURL + this.rootProdottibyStato + stato,  {
+                             headers: this.getAuthHeader()
+                           });
+                  }
   }
-
-
-

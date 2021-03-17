@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 // per aggiornare commandaw da popup
 import { CommandawService } from './../../services/commandaw.service';
 import { Commandaw } from '../../classes/Commandaw';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { ProdottoService} from '../../services/prodotto.service';
+import { Prodotto} from '../../classes/Prodotto';
 
 @Component({
   selector: 'tr[app-commandawriga]',
@@ -55,6 +58,7 @@ export class CommandawrigaComponent implements OnInit {
 
     public commandaw: Commandaw;
     public commandawriga1: Commandawriga;
+    public prodotto: Prodotto;
 
     public newCommandaid = 0;
     public newCommandanProdotti = 0;
@@ -66,7 +70,11 @@ export class CommandawrigaComponent implements OnInit {
 
    public displayedImage = '';
 
-   constructor(private commandawrigaService: CommandawrigaService, private route: Router, private commandawService: CommandawService) { }
+   constructor(private commandawrigaService: CommandawrigaService,
+               private route: Router, 
+               private commandawService: CommandawService,
+               private prodottoService: ProdottoService,
+               private modal: NgbModal) { }
 
    ngOnInit(): void {
 
@@ -127,7 +135,7 @@ goProdottoModal(id: number)  {
   alert('ho selezionato: ' + id);
   this.loadCommandawrigaa(id);
 }
-
+*/
 
 async loadCommandawrigaa(id: number) {
      await this.commandawrigaService.getCommandawriga(id).subscribe(
@@ -228,28 +236,70 @@ await  this. commandawService.getCommandaw(commandawriga.idCommanda).subscribe(
 }
 
 async  updateVendutoCommanda(commandaw: Commandaw) {
- alert('cupdateVendutoCommanda ----   entry');
- this.isVisible = true;
- await  this. commandawService.updateCommanda(commandaw).subscribe(
-        response => {
-         alert('check_02 -    updateCommanda ------> ');
-            if(response['success']) {
-              this.alertSuccess = true;
-            } else {
-              alert(response['message']);
-              this.Message = response['message'];
-              this.alertSuccess = false;
-        }},
-        error =>
-        {
-          console.log(error);
-          this.Message = error.message;
-          this.alertSuccess = false;
-        }
-     );
+   alert('cupdateVendutoCommanda ----   entry');
+   this.isVisible = true;
+   await  this. commandawService.updateCommanda(commandaw).subscribe(
+          response => {
+          alert('check_02 -    updateCommanda ------> ');
+          if(response['success']) {
+                this.alertSuccess = true;
+              } else {
+                alert(response['message']);
+                this.Message = response['message'];
+                this.alertSuccess = false;
+          }},
+          error =>
+          {
+            console.log(error);
+            this.Message = error.message;
+            this.alertSuccess = false;
+          }
+       );
  }
 
-*/
+
+
+async getProdottoSelected(id: number) {
+
+  await  this.prodottoService.getProdotto(id).subscribe(
+    // sentire hidran per lettura particolare
+   // this.fedeleService.getFedeliforMessa(id).subscribe(
+      res => {
+          this.prodotto = res['data'];
+           },
+      error => {
+         alert('commandawriga  -- getProdottoSelected - errore: ' + error.message);
+         console.log(error);
+         this.Message = error.message;
+         this.alertSuccess = false;
+      }
+    )
+}
+
+
+// ------------   gestione popup
+
+openModal(id: number, modalProdotto) {
+// qui leggere il prodotto
+this.getProdottoSelected(id);
+this.modal.open(modalProdotto,{size:'lg'});
+//  posso aprire la popoup con dimensioni diverse:
+//  this.modal.open(modalProdotto,{size:'sm'});    <----  piccola
+//  this.modal.open(modalProdotto,{size:'lg'});    <----  ampia
+//  this.modal.open(modalProdotto,{size:'xl'});    <----  grandissima
+
+
+
+
+
+/*
+  this.modal.open(modalProdotto, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+  this.closeResult = `Closed with: ${result}`;
+}, (reason) => {
+  this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+});  */
+}
+
 
 
 }

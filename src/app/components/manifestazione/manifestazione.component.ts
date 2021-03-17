@@ -1,9 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ManifestazioneService} from '../../services/manifestazione.service';
 import { Manifestazione} from '../../classes/Manifestazione';
-import { faUserEdit, faTrash, faInfo, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUserEdit, faTrash, faInfo, faInfoCircle, faList } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
-
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+// form popup per gestire la manifestazione
+import { ManifestazionepopComponent } from './../../components/popups/manifestazionepop/manifestazionepop.component';
 @Component({
   selector: 'tr[app-manifestazione]',
   templateUrl: './manifestazione.component.html',
@@ -21,6 +23,7 @@ export class ManifestazioneComponent implements OnInit {
   faTrash = faTrash;
   faInfo = faInfo;
   faInfoCircle = faInfoCircle;
+  faList = faList;
 
 // -----
   public textMessage1 = '';
@@ -37,7 +40,9 @@ export class ManifestazioneComponent implements OnInit {
 
   public utenteFedele = false;
 
-  constructor(private manifService: ManifestazioneService, private route: Router) { }
+  constructor(private manifService: ManifestazioneService,
+              private route: Router,
+              private modal: NgbModal) { }
 
   ngOnInit(): void {
 
@@ -112,7 +117,7 @@ export class ManifestazioneComponent implements OnInit {
 
   }
 
-  showMessaDetail() {
+  showManifestazioneDetail() {
    // alert('visualizzo il dettaglio della manifestazione');
           this.route.navigate(['manif', this.manif.id]);
 
@@ -130,7 +135,23 @@ export class ManifestazioneComponent implements OnInit {
   }
 
 
+  // apro la form popup per gestire le variazioni
+  showManifestazionePopup(manif: Manifestazione) {
 
+    const ref = this.modal.open(ManifestazionepopComponent, {size:'lg'});
+    ref.componentInstance.selectedUser = manif;
+  
+    ref.result.then(
+      (yes) => {
+        console.log('Click YES');
+      },
+      (cancel) => {
+        console.log('click Cancel');
+      }
+    )
+  
+
+  }
 
 
 }

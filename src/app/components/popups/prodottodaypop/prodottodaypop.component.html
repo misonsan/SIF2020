@@ -1,0 +1,191 @@
+<div class="modal-header " [style.background]="fase === 'M' ? 'red' : 'green'" [style.color]="fase === 'M' ? 'white' : 'yellow'">   
+    <div class="col-sm-3">
+      <img src="assets/images/logoSanfra.png" width="40" height="40" alt="logo">
+    </div>
+    <h4 class="modal-title" id="modal-basic-title">{{title}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+   <form [formGroup]="editForm" (ngSubmit)="onSubmit()" *ngIf="editForm" >   
+        <!-- Chiave del record -->
+        <input hidden type="text" formControlName="id" class="form-control" />
+          <!-- data della Manifestazione -->
+        <div class="form-row">
+          <div class="form-group col-sm-6">
+              <label for="dtGiornata" id="aa">Data </label>
+              <input  disabled    class="form-control" formControlName="dtGiornata" name="dtGiornata" id="dtGiornata">       <!-- type="date" -->
+          </div>
+          <div class="form-group col-sm-3">
+            <label >Stato</label>
+              <input  disabled    class="form-control" formControlName="statoGiornata" name="statoGiornata" id="statoGiornata"  [style.color]="giornata.stato == 2 ? 'red' : null">
+          </div>
+        <div class="form-group col-sm-3">
+          <label >Stato Prodotti</label>
+          <input  disabled    class="form-control" formControlName="statoMagazzino" name="statoMagazzino" id="statoMagazzino"  [style.color]="giornata.statoMagazzino == 0 ? 'red' : null">
+       </div>
+    </div>
+        <br>
+        <div class="col-6 " style="margin-top: 35px;">
+            <div class="row">
+              <div class="col-md-12 offset-6">
+                <img src="assets/images/photoProducts/{{prodotto.photo}}"  alt="prodotto.photo" class="img-circle rounded-circle border p-1 img" width="150px" height="150px">   
+             </div>
+            </div>
+        </div>
+          <br>
+          <br>
+          <br>
+          <br>
+          <div class="form-row">
+              <!-- descrizione Prodotto -->
+            <div class="form-group col-sm-9">
+                  <label for="cognome">Prodotto</label>
+                  <input   disabled type="text" formControlName="descrizione_prodotto" class="form-control"  name="descrizione_prodotto" id="descrizione_prodotto"/> 
+            </div>
+            <!-- Tipologia Prodotto -->
+            <div class="form-group col-sm-3">
+                <label for="nome">Tipologia</label>
+                <input   disabled type="text" formControlName="d_Tipologia" class="form-control"  name="d_Tipologia" id="d_Tipologia"/> 
+            </div>
+          </div>
+          <div class="form-row">
+            <!-- Categoria -->
+            <div class="form-group col-sm-9">
+                    <label for="cognome">Categoria</label>
+                    <input   disabled type="text" formControlName="d_Categoria" class="form-control"  name="d_Categoria" id="d_Categoria"/> 
+            </div>
+          <!-- Competenza -->
+            <div class="form-group col-sm-3">
+                <label for="nome">Tipologia</label>
+                <input   disabled type="text" formControlName="d_Competenza" class="form-control"  name="d_Competenza" id="d_Competenza"/> 
+            </div>
+          </div>
+           <!-- Disponibile Giornaliera -->
+          <div class="form-row">
+            <div class="form-group col-sm-6 ">
+               <label for="disponibile_Day">Disponibile</label>
+              <input   required type="text" formControlName="disponibile_Day" class="form-control"  name="disponibile_Day" id="disponibile_Day" placeholder="Inserire la disponibilità per oggi"  minlength="2" maxlength="3" pattern="[0-9]{2,3}"  type="number" />
+              <div *ngIf="editFormData.disponibile_Day.dirty && editFormData.disponibile_Day.touched && editFormData.disponibile_Day.invalid "  class="alert alert-danger">
+                  <div  *ngIf="editFormData.disponibile_Day.errors.required">
+                    inserire la disponibilità giornaliera - campo Obbligatorio
+                  </div>
+                  <div  *ngIf="editFormData.disponibile_Day.errors.minlength">
+                    il campo deve avere almeno {{editFormData.disponibile_Day.errors.minlength.requiredLength }} caratteri
+                  </div>
+                  <div *ngIf="editFormData.disponibile_Day.errors?.pattern">
+                    <!-- non posso inserire lettere   {{editFormData.disponibile_Day.errors.pattern.requiredPattern }}     -->
+                    Disponibilità giornaliera non valida.
+                  </div>
+              </div>   
+            </div>
+            <div class="form-group col-sm-6">
+                <label for="disponibile">Disponibile Std</label>
+                  <input   disabled type="text" formControlName="disponibile" class="form-control"  name="disponibile" id="disponibile"/>
+            </div>
+        </div> 
+
+        <!--  prezzo -->
+        <div class="form-row">
+          <div class="form-group col-sm-6">
+            <label for="prezzo_day">Prezzo</label>
+            <input required type="text" formControlName="prezzo_day" class="form-control"  name="prezzo_day" id="prezzo_day" placeholder="Inserire prezzo per oggi"  minlength="1" maxlength="3" pattern="^[1-9]d{0,9}(.d{1,2})?%?$"  type="number"/>
+
+            <div *ngIf="editFormData.prezzo_day.dirty && editFormData.prezzo_day.touched && editFormData.prezzo_day.invalid"  class="alert alert-danger">
+                <div  *ngIf="editFormData.prezzo_day.errors.required">
+                inserire il prezzo giornaliero - campo Obbligatorio
+                </div>
+                <div  *ngIf="editFormData.prezzo_day.errors.minlength">
+                il campo deve avere almeno {{editFormData.prezzo_day.errors.minlength.requiredLength }} caratteri
+                </div>
+                <div *ngIf="editFormData.prezzo_day.errors?.pattern">
+                <!-- non posso inserire lettere   {{postimax.errors.pattern.requiredPattern }}   -->
+                Prezzo giornaliero non valido
+                </div>
+                <div *ngIf="editFormData.prezzo_day === 0">
+                <!-- non posso inserire lettere   {{postimax.errors.pattern.requiredPattern }}   -->
+                Valorizzare il Prezzo giornaliero
+                </div>
+            </div>   
+          </div>
+            <div class="form-group col-sm-6">
+                <label for="prezzo">Prezzo Std</label>
+                <input   disabled type="text" formControlName="prezzo" class="form-control"  name="prezzo" id="prezzo"/>
+            </div>
+        </div>  
+
+        <div class="form-group col-sm-6">
+            <input #saveValueStdCheckBox
+                  id="saveValueStdCheckBox"
+                  type="checkbox"
+                  [checked]="saveValueStd"
+                  (change)="onSaveValueStdChanged(saveValueStdCheckBox.checked)" />&nbsp;&nbsp;per Impostare valori Std
+          </div>  
+          <div class="form-row"> 
+        <!--  riga selezione per scegliere utilizzo a menu  -->
+            <div class="form-group was-validated col-md-6">
+                <label class="col-sm-10 control-label ">Selezionare se Prodotto a Menu</label>         
+                <select class="custom-select" required (change)="selectedUtilizzo($event.target.value)">    <!-- selectedUtilizzo($event.target.value)--> 
+                <option *ngFor="let prod of enabledProd" [value]="prod.value"  class="form-control" >{{prod.dEnable}}</option>
+                </select>
+                <div class="invalid-feedback">effettuare la scelta del prodotto del giorno</div>
+            </div>
+            <!-- descrizione Prodotto -->
+            <div class="form-group col-sm-6">
+                  <label for="cognome">Attuale</label>
+                  <input   disabled type="text" formControlName="condizioneMenu" class="form-control"  name="condizioneMenu" id="condizioneMenu"  [style.color]="condizioneMenu === '?' ? 'red' : null"  [style.background]="condizioneMenu === '?' ? 'yellow' : null"/> 
+            </div>
+          </div>
+     
+        <!-- messaggi -->
+           <div class="row col-md-12">
+               <div *ngIf="!alertSuccess && isVisible" class="alert alert-danger" role="alert">
+              <!--   <h4 class="alert-heading">Errore in elenco</h4>    -->
+                 <p>{{Message}}</p>
+                 <hr>
+               </div>
+               <div *ngIf="alertSuccess && isVisible" class="alert alert-success" role="alert">
+               <!--   <h4 class="alert-heading">Modifca Password</h4>    -->
+                 <p>{{Message}}</p>
+               </div>
+            </div>
+  </form>
+</div> 
+
+<div class="modal-footer">
+ 
+    <button [disabled]="isLoading" class="btn btn-secondary mr-2" (click)="modal.dismiss('Cross click')">Cancel
+      <fa-icon [icon]="faWindowClose"  fixed="true"></fa-icon>
+    </button>   
+    <button [disabled]="!selectedCorrect" class="btn btn-primary mr-2" (click)="onSubmit()" >Salva    <!--   contrDate()  manipData()-->
+      <fa-icon [icon]="faSave"  fixed="true"></fa-icon>
+    </button>  
+   
+</div>  
+
+
+
+
+<ng-template #templateConfirmDelete>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Cancellazione Giornata</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    confermi la cancellazione per la giornata selezionata ?<br />
+  </div>
+    <div class="modal-footer">
+     <button type="button" class="btn btn-secondary" (click)="closeModal(2)">Annulla
+      <fa-icon [icon]="faWindowClose"  fixed="true"></fa-icon>
+     </button>
+    <button type="button" class="btn btn-danger" (click)="closeModal(3)">Conferma
+      <fa-icon [icon]="faTrash"  fixed="true"></fa-icon>
+    </button>
+  </div>
+</ng-template>     
+
+
+

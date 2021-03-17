@@ -6,11 +6,16 @@
 <td class="buttons">
   <div class="row">
     <div class="col-sm-4">
-      <!-- per vedere come attivare popup -->
-            <button   class="btn btn-primary  btn-sm" (click)="showPersonaDetail()"  >
+            <!-- aggiornamento utente passaggio ad altro componente - prima versione -->
+            <!-- <button   class="btn btn-primary  btn-sm" (click)="showPersonaDetail()"  >  -->
+            
+              <!-- aggiornamento utente tramite popup seconda versione -->
+              <button   class="btn btn-primary  btn-sm" (click)="showPersonaDetailPopup()">
+                <fa-icon [icon]="faUserEdit" fixed="true"></fa-icon>
+            
 
      <!-- <button   class="btn btn-primary  btn-sm" (click)="showMessaDetail()"> -->
-         <fa-icon [icon]="faUserEdit" fixed="true"></fa-icon>
+       <!--  <fa-icon [icon]="faUserEdit" fixed="true"></fa-icon>  -->
           <!--  <fa name="fainfo" fixed="true" ></fa>  -->
       </button>
     </div>

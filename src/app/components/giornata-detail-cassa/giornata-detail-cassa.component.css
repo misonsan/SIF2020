@@ -8,3 +8,13 @@ input.disabled {
 input.enabled {
   background:Cornsilk;
 }
+.borde {
+  border: 2px solid red;
+}
+.btngreen {
+  /* Green */
+
+
+  border: 4pz solid green;
+
+}

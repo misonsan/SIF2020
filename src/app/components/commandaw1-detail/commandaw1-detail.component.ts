@@ -246,7 +246,7 @@ async calcoloImportoProdotti() {
     this.nProdOrd = 0;
     this.iProdOrd = 0;
 
-     for(let ordinato of this.commandawrighe) {
+    for(let ordinato of this.commandawrighe) {
           this.nProdOrd = this.nProdOrd + ordinato.qta;
           this.iProdOrd = this.iProdOrd + (ordinato.qta * ordinato.prezzo_day);
        }

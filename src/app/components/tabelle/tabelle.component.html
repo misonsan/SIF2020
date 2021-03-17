@@ -1,0 +1,98 @@
+<p>tabelle works!</p>
+
+<div class="container">
+    <caption class="title col-sm-12"><strong>{{title}}</strong></caption>
+  
+    <div class="row col-md-10">    <!--  <div class="row justify-content-md-center"> -->
+  
+      <div class="col-md-auto">
+        <form #fm ="ngForm">
+  
+
+       <!--    ruoli --> 
+   
+       <div class="form-group was-validated col-md-12">
+        <label class="col-sm-2 control-label ">Tabelle</label>         
+        <select class="custom-select" required (change)="selectedTabella($event.target.value)">
+          <option value="">Selezione la tabella</option>
+          <option *ngFor="let tabellat of tabellet" [value]="tabellat.id"  class="form-control" [style.color]="tabellat.fatto === 'N' ? 'red' : null">{{tabellat.d_tabella}} -- {{tabellat.fatto}}</option>
+        </select>
+        <div class="invalid-feedback">effettuare la scelta della tabella</div>
+      </div>
+
+      <!-- creare interface / classe / controller su angular e model / controller per Laravel -->
+    <div class="form-row">
+        <div class="form-group col-sm-3">
+             <label for="numNew">N.ro Accensioni</label>
+             <input disabled #numNew="ngModel"  [(ngModel)]="tabellatw.numNew" class="form-control" name="numNew" id="numNew">
+        </div>
+        <div class="form-group col-sm-3">
+          <label for="nome">N.ro Modifiche</label>
+          <input disabled #numUpd="ngModel"  [(ngModel)]="tabellatw.numUpd" class="form-control" name="numUpd" id="numUpd">   
+        </div>
+        <div class="form-group col-sm-3">
+          <label for="nome">N.ro Cancellazioni</label>
+          <input disabled #numDlt="ngModel"  [(ngModel)]="tabellatw.numDlt" class="form-control" name="numDlt" id="numDlt">   
+       </div>
+    </div>  
+          <div class="form-row">
+            <div class="row col-sm-6">
+              <div class="col-sm-6">
+                   <button  class="btn btn-primary btn-rounded"  (click)="NuovoElemento()">Nuovo
+                     <fa-icon [icon]="faPlusSquare"  fixed="true"></fa-icon>
+                    </button>
+               </div>
+            </div>
+  
+      
+  
+  
+    
+    <br>
+  
+ 
+  
+       <br>
+       <!-- creare componente tabella   -->
+    <div class="form-row col-md-12 borde">
+          <table class="table  ">   <!--  table-striped p-3 mb-5 table-lg shadow-lgbg-white  -->
+  
+
+            <tr>
+                <th>prog</th>
+                <th>id</th>
+                <th>Descrizione</th>
+                <th>Stato</th>
+                <th>Action</th>
+            </tr>
+  
+            <tr app-tabella-tw-dett  *ngFor ="let tabellatwDett of tabelletwDett ; let i = index"
+            [tabella-tw-dett-prog] = i+1
+            [tabella-tw-dett-data] = "tabellatwDett" >
+              
+  
+          </tr>
+          </table>
+          </div>  
+      </div>
+       <div class="row col-md-12">
+    <!-- messaggi -->
+    <div *ngIf="!alertSuccess && isVisible" class="alert alert-danger" role="alert">
+      <!--   <h4 class="alert-heading">Errore in elenco</h4>    -->
+         <p>{{Message}}</p>
+         <hr>
+       </div>
+       <div *ngIf="alertSuccess && isVisible" class="alert alert-success" role="alert">
+       <!--   <h4 class="alert-heading">Modifca Password</h4>    -->
+         <p>{{Message}}</p>
+       </div>
+      </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  

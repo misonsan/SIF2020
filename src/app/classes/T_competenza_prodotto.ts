@@ -1,7 +1,7 @@
 import { TcompetenzaProdottoInterface } from './../interfaces/t_competenza_prodotto';
 
 
-export class Tcategoriaprodotto implements TcompetenzaProdottoInterface  {
+export class TcompetenzaProdotto implements TcompetenzaProdottoInterface  {
 
   id: number;
   d_competenza: string;

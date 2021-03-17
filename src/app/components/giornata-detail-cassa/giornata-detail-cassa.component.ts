@@ -2,11 +2,18 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { Manifestazione} from '../../classes/Manifestazione';
 import { Giornata } from '../../classes/Giornata';
+import { Cassaw } from '../../classes/Cassaw';
+import { Commanda } from '../../classes/Commanda';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ManifestazioneService} from './../../services/manifestazione.service';
 import { GiornataService }  from './../../services/giornata.service';
 import { CommandaService } from './../../services/commanda.service';
-import { faUndo, faSave, faHandPointLeft, faTrashAlt, faInfoCircle, faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
+import { CassawService } from './../../services/cassaw.service';
+import { faUndo, faSave, faHandPointLeft, faTrashAlt, faInfoCircle, faThumbsUp, faThumbsDown, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { CassapopComponent } from './../../components/popups/cassapop/cassapop.component';
+
 
 @Component({
   selector: 'app-giornata-detail-cassa',
@@ -37,6 +44,8 @@ get giornata() {
      faInfoCircle = faInfoCircle;
      faThumbsUp = faThumbsUp;
      faThumbsDown = faThumbsDown;
+     faPlusSquare = faPlusSquare;
+
 // variabili per editazione messaggio
     public alertSuccess = false;
     public savechange = false;
@@ -49,6 +58,9 @@ get giornata() {
 
   public title = 'situagione giornaliera Cassa  -  giornata-detail-cassa works!';
   public manif: Manifestazione;
+  public cassaw: Cassaw;
+  public commanda: Commanda;
+  
   //public giornata: Giornata;
   //  campi calcolati per editazione
   // sbilancio
@@ -60,7 +72,7 @@ get giornata() {
   public smoneta = 0;
   // valore iniziale
   public vi100 = 0;
-  public vi050 = 0;
+  public vi050 = 0;   
   public vi020 = 0;
   public vi010 = 0;
   public vi005 = 0;
@@ -98,12 +110,16 @@ get giornata() {
 
   public trovatoRec = false;
   public nRec = 0;
+  public keyCassaw = 0;
+  public CassaCaricata = false;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
               private manifService: ManifestazioneService,
               private giornataService: GiornataService,
-              private commandaService: CommandaService
+              private commandaService: CommandaService,
+              public modal: NgbModal,
+              private cassawService: CassawService
                ) { }
 
   ngOnInit(): void {
@@ -111,7 +127,7 @@ get giornata() {
     this.route.paramMap.subscribe(p => {
          // -------  leggo i dati della giornata
           this.loadGiornata(+p.get('id'));
-
+   
     //      alert('loadGiornata - finito OnInit');
       });
   }
@@ -120,6 +136,7 @@ get giornata() {
     await this.giornataService.getGiornata(id).subscribe(
       response => {
        this.giornata = response['data'];
+  
              // leggo i dati della manifestazione
          this.loadManifestazione(this.giornata.idManifestazione);
            this.conteggiaValori();
@@ -148,6 +165,82 @@ async loadManifestazione(id: number) {
    }
  )
 
+}
+
+registra() {
+
+  alert('faccio partire popup per la registrazione Cassa -  da fare');
+
+  // cancello la vecchia cassaw e la ricreo con la data della giornata selezionata
+  this.ricreaCassaw();
+  
+  const ref = this.modal.open(CassapopComponent, {size:'lg'});
+  ref.componentInstance.selectedUser = this.cassaw;                               //this.cassaw;
+
+  ref.result.then(
+    (yes) => {
+      console.log('Click YES');
+    },
+    (cancel) => {
+      console.log('click Cancel');
+    }
+  )
+
+}
+
+
+ricreaCassaw() {
+    this.CancellaCassaw();
+    this.creaCassaw();
+}
+
+
+
+// metodo non più necessario da quando passo giornata e non cassaw
+CancellaCassaw() {
+  // cancello la vecchia Cassaw e la ricreo con la data della giornata selezionata
+  this.cassaw = new Cassaw();
+  this.cassawService.deleteCassa(this.cassaw).subscribe(
+    response => {
+      if(response['success']) {
+ 
+      } else {
+        alert(response['message']);
+        this.message = response['message'];
+        this.alertSuccess = false;
+      }
+  },
+  error =>
+  {
+    console.log(error);
+    this.message = error.message;
+    this.alertSuccess = false;
+  }
+  );
+
+}
+
+creaCassaw() {
+  this.cassaw.idDay = this.giornata.id;
+  this.cassaw.dtGiornata = this.giornata.dtGiornata;
+  this.cassaw.statoCassa = this.giornata.statoCassa;
+  this.cassawService.createCassa(this.cassaw).subscribe(
+    response => {
+      if(response['success']) {
+           // non faccio niente e apro popup
+      } else {
+        alert(response['message']);
+        this.message = response['message'];
+        this.alertSuccess = false;
+      }
+  },
+  error =>
+  {
+    console.log(error);
+    this.message = error.message;
+    this.alertSuccess = false;
+  }
+  );
 }
 
 
@@ -190,19 +283,27 @@ myFunction(x) {
 
 conteggiaValori() {
 
+  // utilizati per la vecchia gestione degli aggiornamenti di cassa
+  // ora con la gestione popup tutti i campi della mappa sono disabled e 
+  // aggiornamento cassa lo faccio da popup
+
+  /*
   this.enabledCassaFinale = false;
   this.enabledCassaIniziale = false;
 
   switch (this.giornata.statoCassa) {
     case 0:
+    case 1:
        this.enabledCassaFinale = false;
        this.enabledCassaIniziale = true;
        break;
-    case 1:
+    case 2:
        this.enabledCassaFinale = true;
        this.enabledCassaIniziale = false;
        break;
      }
+*/
+
 
     this.eseguoConteggioValori();
 
@@ -314,8 +415,14 @@ backToGiornata(){
 updateGiornataCassa(giornata: Giornata) {
    //alert('cassa- sono in update cassa -  da fare');
 
-  this.isVisible = true;
-  this.giornataService.updateGiornata(this.giornata).subscribe(
+   this.isVisible = true;
+ // aggiorno lo stato della giornata
+   this.giornata.stato = 1;
+   this.giornata.statoCassa = 1;
+   if(this.giornata.statoCassa === 1 && this.giornata.statoMagazzino === 1  && this.giornata.statoUtenti === 1) {
+      this.giornata.stato = 2;
+   }
+   this.giornataService.updateGiornata(this.giornata).subscribe(
       response => {
           if(response['success']) {
              this.message = 'Cassa ' + giornata.d_stato_cassa + ' Modificata con successo';
@@ -413,6 +520,12 @@ aggiornaGiornata()  {
     this.headerPopup = 'Caricamento Cassa Iniziale';
     this.textMessage2 = 'Cassa Iniziale';
     this.giornata.statoCassa = 1;
+
+
+
+
+
+
               // salvo su cassa attuale i dati di cassa attuale
     this.giornata.a100 = this.giornata.i100;
     this.giornata.a050 = this.giornata.i050;

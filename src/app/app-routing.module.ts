@@ -24,6 +24,10 @@ import { HomeComponent } from './components/home/home.component';
 import { PreviewCommandaComponent } from './components/preview-commanda/preview-commanda.component';
 import { CommandaDataComponent } from './components/commanda-data/commanda-data.component';
 import { GestioneCommandeComponent } from './components/gestione-commande/gestione-commande.component';
+import { TabelleComponent } from './components/tabelle/tabelle.component';
+import { ProdottiAnagComponent } from './components/prodotti-anag/prodotti-anag.component';
+
+
 // test
 import { GestioneComandetestComponent } from './components/gestione-comandetest/gestione-comandetest.component';
 
@@ -72,7 +76,11 @@ const routes: Routes = [
     component: GestioneComandetestComponent,
     canActivate: [RouteGuardService]
   },
-
+  {
+    path: 'tabellat',
+    component: TabelleComponent,
+    canActivate: [RouteGuardService]
+  },
 
 
 
@@ -142,6 +150,11 @@ const routes: Routes = [
     component: HomeComponent,
     canActivate: [RouteGuardService]
   },
+  {
+    path: 'prodotti',
+    component: ProdottiAnagComponent,
+    canActivate: [RouteGuardService]
+  },
 /*
   {
 
@@ -170,7 +183,7 @@ const routes: Routes = [
 
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule],
   providers: []
 })

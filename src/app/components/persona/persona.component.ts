@@ -3,7 +3,10 @@ import { PersonaService} from '../../services/persona.service';
 import { Persona} from '../../classes/Persona';
 import { faUserEdit, faTrash, faInfo, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
-
+import { PersonadaypopComponent } from './../../components/popups/personadaypop/personadaypop.component';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+// per gestire il popup con esito operazione
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'tr[app-persona]',
@@ -37,14 +40,20 @@ export class PersonaComponent implements OnInit {
   public presenti = false;
   public isVisible = false;
   public alertSuccess = false;
-
+  public funcSearch = 0;
   public nRec = 0;
 
+  public type = '';
   public utenteFedele = false;
+  public functionEnabled = false;
 
 
-
-  constructor(private personaService: PersonaService, private route: Router) { }
+  constructor(public modal: NgbModal,
+             private personaService: PersonaService,
+             private route: Router,
+             private notifier: NotifierService) {
+              this.notifier = notifier;
+            }
 
   ngOnInit(): void {
 
@@ -113,16 +122,48 @@ export class PersonaComponent implements OnInit {
     // non effettuo una navigazione a altro componente, ma passo una variabile a Persona-Detail
       //     this.route.navigate(['persona', this.persona.id]);
 
+     // modalità di link con prima versione che prevedeva scambio tra componenti
+    //   this.onSelectUser.emit(this.persona);
 
-      this.onSelectUser.emit(this.persona);
-
-
-     // alert('----- 2       dovrei aver passaato oggetto user al filglio (persone-detail' + this.persona.cognome);
-
+// modalità di aggiornamento tramite popup
 
 
 
   }
+
+
+  showPersonaDetailPopup() {
+
+    // verifico se ho già effettuato la conferma delle persone
+
+    this.ControllaSeselezionatiTutti();
+
+
+    if(this.functionEnabled == false) {
+      this.type = 'error';
+      this.Message = 'Aggiornamento completato per tutte le persone ' + '--  funzione non eseguibile';
+      this.showNotification(this.type, this.Message);
+      return;
+    }
+
+
+
+    const ref = this.modal.open(PersonadaypopComponent, {size:'lg'});
+    ref.componentInstance.selectedUser = this.persona;
+  
+    ref.result.then(
+      (yes) => {
+        console.log('Click YES');
+      },
+      (cancel) => {
+        console.log('click Cancel');
+      }
+    )
+
+    }
+
+
+
 
 
 
@@ -152,6 +193,42 @@ export class PersonaComponent implements OnInit {
   okconfirm() {
     // alert('metodo da fare');
   }
+
+
+  async  ControllaSeselezionatiTutti() {
+    // verificare se selezionati tutti a menu o no menu
+  //  alert('------------------ Controllaselezionatitutti ');
+    this.funcSearch = 0;
+    await  this.personaService.getPersoneforRuolo1(this.funcSearch).subscribe(
+     resp => {
+  
+      alert('Controllaselezionatitutti: ' + resp['number']);
+      if(resp['number'] === 0) {
+         this.functionEnabled = false;
+       } else {
+        this.functionEnabled = true;
+       }
+     },
+     error => {
+       alert(' ControllaSeselezionatiTutti');
+       console.log(error);
+       this.type = 'error';
+       this.Message = 'Errore ControllaSeselezionatiTutti ' + '\n' + error.message;
+       this.showNotification(this.type, this.Message);
+       this.alertSuccess = false;
+     }); 
+  }
+
+/**
+* Show a notification
+*
+* @param {string} type    Notification type
+* @param {string} message Notification message
+*/
+
+showNotification( type: string, message: string ): void {
+  this.notifier.notify( type, message );
+}
 
 
 }

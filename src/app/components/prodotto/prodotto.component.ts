@@ -3,7 +3,10 @@ import { ProdottoService} from '../../services/prodotto.service';
 import { Prodotto} from '../../classes/Prodotto';
 import { faUserEdit, faTrash, faInfo, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
-
+import { ProdottodaypopComponent } from './../../components/popups/prodottodaypop/prodottodaypop.component';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+// per gestire il popup con esito operazione
+import { NotifierService } from 'angular-notifier';
 
 
 @Component({
@@ -36,11 +39,21 @@ export class ProdottoComponent implements OnInit {
   public presenti = false;
   public isVisible = false;
   public alertSuccess = false;
+  public aMenuSearch = '';
+  public functionEnabled = false;
+
+
+  public type = '';
 
   public nRec = 0;
 
 
-  constructor(private prodottoService: ProdottoService, private route: Router) { }
+  constructor(public modal: NgbModal,
+              private prodottoService: ProdottoService,
+              private route: Router,
+              private notifier: NotifierService) {
+                this.notifier = notifier;
+              }
 
   ngOnInit(): void {
 
@@ -50,59 +63,43 @@ export class ProdottoComponent implements OnInit {
   //   this.textUser = this.messa.demessa;
      this.textMessage2 = 'Registrazione non possibile';
 
-    // this.loadManifestazioni();
-
   }
 
+  async  ControllaSeselezionatiTutti() {
+    // verificare se selezionati tutti a menu o no menu
+    alert('------------------ Controllaselezionatitutti ');
+    this.aMenuSearch = '*';
+    await  this.prodottoService.getProdottiforMenu(this.aMenuSearch).subscribe(
+     resp => {
+  
+      alert('Controllaselezionatitutti: ' + resp['number']);
+      if(resp['number'] === 0) {
+         this.functionEnabled = false;
+       } else {
+        this.functionEnabled = true;
+       }
+     },
+     error => {
+       alert(' ControllaSeselezionatiTutti');
+       console.log(error);
+       this.type = 'error';
+       this.Message = 'Errore ControllaSeselezionatiTutti ' + '\n' + error.message;
+       this.showNotification(this.type, this.Message);
+       this.alertSuccess = false;
+     }); 
+  }
+  
 
-/*    metterlo su manifestazione-data  per editare le giornate della manifestazione
+/**
+* Show a notification
+*
+* @param {string} type    Notification type
+* @param {string} message Notification message
+*/
 
-  async loadManifestazioni() {
-    this.presenti = false;
-    this.Message = 'Nessuna Manifestazione presente';
-
-    await  this.manifService.getManifestazioni().subscribe(
-      res => {
-        if(res['number'] > 0) {
-          this.nRec = res['number'];
-          this.alertSuccess = true;
-          this.isVisible = true;
-          this.Message = 'Situazione attuale';
-          this.manif = res['data'];
-          console.log('trovate manifestazioni da editare in elenco');
-          this.presenti = true;
-          } else {
-              this.isVisible = true;
-              this.Message = 'Nessuna Manifestazione presente';
-            }
-      },
-      err => {
-        this.alertSuccess = false;
-        this.isVisible = true;
-
-        console.log(err);
-        switch (err.status) {
-           case 401:      //login
-              this.Message = 'errore 401';
-              break;
-          case 403:     //forbidden
-              this.Message = 'errore 403';
-              break;
-          case 404:      //login
-              this.Message = 'errore 404';
-              break;
-          case 405:     //forbidden
-              this.Message = 'errore 405';
-              break;
-          default:
-              this.Message = err.status;
-              break;
-          }
-     });
-
-
+showNotification( type: string, message: string ): void {
+  this.notifier.notify( type, message );
 }
-  */
 
 
  showDetail() {
@@ -115,9 +112,34 @@ export class ProdottoComponent implements OnInit {
 
    // alert('----- 2       dovrei aver passaato oggetto user al filglio (persone-detail' + this.persona.cognome);
 
+}
+
+showProdottoDetailPopup() {
+
+ // fare una verifica se effettuata la modifica di tutti i prodotti.
+     // se effettuati visualizzare messaggio e inibire l'operatività sul prodotto
+
+     this.ControllaSeselezionatiTutti();
 
 
-
+  if(this.functionEnabled == false) {
+    this.type = 'error';
+    this.Message = 'Aggiornamento completato per tutti i prodotti ' + '--  funzione non eseguibile';
+    this.showNotification(this.type, this.Message);
+    return;
+  }
+  
+  const ref = this.modal.open(ProdottodaypopComponent, {size:'lg'});
+  ref.componentInstance.selectedUser = this.prodotto;
+  
+  ref.result.then(
+      (yes) => {
+        console.log('Click YES');
+      },
+      (cancel) => {
+        console.log('click Cancel');
+      }
+    );
 }
 
 
